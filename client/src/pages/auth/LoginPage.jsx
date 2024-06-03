@@ -27,22 +27,10 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 
-const formSchema = z
-  .object({
-    email: z.string().email(),
-    name: z.string().min(3),
-    password: z.string().min(6),
-    confirmPassword: z.string().min(6),
-  })
-  .superRefine((val, ctx) => {
-    if (val.password !== val.confirmPassword) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-      });
-    }
-  });
+const formSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
 
 const LoginPage = () => {
   const dispatch = useDispatch();
