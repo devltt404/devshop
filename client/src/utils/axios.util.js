@@ -11,8 +11,13 @@ axiosWithAuth.interceptors.response.use(
   },
   async function (error) {
     try {
-      await axiosWithAuth.post("/auth/refresh-token");
-      return axiosWithAuth.request(error.config);
+      //Try to refresh token if 401
+      if (error.response.status === 401) {
+        await axiosWithAuth.post("/auth/refresh-token");
+        return axiosWithAuth.request(error.config);
+      } else {
+        return Promise.reject(error);
+      }
     } catch (error) {
       //TODO: logout
       return Promise.reject(error);
@@ -36,9 +41,9 @@ const axiosBaseQuery =
     } catch (axiosError) {
       const err = axiosError;
       return {
-        error: {
+        error: err.response?.data || {
           status: err.response?.status,
-          data: err.response?.data || err.message,
+          message: err.message,
         },
       };
     }

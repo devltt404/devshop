@@ -1,7 +1,7 @@
 import axiosBaseQuery from "@/utils/axios.util.js";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-export const auth = createApi({
+export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: axiosBaseQuery({
     baseUrl: "/auth",
@@ -13,6 +13,7 @@ export const auth = createApi({
         method: "GET",
       }),
     }),
+
     login: builder.mutation({
       query: (data) => ({
         url: "/login",
@@ -20,6 +21,7 @@ export const auth = createApi({
         data,
       }),
     }),
+
     register: builder.mutation({
       query: (data) => ({
         url: "/register",
@@ -27,6 +29,7 @@ export const auth = createApi({
         data,
       }),
     }),
+
     logout: builder.mutation({
       query: () => ({
         url: "/logout",
@@ -35,3 +38,10 @@ export const auth = createApi({
     }),
   }),
 });
+
+export const {
+  useAuthUserQuery,
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+} = authApi;

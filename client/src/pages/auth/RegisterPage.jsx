@@ -1,4 +1,4 @@
-import GoogleIcon from "@/components/icons/GoogleIcon.jsx";
+import ProviderButtons from "@/components/auth/ProviderButtons.jsx";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,9 +18,12 @@ import {
 import { Form } from "@/components/ui/form.jsx";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator.jsx";
+import useValidateForm from "@/hooks/useValidateForm.jsx";
+import { setUserInfo } from "@/redux/slices/user.slice.js";
+import { useRegisterMutation } from "@/services/auth.service.js";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Facebook } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 
@@ -41,77 +44,11 @@ const formSchema = z
     }
   });
 
-const ProviderButtons = () => (
-  <div className="grid grid-cols-2 gap-8">
-    <Button type="button" className="w-full shadow-sm" variant="outline">
-      <GoogleIcon className="mr-2 h-4 w-4" />
-      Google
-    </Button>
-    <Button type="button" className="w-full shadow-sm" variant="outline">
-      <Facebook className="mr-2 h-4 w-4" />
-      Facebook
-    </Button>
-  </div>
-);
-
-const EmailMethodFields = ({ control }) => (
-  <div className="grid gap-4">
-    <FormField
-      control={control}
-      name="email"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Email</FormLabel>
-          <FormControl>
-            <Input type="email" placeholder="name@example.com" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={control}
-      name="name"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Name</FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="name" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={control}
-      name="password"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Password</FormLabel>
-          <FormControl>
-            <Input type="password" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={control}
-      name="confirmPassword"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Confirm Password</FormLabel>
-          <FormControl>
-            <Input type="password" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  </div>
-);
-
 const RegisterPage = () => {
+  const dispatch = useDispatch();
+
+  const [registerUser, { isLoading, error }] = useRegisterMutation();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -122,9 +59,19 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = ({ email, name, password }) => {
+    registerUser({
+      email,
+      name,
+      password,
+    })
+      .unwrap()
+      .then(({ metadata }) => {
+        dispatch(setUserInfo(metadata.user));
+      });
   };
+
+  useValidateForm({ error, form });
 
   return (
     <Card className="mx-auto my-12 max-w-lg">
@@ -149,11 +96,68 @@ const RegisterPage = () => {
               <Separator className="flex-1" />
             </div>
 
-            <EmailMethodFields control={form.control} />
+            <div className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="name@example.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </CardContent>
 
           <CardFooter>
-            <Button type="submit" className="w-full">
+            <Button disabled={isLoading} type="submit" className="w-full">
               Register
             </Button>
           </CardFooter>

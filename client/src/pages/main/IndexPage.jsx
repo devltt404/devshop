@@ -1,6 +1,6 @@
 import ProductCard from "@/components/ProductCard.jsx";
 import { CheckIcon, Flame } from "lucide-react";
-import HeroBg from "../assets/hero.png";
+import HeroBg from "../../assets/hero.png";
 
 export default function IndexPage() {
   return (
