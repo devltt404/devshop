@@ -90,6 +90,7 @@ const LoginPage = () => {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
+                        error={form.formState.errors.email}
                         type="email"
                         placeholder="name@example.com"
                         {...field}
@@ -107,7 +108,11 @@ const LoginPage = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        error={form.formState.errors.password}
+                        type="password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

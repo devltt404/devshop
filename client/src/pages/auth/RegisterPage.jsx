@@ -106,6 +106,7 @@ const RegisterPage = () => {
                     <FormControl>
                       <Input
                         type="email"
+                        error={form.formState.errors.email}
                         placeholder="name@example.com"
                         {...field}
                       />
@@ -121,7 +122,12 @@ const RegisterPage = () => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="name" {...field} />
+                      <Input
+                        type="text"
+                        placeholder="name"
+                        error={form.formState.errors.name}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -134,7 +140,11 @@ const RegisterPage = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        type="password"
+                        error={form.formState.errors.password}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -147,7 +157,11 @@ const RegisterPage = () => {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        type="password"
+                        error={form.formState.errors.confirmPassword}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
