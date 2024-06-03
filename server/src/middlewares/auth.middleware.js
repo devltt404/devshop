@@ -18,7 +18,13 @@ const checkAuthentication =
       }
 
       // Verify access token
-      const decode = jwt.verify(accessToken, serverConfig.server.jwtSecret);
+      let decode;
+      try {
+        decode = jwt.verify(accessToken, serverConfig.server.jwtSecret);
+      } catch (error) {
+        throw new UnauthorizedError("Invalid access token");
+      }
+
       const { userId } = decode;
 
       // Check if user exists

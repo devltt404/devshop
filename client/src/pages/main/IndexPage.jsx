@@ -55,7 +55,7 @@ export default function IndexPage() {
       </section>
 
       {/* Email Form */}
-      <div className="my-16 rounded-lg bg-gradient-to-t from-black to-[rgba(0,0,0,0.8)] py-20 text-white">
+      <div className="my-16 rounded-xl bg-gradient-to-t from-black to-[rgba(0,0,0,0.8)] py-24 text-white">
         <h2 className="text-center text-3xl font-semibold">
           WANT TO GET LATEST UPDATES?
         </h2>
@@ -78,7 +78,7 @@ export default function IndexPage() {
         </div>
 
         <form className="mt-6 flex justify-center">
-          <div className="shadow-outer flex w-full max-w-md rounded-md border border-white">
+          <div className="flex w-full max-w-md rounded-md border border-white shadow-outer">
             <input
               type="email"
               className="flex-1 bg-transparent px-4 outline-none"
