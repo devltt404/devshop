@@ -1,7 +1,8 @@
-import { ShoppingBag, User2 } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "../Logo.jsx";
 import SearchInput from "../SearchInput.jsx";
+import UserMenu from "../UserMenu.jsx";
 import Headline from "./Headline.jsx";
 
 export default function Header() {
@@ -15,17 +16,7 @@ export default function Header() {
         <SearchInput />
 
         <div className="flex gap-2">
-          {/* Sign in redirect */}
-          <Link
-            to="/login"
-            className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
-          >
-            <User2 className="mr-2 stroke-[1.5px]" />
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">Sign in</span>
-              <span className="-mt-1 text-sm font-semibold">Account</span>
-            </div>
-          </Link>
+          <UserMenu />
 
           {/* Cart icon */}
           <Link
