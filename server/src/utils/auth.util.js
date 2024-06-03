@@ -7,5 +7,15 @@ export function setTokenCookie({ res, accessToken, refreshToken }) {
     httpOnly: true,
   });
 
+  res.cookie("session", new Date().getTime(), {
+    httpOnly: false,
+  });
+
   return { accessToken, refreshToken };
+}
+
+export function clearTokenCookie(res) {
+  res.clearCookie("accessToken", { httpOnly: true });
+  res.clearCookie("refreshToken", { httpOnly: true });
+  res.clearCookie("session", { httpOnly: false });
 }

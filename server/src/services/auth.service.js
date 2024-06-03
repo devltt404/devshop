@@ -1,11 +1,7 @@
 import jwt from "jsonwebtoken";
 import serverConfig from "../configs/server.config.js";
-import {
-  BadRequestError,
-  ForbiddenError,
-  UnauthorizedError,
-} from "../core/error.response.js";
-import { setTokenCookie } from "../utils/auth.util.js";
+import { BadRequestError, UnauthorizedError } from "../core/error.response.js";
+import { clearTokenCookie, setTokenCookie } from "../utils/auth.util.js";
 import { checkMissingFields, getFieldsFromObject } from "../utils/index.js";
 import { compareUserPassword, generateTokens } from "../utils/user.util.js";
 import UserService from "./user.service.js";
@@ -28,38 +24,41 @@ export default class AuthService {
 
   /**
    * Refreshes the access token and generates a new refresh token for the user.
-   * @param {string} oldRefreshToken - The old refresh token.
-   * @returns {Promise<Object>} - An object containing the new access token, refresh token, and user information.
+   * @returns {Promise<Object>} - An object containing the new access token, refresh token
    * @throws {UnauthorizedError} - If the old refresh token is invalid.
    * @throws {ForbiddenError} - If the old refresh token is valid but the user is not found.
    */
-  static async refreshToken(oldRefreshToken) {
-    if (!oldRefreshToken) {
-      throw new UnauthorizedError("Invalid refresh token");
-    }
-
+  static async refreshToken(oldRefreshToken, res) {
     try {
-      const decoded = jwt.verify(
-        oldRefreshToken,
-        serverConfig.server.jwtSecret
-      );
+      if (!oldRefreshToken) {
+        throw new UnauthorizedError("Invalid refresh token");
+      }
+
+      let decoded;
+      try {
+        decoded = jwt.verify(oldRefreshToken, serverConfig.server.jwtSecret);
+      } catch (error) {
+        throw new UnauthorizedError("Invalid refresh token");
+      }
+
       const { userId } = decoded;
       const foundUser = await UserService.findUserById({
         userId,
       });
 
       if (!foundUser) {
-        throw new ForbiddenError("Invalid refresh token");
+        throw new UnauthorizedError("Invalid refresh token");
       }
 
       const { accessToken, refreshToken } = generateTokens(foundUser);
+      setTokenCookie({ accessToken, refreshToken, res });
       return {
         accessToken,
         refreshToken,
-        userId,
       };
     } catch (error) {
-      throw new ForbiddenError("Invalid refresh token");
+      clearTokenCookie(res);
+      throw error;
     }
   }
 

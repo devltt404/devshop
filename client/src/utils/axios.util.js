@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const baseApiURL = import.meta.env.VITE_API_BASE_URL;
+
 const axiosWithAuth = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: baseApiURL,
   withCredentials: true,
 });
 
@@ -11,15 +13,16 @@ axiosWithAuth.interceptors.response.use(
   },
   async function (error) {
     try {
-      //Try to refresh token if 401
+      //Try to refresh token if unauthorized (401)
       if (error.response.status === 401) {
-        await axiosWithAuth.post("/auth/refresh-token");
+        await axios.post(baseApiURL + "/auth/refresh-token", null, {
+          withCredentials: true,
+        });
         return axiosWithAuth.request(error.config);
       } else {
         return Promise.reject(error);
       }
     } catch (error) {
-      //TODO: logout
       return Promise.reject(error);
     }
   },

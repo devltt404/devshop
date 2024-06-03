@@ -12,7 +12,7 @@ export default class AuthController {
   static async refreshToken(req, res) {
     new SuccessResponse({
       message: "Token refreshed successfully",
-      metadata: await AuthService.refreshToken(req.body.refreshToken),
+      metadata: await AuthService.refreshToken(req.cookies.refreshToken, res),
     }).send(res);
   }
 
