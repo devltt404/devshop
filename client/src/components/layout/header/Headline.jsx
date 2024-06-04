@@ -2,7 +2,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
+} from "@/components/ui/carousel.jsx";
 import Autoplay from "embla-carousel-autoplay";
 import { Package, Truck } from "lucide-react";
 

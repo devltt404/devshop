@@ -1,18 +1,18 @@
-import { authApi } from "@/services/auth.service.js";
-import { categoryApi } from "@/services/category.service.js";
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import userSlice from "./slices/user.slice.js";
+import { api } from "./api/index.js";
+import authSlice from "./slices/auth.slice.js";
 
 export const store = configureStore({
   reducer: {
-    [authApi.reducerPath]: authApi.reducer,
-    [categoryApi.reducerPath]: categoryApi.reducer,
-    user: userSlice,
+    [api.reducerPath]: api.reducer,
+    auth: authSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, categoryApi.middleware),
+    getDefaultMiddleware().concat(api.middleware),
+
+  devTools: import.meta.env.DEV,
 });
 
 setupListeners(store.dispatch);

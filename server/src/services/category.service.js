@@ -72,18 +72,14 @@ export default class CategoryService {
    * @returns {Promise<Array>} A promise that resolves to a JSON tree of categories.
    */
   static async getAllCategories() {
-    const categories = await CategoryModel.find({})
-      .select("name path slug ")
-      .lean();
+    const categories = await CategoryModel.find({}).lean();
 
     const categoryMap = {};
 
     // Create a map of categories with selected fields.
     categories.forEach((category) => {
       categoryMap[category._id] = {
-        _id: category._id,
-        name: category.name,
-        slug: category.slug,
+        ...category,
         children: [],
       };
     });

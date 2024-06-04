@@ -1,13 +1,10 @@
-import { userSelector } from "@/redux/slices/user.slice.js";
-import { useSelector } from "react-redux";
+import useAuth from "@/hooks/useAuth.jsx";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AuthContainer = () => {
-  const { info } = useSelector(userSelector);
+  const { user } = useAuth();
 
-  if (!info) return <Navigate to="/" />;
-
-  return <Outlet />;
+  return !user ? <Navigate to="/" /> : <Outlet />;
 };
 
 export default AuthContainer;

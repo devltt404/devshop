@@ -19,8 +19,8 @@ import { Form } from "@/components/ui/form.jsx";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator.jsx";
 import useValidateForm from "@/hooks/useValidateForm.jsx";
-import { setUserInfo } from "@/redux/slices/user.slice.js";
-import { useLoginMutation } from "@/services/auth.service.js";
+import { useLoginMutation } from "@/redux/api/auth.api.js";
+import { setUser } from "@/redux/slices/auth.slice.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -52,7 +52,7 @@ const LoginPage = () => {
     })
       .unwrap()
       .then(({ metadata }) => {
-        dispatch(setUserInfo(metadata.user));
+        dispatch(setUser(metadata.user));
       });
   };
 
@@ -93,6 +93,7 @@ const LoginPage = () => {
                         error={form.formState.errors.email}
                         type="email"
                         placeholder="name@example.com"
+                        autoComplete="email"
                         {...field}
                       />
                     </FormControl>
@@ -111,6 +112,7 @@ const LoginPage = () => {
                       <Input
                         error={form.formState.errors.password}
                         type="password"
+                        autoComplete="password"
                         {...field}
                       />
                     </FormControl>

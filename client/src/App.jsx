@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import AppRoutes from "./components/AppRoutes.jsx";
 import LoadingScreen from "./components/loading/LoadingScreen.jsx";
 import { Toaster } from "./components/ui/toaster.jsx";
-import { setUserInfo } from "./redux/slices/user.slice.js";
-import { useAuthUserQuery } from "./services/auth.service.js";
+import { useAuthUserQuery } from "./redux/api/auth.api.js";
+import { setUser } from "./redux/slices/auth.slice.js";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function App() {
 
   useEffect(() => {
     if (data) {
-      dispatch(setUserInfo(data.metadata.user));
+      dispatch(setUser(data.metadata.user));
     }
   }, [data]);
 

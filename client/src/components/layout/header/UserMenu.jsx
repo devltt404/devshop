@@ -5,13 +5,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { clearUserInfo, userSelector } from "@/redux/slices/user.slice.js";
-import { useLogoutMutation } from "@/services/auth.service.js";
+} from "@/components/ui/dropdown-menu.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
+import { useLogoutMutation } from "@/redux/api/auth.api.js";
+import { clearUser } from "@/redux/slices/auth.slice.js";
 import { ReceiptText, User2 } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "./ui/button.jsx";
+import { Button } from "../../ui/button.jsx";
 
 const dropdownItems = [
   {
@@ -37,7 +38,7 @@ const TextGroup = ({ sub, main }) => {
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  const { info } = useSelector(userSelector);
+  const { user } = useAuth();
 
   const [logoutUser] = useLogoutMutation();
 
@@ -45,11 +46,11 @@ const UserMenu = () => {
     logoutUser()
       .unwrap()
       .then(() => {
-        dispatch(clearUserInfo(null));
+        dispatch(clearUser(null));
       });
   }
 
-  return !info ? (
+  return !user ? (
     <Link
       to="/login"
       className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
@@ -61,12 +62,12 @@ const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted">
         <User2 className="mr-2 stroke-[1.5px]" />
-        <TextGroup sub={`Hello, ${info.name.split(" ")[0]}`} main="Account" />
+        <TextGroup sub={`Hello, ${user.name.split(" ")[0]}`} main="Account" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-52">
         <DropdownMenuLabel className="px-4 py-3 text-base">
-          {info.name}
-          <p className="truncate text-sm font-normal">{info.email}</p>
+          {user.name}
+          <p className="truncate text-sm font-normal">{user.email}</p>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />

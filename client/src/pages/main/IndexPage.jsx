@@ -1,28 +1,50 @@
 import ProductCard from "@/components/ProductCard.jsx";
+import CategoriesSection from "@/components/home/CategoriesSection.jsx";
+import {
+  ProductsSection,
+  ProductsSectionTitle,
+} from "@/components/home/ProductsSection.jsx";
 import { CheckIcon, Flame } from "lucide-react";
 import HeroBg from "../../assets/hero.png";
 
 export default function IndexPage() {
+  const productSections = [
+    {
+      title: (
+        <div className="flex items-center gap-2 text-red-600">
+          <Flame className="h-7 w-7" />
+          <h2>Hot Sale!</h2>
+        </div>
+      ),
+      products: [],
+      variant: "muted",
+    },
+    {
+      title: "Most Popular",
+      products: [],
+    },
+    {
+      title: "Latest Arrivals",
+      products: [],
+    },
+  ];
+
   return (
     <div className="container">
       <img src={HeroBg} />
+      <CategoriesSection />
 
-      {/* Categories */}
-      <section className="my-16">
-        <h2 className="mb-2 text-center text-3xl font-semibold">Categories</h2>
-        <p className="mb-10 text-center text-muted-foreground">
-          We offer a wide range of categories to choose from, let's explore!
-        </p>
+      {productSections.map((section, index) => (
+        <ProductsSection key={index} variant={section.variant}>
+          <ProductsSectionTitle>{section.title}</ProductsSectionTitle>
 
-        <ul className="flex gap-8">
-          <li className="inline-flex flex-col items-center gap-2">
-            <div className="inline-flex h-44 w-52 items-center justify-center rounded-md bg-slate-50 p-6">
-              <img src="https://res.cloudinary.com/db9v5ywkw/image/upload/v1717474995/2_enz8ow.png" />
-            </div>
-            <p className="text-lg font-medium">Laptop</p>
-          </li>
-        </ul>
-      </section>
+          <div className="flex">
+            {section.products.map((product, index) => (
+              <ProductCard key={index} />
+            ))}
+          </div>
+        </ProductsSection>
+      ))}
 
       {/* Hot sale */}
       <section className="my-16 rounded-lg bg-muted px-8 py-10">

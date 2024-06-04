@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const baseApiURL = import.meta.env.VITE_API_BASE_URL;
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const axiosWithAuth = axios.create({
-  baseURL: baseApiURL,
+  baseURL: apiBaseUrl,
   withCredentials: true,
 });
 
@@ -15,7 +15,7 @@ axiosWithAuth.interceptors.response.use(
     try {
       //Try to refresh token if unauthorized (401)
       if (error.response.status === 401) {
-        await axios.post(baseApiURL + "/auth/refresh-token", null, {
+        await axios.post(apiBaseUrl + "/auth/refresh-token", null, {
           withCredentials: true,
         });
         return axiosWithAuth.request(error.config);
@@ -28,7 +28,7 @@ axiosWithAuth.interceptors.response.use(
   },
 );
 
-const axiosBaseQuery =
+const baseQueryWithReauth =
   ({ baseUrl } = { baseUrl: "" }) =>
   async ({ url, method, data, params, headers }) => {
     try {
@@ -52,4 +52,4 @@ const axiosBaseQuery =
     }
   };
 
-export default axiosBaseQuery;
+export default baseQueryWithReauth;

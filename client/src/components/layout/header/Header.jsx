@@ -1,8 +1,8 @@
 import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
-import Logo from "../Logo.jsx";
-import SearchInput from "../SearchInput.jsx";
-import UserMenu from "../UserMenu.jsx";
+import Logo from "../../Logo.jsx";
+import SearchInput from "./SearchInput.jsx";
+import UserMenu from "./UserMenu.jsx";
 import Headline from "./Headline.jsx";
 
 export default function Header() {

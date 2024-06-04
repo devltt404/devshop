@@ -1,22 +1,20 @@
-import axiosBaseQuery from "@/utils/axios.util.js";
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { api } from "./index.js";
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: axiosBaseQuery({
-    baseUrl: "/auth",
-  }),
+const baseAuthEndpoint = "/auth";
+
+export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     authUser: builder.query({
       query: () => ({
-        url: "",
+        url: baseAuthEndpoint,
         method: "GET",
       }),
+      keepUnusedDataFor: 0,
     }),
 
     login: builder.mutation({
       query: (data) => ({
-        url: "/login",
+        url: baseAuthEndpoint + "/login",
         method: "POST",
         data,
       }),
@@ -24,21 +22,21 @@ export const authApi = createApi({
 
     register: builder.mutation({
       query: (data) => ({
-        url: "/register",
+        url: baseAuthEndpoint + "/register",
         method: "POST",
         data,
       }),
-      invalidatesTags: ["AuthUser"],
     }),
 
     logout: builder.mutation({
       query: () => ({
-        url: "/logout",
+        url: baseAuthEndpoint + "/logout",
         method: "POST",
       }),
     }),
   }),
 });
+
 
 export const {
   useAuthUserQuery,

@@ -135,8 +135,7 @@ export default class AuthService {
    * @returns {Object} - An empty object.
    */
   static logout(res) {
-    res.clearCookie("accessToken", { httpOnly: true });
-    res.clearCookie("refreshToken", { httpOnly: true });
+    clearTokenCookie(res);
     return {};
   }
   // #endregion BUSINESS LOGIC
