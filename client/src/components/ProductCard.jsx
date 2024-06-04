@@ -12,7 +12,7 @@ export default function ProductCard() {
 
       <div className="px-4 pb-4">
         <p className="text-sm text-muted-foreground">Phone</p>
-        <p className="line-clamp-2 text-xl font-medium">Product Name</p>
+        <p className="line-clamp-2 text-lg font-medium">Product Name</p>
 
         <div className="my-1 flex items-center gap-1 text-sm">
           <Star className="h-4 w-4 fill-orange-400" strokeWidth={0} />
@@ -23,7 +23,7 @@ export default function ProductCard() {
 
         <div className="mb-2 flex items-center gap-2">
           <p className="text-xl font-semibold">$100.00</p>
-          <p className="text-sm text-muted-foreground line-through">$255.00</p>
+          <p className="text-xs text-muted-foreground line-through">$255.00</p>
         </div>
       </div>
     </div>

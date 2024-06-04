@@ -15,12 +15,15 @@ const categorySchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      
+    },
+    icon: {
+      type: String,
     },
     description: {
       type: String,
       trim: true,
     },
+    // Using materialized path to store the hierarchy of categories (,parentCategoryID,subCategoryID,subSubCategoryID,...)
     path: {
       type: String,
       index: true,

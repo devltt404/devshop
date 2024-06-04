@@ -11,7 +11,7 @@ export default function Header() {
       {/* Headline */}
       <Headline />
 
-      <div className="container flex items-center justify-between py-6">
+      <div className="container flex items-center justify-between py-4">
         <Logo />
         <SearchInput />
 

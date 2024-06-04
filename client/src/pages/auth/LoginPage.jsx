@@ -51,7 +51,7 @@ const LoginPage = () => {
       password,
     })
       .unwrap()
-      .then(({ metadata, message }) => {
+      .then(({ metadata }) => {
         dispatch(setUserInfo(metadata.user));
       });
   };

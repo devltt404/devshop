@@ -8,7 +8,7 @@ export default function IndexPage() {
       <img src={HeroBg} />
 
       {/* Categories */}
-      <section className="my-12">
+      <section className="my-16">
         <h2 className="mb-2 text-center text-3xl font-semibold">Categories</h2>
         <p className="mb-10 text-center text-muted-foreground">
           We offer a wide range of categories to choose from, let's explore!
@@ -16,8 +16,8 @@ export default function IndexPage() {
 
         <ul className="flex gap-8">
           <li className="inline-flex flex-col items-center gap-2">
-            <div className="inline-flex h-44 w-52 items-center justify-center rounded-md bg-slate-50 p-3">
-              <img src="/laptop.png" />
+            <div className="inline-flex h-44 w-52 items-center justify-center rounded-md bg-slate-50 p-6">
+              <img src="https://res.cloudinary.com/db9v5ywkw/image/upload/v1717474995/2_enz8ow.png" />
             </div>
             <p className="text-lg font-medium">Laptop</p>
           </li>
@@ -25,7 +25,7 @@ export default function IndexPage() {
       </section>
 
       {/* Hot sale */}
-      <section className="my-12 rounded-lg bg-muted px-8 py-10">
+      <section className="my-16 rounded-lg bg-muted px-8 py-10">
         <div className="mb-6 flex items-center gap-2 text-red-600">
           <Flame className="h-7 w-7" />
           <h2 className="text-3xl font-semibold">Hot Sale!</h2>
@@ -37,7 +37,7 @@ export default function IndexPage() {
       </section>
 
       {/* Popular */}
-      <section className="my-12 px-8">
+      <section className="my-16 px-8">
         <h2 className="mb-6 text-3xl font-semibold">Most Popular</h2>
 
         <div className="flex">
@@ -46,7 +46,7 @@ export default function IndexPage() {
       </section>
 
       {/* Popular */}
-      <section className="my-12 px-8">
+      <section className="my-16 px-8">
         <h2 className="mb-6 text-3xl font-semibold">Latest Arrivals</h2>
 
         <div className="flex">

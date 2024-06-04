@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { setUserInfo, userSelector } from "@/redux/slices/user.slice.js";
+import { clearUserInfo, userSelector } from "@/redux/slices/user.slice.js";
 import { useLogoutMutation } from "@/services/auth.service.js";
 import { ReceiptText, User2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,8 +44,8 @@ const UserMenu = () => {
   function handleLogout() {
     logoutUser()
       .unwrap()
-      .then(({ message }) => {
-        dispatch(setUserInfo(null));
+      .then(() => {
+        dispatch(clearUserInfo(null));
       });
   }
 
