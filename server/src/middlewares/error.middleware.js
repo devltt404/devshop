@@ -25,10 +25,9 @@ export const errorHandler = (error, req, res, next) => {
   }
 
   const status = error.status || 500;
-  const message =
-    serverConfig.env !== "pro"
-      ? error.message || "Something went wrong. Please try again."
-      : "Internal server error. Please try again.";
+  const message = !serverConfig.isPro
+    ? error.message || "Something went wrong. Please try again."
+    : "Internal server error. Please try again.";
 
   const errResponse = {
     status: "error",

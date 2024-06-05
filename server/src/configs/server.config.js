@@ -1,21 +1,37 @@
-import { getEnvVariable } from "../utils/env.util.js";
+import { cleanEnv, port, str } from "envalid";
+
+const env = cleanEnv(process.env, {
+  NODE_ENV: str({ choices: ["development", "production", "test"] }),
+
+  SERVER_BASE_URL: str({ default: "http://localhost" }),
+  SERVER_PORT: port({ default: 4000 }),
+  API_BASE_PATH: str({ default: "/api/v1" }),
+
+  JWT_SECRET: str(),
+  ACCESS_TOKEN_EXPIRATION: str({ default: "30m" }),
+  REFRESH_TOKEN_EXPIRATION: str({ default: "1d" }),
+
+  DATABASE_URL: str(),
+
+  CLIENT_BASE_URL: str(),
+});
 
 const serverConfig = {
-  env: getEnvVariable("NODE_ENV"),
+  isDev: env.NODE_ENV === "development",
+  isPro: env.NODE_ENV === "production",
   server: {
-    baseUrl: getEnvVariable("SERVER_BASE_URL", "http://localhost"),
-    port: getEnvVariable("SERVER_PORT"),
-    apiBaseUrl: getEnvVariable("API_BASE_URL", "/api/v1"),
-    jwtSecret: getEnvVariable("JWT_SECRET"),
-    accessTokenExpiration: getEnvVariable("ACCESS_TOKEN_EXPIRATION", "30m"),
-    refreshTokenExpiration: getEnvVariable("REFRESH_TOKEN_EXPIRATION", "1d"),
+    port: env.SERVER_PORT,
+    apiBasePath: env.API_BASE_PATH,
+    jwtSecret: env.JWT_SECRET,
+    accessTokenExpiration: env.ACCESS_TOKEN_EXPIRATION,
+    refreshTokenExpiration: env.REFRESH_TOKEN_EXPIRATION,
   },
   database: {
-    url: getEnvVariable("DATABASE_URL"),
+    url: env.DATABASE_URL,
   },
   client: {
-    baseUrl: getEnvVariable("CLIENT_BASE_URL"),
-  }
+    baseUrl: env.CLIENT_BASE_URL,
+  },
 };
 
 export default serverConfig;

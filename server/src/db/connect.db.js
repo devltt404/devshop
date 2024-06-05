@@ -8,7 +8,7 @@ class Database {
   }
 
   connect() {
-    if (serverConfig.env !== "pro")
+    if (!serverConfig.isPro)
       mongoose.set("debug", { shell: true, color: true });
 
     mongoose

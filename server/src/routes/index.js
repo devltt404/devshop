@@ -15,7 +15,7 @@ apiRoutes.use("/category", categoryRoutes);
 apiRoutes.use("/product", productRoutes);
 apiRoutes.use("/cart", cartRoutes);
 
-if (serverConfig.env === "dev") {
+if (!serverConfig.isPro) {
   apiRoutes.use("/test", testRoutes);
 }
 
