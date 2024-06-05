@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import serverConfig from "../configs/server.config.js";
+import logger from "../logger.js";
 
 //Singleton class to connect to MongoDB
 class Database {
@@ -14,10 +15,10 @@ class Database {
     mongoose
       .connect(serverConfig.database.url)
       .then(() => {
-        console.log("Connected to MongoDB");
+        logger.info("Connected to MongoDB");
       })
       .catch((error) => {
-        console.error("Error connecting to MongoDB: ", error);
+        logger.error("Error connecting to MongoDB: ", error);
       });
   }
 

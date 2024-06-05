@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //routes
-app.use(serverConfig.server.apiBaseUrl, apiRoutes);
+app.use(serverConfig.server.apiBasePath, apiRoutes);
 
 //error handling
 app.use(notFoundHandler);

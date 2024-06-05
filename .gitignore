@@ -4,3 +4,5 @@
 /server/scripts
 /client/node_modules
 /ref
+/server/src/logs
+/.idea
