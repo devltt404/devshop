@@ -27,6 +27,15 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
 
+    variationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProductVariation",
+    },
+    defaultItemId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProductItem",
+    },
+
     minPrice: {
       type: Number,
     },
@@ -41,29 +50,24 @@ const productSchema = new mongoose.Schema(
       type: Map,
       of: String,
     },
-    variants: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "ProductVariant" }],
-      default: [],
-    },
-    defaultVariant: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductVariant",
-    },
     isOutOfStock: {
       type: Boolean,
       default: false,
     },
+
     avgRating: {
       type: Number,
       default: 0,
       min: [0, "Average rating can not be less than 0"],
       max: [5, "Average rating can not be greater than 5"],
     },
-    reviews: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-      default: [],
+    numReviews: {
+      type: Number,
+      default: 0,
+      min: [0, "Number of reviews can not be less than 0"],
     },
-    category: {
+
+    categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: [true, "Product category is required"],

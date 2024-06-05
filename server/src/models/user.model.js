@@ -26,41 +26,17 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      minlength: [6, "Password must be at least 6 characters long"],
+      minLength: [6, "Password must be at least 6 characters long"],
       trim: true,
     },
     picture: {
       type: String,
-      default: "https://via.placeholder.com/150",
+      default: "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg",
     },
     role: {
       type: String,
       enum: Object.values(USER.ROLE),
       default: USER.ROLE.CUSTOMER,
-    },
-    cart: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cart",
-    },
-    orders: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Order",
-        },
-      ],
-      default: [],
-    },
-    provider: {
-      type: String,
-      enum: ["email", "google"],
-      default: "email",
-    },
-    resetPasswordToken: {
-      type: String,
-    },
-    resetPasswordExpire: {
-      type: Date,
     },
   },
   {
@@ -68,6 +44,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+//Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();

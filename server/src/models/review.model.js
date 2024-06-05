@@ -2,26 +2,26 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
-    author: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    product: {
+    productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
     },
-    variant: {
+    modelId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductVariant",
+      ref: "ProductModel",
       required: true,
     },
-    reviewContent: {
+    comment: {
       type: String,
       required: [true, "Review content is required"],
     },
-    rating: {
+    ratingValue: {
       type: Number,
       required: [true, "Rating is required"],
       min: [1, "Rating can not be less than 1"],

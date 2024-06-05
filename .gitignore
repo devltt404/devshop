@@ -3,3 +3,4 @@
 /client/.env
 /server/scripts
 /client/node_modules
+/ref
