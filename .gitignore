@@ -1,8 +1,12 @@
+/.idea
+
 /server/node_modules
+/client/node_modules
 /server/.env
 /client/.env
-/server/scripts
-/client/node_modules
-/ref
+
 /server/src/logs
-/.idea
+
+/script
+/server/scripts
+/server/src/scripts

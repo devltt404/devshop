@@ -6,21 +6,12 @@ const productItemSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: [true, "Product ID is required"],
+      index: true,
     },
-    variationSelection: [
-      {
-        code: {
-          type: String,
-          required: [true, "Variation code is required"],
-          trim: true,
-        },
-        value: {
-          type: String,
-          required: [true, "Variation value is required"],
-          trim: true,
-        },
-      },
-    ],
+    variationSelection: {
+      type: Map,
+      of: String,
+    },
     images: {
       type: [String],
       default: [],
@@ -45,16 +36,11 @@ const productItemSchema = new mongoose.Schema(
         $gt: ["$price", "Original price must be greater than discounted price"],
       },
     },
-    discountPercent: {
-      type: Number,
-      min: [0, "Discount percentage can not be less than 0"],
-      max: [100, "Discount percentage can not be greater than 100"],
-    },
   },
   {
     timestamps: true,
   }
 );
 
-const ProductItemModel = mongoose.model("ProductItem", productItemSchema);
+const ProductItemModel = mongoose.model("Product_Item", productItemSchema);
 export default ProductItemModel;

@@ -1,6 +1,7 @@
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import winston from "winston";
+import "winston-daily-rotate-file";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -19,8 +20,18 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console(),
+    new winston.transports.DailyRotateFile({
+      filename: path.join(__dirname, `/logs/devshop-%DATE%.log`),
+    }),
+  ],
+  exceptionHandlers: [
     new winston.transports.File({
-      filename: path.join(__dirname, "/logs/combined.log"),
+      filename: path.join(__dirname, "/logs/exceptions.log"),
+    }),
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({
+      filename: path.join(__dirname, "/logs/rejections.log"),
     }),
   ],
 });

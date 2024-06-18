@@ -31,7 +31,6 @@ const checkAuthentication =
       const foundUser = await UserService.findUserById({
         userId,
         select: selectedUserFields,
-        lean: false,
       });
 
       if (!foundUser) {

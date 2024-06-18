@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import AppRoutes from "./components/AppRoutes.jsx";
 import LoadingScreen from "./components/loading/LoadingScreen.jsx";
 import { Toaster } from "./components/ui/toaster.jsx";
+import ScrollToTopWrapper from "./components/wrappers/ScrollToTopWrapper.jsx";
 import { useAuthUserQuery } from "./redux/api/auth.api.js";
 import { setUser } from "./redux/slices/auth.slice.js";
 
@@ -22,9 +23,9 @@ export default function App() {
   }, [data]);
 
   return (
-    <Fragment>
+    <ScrollToTopWrapper>
       {isLoading ? <LoadingScreen /> : <AppRoutes />}
       <Toaster />
-    </Fragment>
+    </ScrollToTopWrapper>
   );
 }

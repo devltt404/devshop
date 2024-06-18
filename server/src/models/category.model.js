@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
+import { generateCatId } from "../utils/category.util.js";
 
 const categorySchema = new mongoose.Schema(
   {
+    _id: {
+      type: String,
+      default: generateCatId,
+    },
     name: {
       type: String,
       required: [true, "Category name is required"],

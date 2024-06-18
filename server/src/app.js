@@ -17,9 +17,17 @@ const app = express();
 
 // Connect to database
 import "../src/db/connect.db.js";
+import logger from "./logger.js";
 
 //middlewares
-app.use(morgan("dev"));
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms", {
+    stream: {
+      // Configure Morgan to use logger
+      write: (message) => logger.http(message.trim()),
+    },
+  })
+);
 app.use(helmet());
 app.use(compression());
 

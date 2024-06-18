@@ -14,6 +14,11 @@ const productSchema = new mongoose.Schema(
         "Product name must not be more than 100 characters long",
       ],
     },
+    type: {
+      type: String,
+      enum: ["simple", "configurable"],
+      required: [true, "Product type is required"],
+    },
     slug: {
       type: String,
       unique: true,
@@ -27,13 +32,13 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
 
-    variationId: {
+    variationGroupId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductVariation",
+      ref: "Product_Variation_Group",
     },
     defaultItemId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductItem",
+      ref: "Product_Item",
     },
 
     minPrice: {
@@ -68,14 +73,36 @@ const productSchema = new mongoose.Schema(
     },
 
     categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "Category",
       required: [true, "Product category is required"],
+      index: true,
     },
     numSold: {
       type: Number,
       default: 0,
-      min: [0, "Number of products sold can not be less than 0"],
+      min: [0, "Number of product sold can not be less than 0"],
+    },
+
+    crawlId: {
+      type: String,
+      unique: true,
+      select: false,
+    },
+
+    //Fields for product without variations
+    originalPrice: {
+      type: Number,
+      min: [0, "Original price can not be less than 0"],
+    },
+    price: {
+      type: Number,
+      min: [0, "Price can not be less than 0"],
+    },
+    stock: {
+      type: Number,
+      default: 0,
+      min: [0, "Stock can not be less than 0"],
     },
   },
   {

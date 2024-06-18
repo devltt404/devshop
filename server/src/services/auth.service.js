@@ -18,8 +18,7 @@ export default class AuthService {
   static async authUser(user) {
     if (!user) return null;
 
-    await user.populate("cart", "items");
-    return getFieldsFromObject(["name", "email", "cart"], user);
+    return getFieldsFromObject(["name", "email"], user);
   }
 
   /**

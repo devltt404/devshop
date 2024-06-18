@@ -1,41 +1,35 @@
-import { Suspense, lazy } from "react";
+import {
+  LazyIndex,
+  LazyLogin,
+  LazyNotFound,
+  LazyProduct,
+  LazyRegister,
+} from "@/pages/index.js";
+import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import AuthContainer from "./containers/AuthContainer.jsx";
-import GuestContainer from "./containers/GuestContainer.jsx";
-import ShopContainer from "./containers/ShopContainer.jsx";
+import AuthWrapper from "@/components/wrappers/AuthWrapper.jsx";
+import GuestWrapper from "@/components/wrappers/GuestWrapper.jsx";
+import ShopWrapper from "@/components/wrappers/ShopWrapper.jsx";
 import LoadingScreen from "./loading/LoadingScreen.jsx";
-
-// region lazy imports
-// auth
-const Login = lazy(() => import("../pages/auth/LoginPage.jsx"));
-const Register = lazy(() => import("../pages/auth/RegisterPage.jsx"));
-
-// error
-const NotFound = lazy(() => import("../pages/error/NotFoundPage.jsx"));
-
-// main
-const Index = lazy(() => import("../pages/main/IndexPage.jsx"));
-// endregion lazy imports
-
-//---------------------------------------------------------------------------------
 
 const AppRoutes = () => {
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
-        <Route element={<ShopContainer />}>
+        <Route element={<ShopWrapper />}>
           {/* PUBLIC */}
-          <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<Index />} />
+          <Route path="*" element={<LazyNotFound />} />
+          <Route path="/" element={<LazyIndex />} />
+          <Route path="/product/:slug" element={<LazyProduct />} />
 
           {/* GUEST ONLY */}
-          <Route element={<GuestContainer />}>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+          <Route element={<GuestWrapper />}>
+            <Route path="/register" element={<LazyRegister />} />
+            <Route path="/login" element={<LazyLogin />} />
           </Route>
 
           {/* AUTH ONLY */}
-          <Route element={<AuthContainer />}></Route>
+          <Route element={<AuthWrapper />}></Route>
         </Route>
       </Routes>
     </Suspense>

@@ -1,10 +1,10 @@
 import useAuth from "@/hooks/useAuth.jsx";
 import { Navigate, Outlet } from "react-router-dom";
 
-const GuestContainer = () => {
+const GuestWrapper = () => {
   const { user } = useAuth();
 
   return user ? <Navigate to="/" /> : <Outlet />;
 };
 
-export default GuestContainer;
+export default GuestWrapper;

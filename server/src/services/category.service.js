@@ -49,18 +49,7 @@ export default class CategoryService {
 
     findQueries.push(category);
 
-    let tree = {};
-    for (let i = findQueries.length - 1; i >= 0; i--) {
-      const category = findQueries[i];
-      tree = {
-        _id: category._id,
-        name: category.name,
-        slug: category.slug,
-        child: i === findQueries.length - 1 ? null : tree,
-      };
-    }
-
-    return tree;
+    return findQueries;
   }
 
   // #endregion HELPERS
