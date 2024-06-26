@@ -1,67 +1,79 @@
-// import { SuccessResponse } from "../core/success.response.js";
-// import CartService from "../services/cart.service.js";
+import { SuccessResponse } from "../core/success.response.js";
+import CartService from "../services/cart.service.js";
+import { getCommonCartParams } from "../utils/cart.util.js";
 
-// export default class CartController {
-//   static async getCartDetail(req, res) {
-//     return new SuccessResponse({
-//       message: "Cart details fetched successfully",
-//       metadata: {
-//         cart: await CartService.getCartDetail(req, res),
-//       },
-//     }).send(res);
-//   }
+export default class CartController {
+  static async getSimpleCart(req, res) {
+    return new SuccessResponse({
+      message: "Simple cart fetched successfully",
+      metadata: {
+        cart: await CartService.getSimpleCart({
+          ...getCommonCartParams(req),
+          res,
+        }),
+      },
+    }).send(res);
+  }
 
-//   static async addToCart(req, res) {
-//     return new SuccessResponse({
-//       message: "Product added to cart successfully",
-//       metadata: {
-//         cart: await CartService.addToCart({
-//           productId: req.body.productId,
-//           variantId: req.body.variantId,
-//           quantity: req.body.quantity,
-//           guestCart: req.guestCart,
-//           req,
-//           res,
-//         }),
-//       },
-//     }).send(res);
-//   }
+  static async getCartDetail(req, res) {
+    return new SuccessResponse({
+      message: "Cart details fetched successfully",
+      metadata: {
+        cart: await CartService.getCartDetail({
+          ...getCommonCartParams(req),
+          res,
+        }),
+      },
+    }).send(res);
+  }
 
-//   static async updateCartItem(req, res) {
-//     return new SuccessResponse({
-//       message: "Cart item updated successfully",
-//       metadata: {
-//         cart: await CartService.updateCartItem({
-//           productId: req.body.productId,
-//           variantId: req.body.variantId,
-//           quantity: req.body.quantity,
-//           req,
-//           res,
-//         }),
-//       },
-//     }).send(res);
-//   }
+  static async addToCart(req, res) {
+    return new SuccessResponse({
+      message: "Product added to cart successfully",
+      metadata: {
+        cart: await CartService.addToCart({
+          ...getCommonCartParams(req),
+          ...req.body,
+          res,
+        }),
+      },
+    }).send(res);
+  }
 
-//   static async removeCartItem(req, res) {
-//     return new SuccessResponse({
-//       message: "Cart item removed successfully",
-//       metadata: {
-//         cart: await CartService.removeCartItem({
-//           productId: req.body.productId,
-//           variantId: req.body.variantId,
-//           req,
-//           res,
-//         }),
-//       },
-//     }).send(res);
-//   }
+  static async updateCartItemQuantity(req, res) {
+    return new SuccessResponse({
+      message: "Cart item quantity updated successfully",
+      metadata: {
+        cart: await CartService.updateCartItemQuantity({
+          ...req.body,
+          ...getCommonCartParams(req),
+        }),
+      },
+    }).send(res);
+  }
 
-//   static async clearCart(req, res) {
-//     return new SuccessResponse({
-//       message: "Cart cleared successfully",
-//       metadata: {
-//         cart: await CartService.clearCart(req),
-//       },
-//     }).send(res);
-//   }
-// }
+  static async removeCartItem(req, res) {
+    return new SuccessResponse({
+      message: "Cart item deleted successfully",
+      metadata: {
+        cart: await CartService.removeCartItem({
+          ...req.body,
+          ...getCommonCartParams(req),
+          res,
+        }),
+      },
+    }).send(res);
+  }
+
+  static async clearCart(req, res) {
+    return new SuccessResponse({
+      message: "Cart cleared successfully",
+      metadata: {
+        cart: await CartService.clearCart({
+          ...getCommonCartParams(req),
+          res
+        }),
+      },
+    }).send(res);
+  }
+}

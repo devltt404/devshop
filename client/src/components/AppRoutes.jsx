@@ -1,4 +1,8 @@
+import AuthWrapper from "@/components/wrappers/AuthWrapper.jsx";
+import GuestWrapper from "@/components/wrappers/GuestWrapper.jsx";
+import ShopWrapper from "@/components/wrappers/ShopWrapper.jsx";
 import {
+  LazyCart,
   LazyIndex,
   LazyLogin,
   LazyNotFound,
@@ -7,9 +11,6 @@ import {
 } from "@/pages/index.js";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import AuthWrapper from "@/components/wrappers/AuthWrapper.jsx";
-import GuestWrapper from "@/components/wrappers/GuestWrapper.jsx";
-import ShopWrapper from "@/components/wrappers/ShopWrapper.jsx";
 import LoadingScreen from "./loading/LoadingScreen.jsx";
 
 const AppRoutes = () => {
@@ -20,6 +21,7 @@ const AppRoutes = () => {
           {/* PUBLIC */}
           <Route path="*" element={<LazyNotFound />} />
           <Route path="/" element={<LazyIndex />} />
+          <Route path="/cart" element={<LazyCart />} />
           <Route path="/product/:slug" element={<LazyProduct />} />
 
           {/* GUEST ONLY */}

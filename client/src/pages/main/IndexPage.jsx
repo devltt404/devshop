@@ -7,7 +7,10 @@ import HeroBg from "../../assets/hero.png";
 export default function IndexPage() {
   return (
     <div className="container mb-24 flex flex-col gap-16">
-      <img src={HeroBg} />
+      <div className="aspect-[3/1]">
+        <img src={HeroBg} className="object-cover" />
+      </div>
+
       <CategoriesSection />
       <BestSellingSection />
       <LatestSection />

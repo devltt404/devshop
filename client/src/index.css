@@ -55,7 +55,8 @@
       --ring: 240 4.9% 83.9%;
     }
   }
-  
+
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -69,5 +70,6 @@ input[type=number] {
 }
 
 .py-container{
-  @apply pt-4 pb-16;
+  @apply pt-6 pb-16;
 }
+

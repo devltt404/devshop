@@ -18,7 +18,7 @@ export default function App() {
 
   useEffect(() => {
     if (data) {
-      dispatch(setUser(data.metadata.user));
+      dispatch(setUser(data.metadata?.user));
     }
   }, [data]);
 

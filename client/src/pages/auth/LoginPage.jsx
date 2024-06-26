@@ -18,6 +18,7 @@ import {
 import { Form } from "@/components/ui/form.jsx";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator.jsx";
+import { toast } from "@/components/ui/use-toast.js";
 import useValidateForm from "@/hooks/useValidateForm.jsx";
 import { useLoginMutation } from "@/redux/api/auth.api.js";
 import { setUser } from "@/redux/slices/auth.slice.js";
@@ -53,6 +54,10 @@ const LoginPage = () => {
       .unwrap()
       .then(({ metadata }) => {
         dispatch(setUser(metadata.user));
+        toast({
+          title: "Login successfully",
+          description: `Welcome back, ${metadata.user.name}!`,
+        });
       });
   };
 

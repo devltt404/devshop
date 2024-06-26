@@ -2,31 +2,19 @@ import jwt from "jsonwebtoken";
 import serverConfig from "../configs/server.config.js";
 import { BadRequestError, UnauthorizedError } from "../core/error.response.js";
 import { clearTokenCookie, setTokenCookie } from "../utils/auth.util.js";
+import { assignCartToUser, clearCartCookie } from "../utils/cart.util.js";
 import { checkMissingFields, getFieldsFromObject } from "../utils/index.js";
 import { compareUserPassword, generateTokens } from "../utils/user.util.js";
 import UserService from "./user.service.js";
 
 export default class AuthService {
   // #region BUSINESS LOGIC
-
-  /**
-   * Authenticates a user.
-   *
-   * @param {Object} user - The user object.
-   * @returns {Promise<Object>} - A promise that resolves to an object containing the specified fields from the user object.
-   */
   static async authUser(user) {
     if (!user) return null;
 
     return getFieldsFromObject(["name", "email"], user);
   }
 
-  /**
-   * Refreshes the access token and generates a new refresh token for the user.
-   * @returns {Promise<Object>} - An object containing the new access token, refresh token
-   * @throws {UnauthorizedError} - If the old refresh token is invalid.
-   * @throws {ForbiddenError} - If the old refresh token is valid but the user is not found.
-   */
   static async refreshToken(oldRefreshToken, res) {
     try {
       if (!oldRefreshToken) {
@@ -61,18 +49,7 @@ export default class AuthService {
     }
   }
 
-  /**
-   * Registers a new user by email.
-   *
-   * @param {Object} reqBody - The request body containing user information.
-   * @param {string} reqBody.name - The name of the user.
-   * @param {string} reqBody.email - The email of the user.
-   * @param {string} reqBody.password - The password of the user.
-   * @param {Object} res - The response object.
-   * @returns {Promise<Object>} - An object containing selected fields from the user (name, email).
-   * @throws {BadRequestError} - If a user with the given email already exists.
-   */
-  static async register({ name, email, password }, res) {
+  static async register({ name, email, password, guestCartId, res }) {
     checkMissingFields({ name, email, password });
 
     const isUserExisted = await UserService.findUserByEmail({ email });
@@ -91,21 +68,19 @@ export default class AuthService {
     });
 
     const { accessToken, refreshToken } = generateTokens(newUser);
+
+    await assignCartToUser({
+      userId: newUser._id,
+      cartId: guestCartId,
+      res,
+    });
     setTokenCookie({ accessToken, refreshToken, res });
+    clearCartCookie(res);
+
     return getFieldsFromObject(["name", "email"], newUser);
   }
 
-  /**
-   * Logs in a user by email.
-   *
-   * @param {Object} reqBody - The request body containing the email and password.
-   * @param {string} reqBody.email - The email of the user.
-   * @param {string} reqBody.password - The password of the user.
-   * @param {Object} res - The response object.
-   * @returns {Promise<Object>} - An object containing selected fields from the user (name, email).
-   * @throws {BadRequestError} - If the email or password is incorrect.
-   */
-  static async login({ email, password }, res) {
+  static async login({ email, password, guestCartId, res }) {
     checkMissingFields({ email, password });
 
     const foundUser = await UserService.findUserByEmail({
@@ -123,18 +98,19 @@ export default class AuthService {
 
     const { accessToken, refreshToken } = generateTokens(foundUser);
 
+    await assignCartToUser({
+      userId: foundUser._id,
+      cartId: guestCartId,
+      res,
+    });
     setTokenCookie({ accessToken, refreshToken, res });
+    clearCartCookie(res);
     return getFieldsFromObject(["name", "email"], foundUser);
   }
 
-  /**
-   * Logs out a user by clearing the access token and refresh token cookies.
-   *
-   * @param {Object} res - The response object.
-   * @returns {Object} - An empty object.
-   */
   static logout(res) {
     clearTokenCookie(res);
+    clearCartCookie(res);
     return {};
   }
   // #endregion BUSINESS LOGIC

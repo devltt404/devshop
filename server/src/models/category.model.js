@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
-import { generateCatId } from "../utils/category.util.js";
+import { genCategoryId } from "../utils/category.util.js";
 
 const categorySchema = new mongoose.Schema(
   {
     _id: {
       type: String,
-      default: generateCatId,
+      default: genCategoryId,
     },
     name: {
       type: String,

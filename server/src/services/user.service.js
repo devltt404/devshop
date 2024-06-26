@@ -2,7 +2,6 @@ import UserModel from "../models/user.model.js";
 
 export default class UserService {
   //#region QUERY
-
   /**
    * Retrieves the user based on the given id.
    * @param {Object} options - The options for getting the user.

@@ -1,4 +1,6 @@
+import AddToCartBtn from "@/components/product/AddToCartBtn.jsx";
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb.jsx";
+import ProductDetails from "@/components/product/ProductDetails.jsx";
 import ProductQuantity from "@/components/product/ProductQuantity.jsx";
 import RatingRow from "@/components/product/RatingRow.jsx";
 import { Button } from "@/components/ui/button.jsx";
@@ -7,19 +9,18 @@ import { Separator } from "@/components/ui/separator.jsx";
 import { cn } from "@/lib/utils.js";
 import { useGetProductDetailQuery } from "@/redux/api/product.api.js";
 import _ from "lodash";
-import { ShoppingCart } from "lucide-react";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import LoadingArea from "../../components/loading/LoadingArea.jsx";
 import { LazyNotFound } from "../index.js";
 
 const ProductPage = () => {
   const { pathname } = useLocation();
+
   const { data, isLoading } = useGetProductDetailQuery({
     id: pathname.split("/").pop().split("-").pop(),
   });
 
-  const [showFullDetails, setShowFullDetails] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
@@ -43,13 +44,14 @@ const ProductPage = () => {
     }
   }, [product]);
 
-  if (isLoading) {
+  if (isLoading || (product && !selectedItem)) {
     return <LoadingArea />;
   }
 
   if (!product) {
     return <LazyNotFound />;
   }
+
   return (
     <div className="py-container container">
       <div>
@@ -158,49 +160,7 @@ const ProductPage = () => {
             )}
 
             <Separator className="my-4" />
-
-            <div>
-              <h2 className="mb-2 text-lg font-semibold">Details</h2>
-              <div className="relative">
-                <div
-                  className={cn(
-                    "grid grid-cols-[200px_1fr] gap-x-2 gap-y-2 overflow-y-hidden",
-                    showFullDetails ? "h-auto" : "h-36",
-                  )}
-                >
-                  {Object.keys(product.details).map((key, i) => (
-                    <Fragment key={i}>
-                      <span className="font-medium">{key}</span>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: product.details[key],
-                        }}
-                      />
-                    </Fragment>
-                  ))}
-                </div>
-
-                {!showFullDetails && (
-                  <div className="absolute bottom-0 h-12 w-full bg-gradient-to-t from-white to-transparent"></div>
-                )}
-              </div>
-
-              {showFullDetails ? (
-                <button
-                  className="mt-1 text-blue-500"
-                  onClick={() => setShowFullDetails(false)}
-                >
-                  Show less
-                </button>
-              ) : (
-                <button
-                  className="mt-1 text-blue-500"
-                  onClick={() => setShowFullDetails(true)}
-                >
-                  Show more
-                </button>
-              )}
-            </div>
+            <ProductDetails details={product.details} />
           </div>
 
           {/* RIGHT */}
@@ -223,13 +183,14 @@ const ProductPage = () => {
             <div className="mt-4">
               <h3 className="mb-1 text-lg font-semibold">Total</h3>
               <p className="text-2xl font-medium">
-                ${(selectedItem?.price * quantity).toFixed(2)}
+                ${(selectedItem?.price * (quantity || 1)).toFixed(2)}
               </p>
             </div>
-            <Button className="mt-4 w-full py-6">
-              <ShoppingCart className="mr-2 h-5 w-5" />
-              Add to Cart
-            </Button>
+            <AddToCartBtn
+              quantity={quantity}
+              productId={product._id}
+              itemId={selectedItem?._id}
+            />
             <br />
             <Button variant="secondary" className="mt-3 w-full py-6">
               Buy Now

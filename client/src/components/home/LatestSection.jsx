@@ -1,7 +1,7 @@
-import { useGetProductsQuery } from "@/redux/api/product.api.js";
-import { useEffect, useState } from "react";
 import ProductCard from "@/components/product/ProductCard.jsx";
 import ProductCardSkeleton from "@/components/product/ProductCardSkeleton.jsx";
+import { useGetProductsQuery } from "@/redux/api/product.api.js";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 
 const LatestSection = () => {

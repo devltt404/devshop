@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
+import PRODUCT from "../constants/product.constant.js";
 
 const productSchema = new mongoose.Schema(
   {
@@ -16,7 +17,7 @@ const productSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["simple", "configurable"],
+      enum: Object.values(PRODUCT.TYPE),
       required: [true, "Product type is required"],
     },
     slug: {

@@ -18,6 +18,7 @@ export const authApi = api.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
 
     register: builder.mutation({
@@ -26,6 +27,7 @@ export const authApi = api.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
 
     logout: builder.mutation({
@@ -33,10 +35,10 @@ export const authApi = api.injectEndpoints({
         url: baseAuthEndpoint + "/logout",
         method: "POST",
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
   }),
 });
-
 
 export const {
   useAuthUserQuery,

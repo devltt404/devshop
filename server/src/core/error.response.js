@@ -2,7 +2,7 @@ import { RESPONSE_MESSAGES } from "../constants/http/responseMessages.constant.j
 import { STATUS_CODES } from "../constants/http/statusCodes.constant.js";
 
 class ErrorResponse extends Error {
-  constructor(message, status, errors, code) {
+  constructor({message, status, errors, code}) {
     super(message);
     this.status = status;
     this.errors = errors;
@@ -13,7 +13,7 @@ class ErrorResponse extends Error {
 const errorFactory = (defaultMessage, defaultStatus) => {
   return class extends ErrorResponse {
     constructor(message = defaultMessage, { errors, code } = {}) {
-      super(message, defaultStatus, errors, code);
+      super({message, defaultStatus, errors, code});
     }
   };
 };
@@ -35,11 +35,11 @@ const ForbiddenError = errorFactory(
   STATUS_CODES.FORBIDDEN
 );
 const InternalServerError = errorFactory(
-  RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR,
-  STATUS_CODES.INTERNAL_SERVER_ERROR
+  RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR
 );
 
 export {
+  ErrorResponse,
   BadRequestError,
   ForbiddenError,
   InternalServerError,

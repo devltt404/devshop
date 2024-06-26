@@ -1,26 +1,31 @@
-// import express from "express";
-// import CartController from "../../controllers/cart.controller.js";
-// import { isOptionalAuthorized } from "../../middlewares/auth.middleware.js";
-// import { asyncHandler } from "../../utils/index.js";
-// const cartRoutes = express.Router();
+import express from "express";
+import CartController from "../../controllers/cart.controller.js";
+import { isOptionallyAuthorized } from "../../middlewares/auth.middleware.js";
+import { asyncHandler } from "../../utils/index.js";
+const cartRoutes = express.Router();
 
-// //! USER + GUEST
-// cartRoutes.get(
-//   "/detail",
-//   isOptionalAuthorized,
-//   asyncHandler(CartController.getCartDetail)
-// );
-// cartRoutes.put(
-//   "/item",
-//   isOptionalAuthorized,
-//   asyncHandler(CartController.addToCart)
-// );
-// cartRoutes.patch("/item", asyncHandler(CartController.updateCartItem));
-// cartRoutes.delete("/item", asyncHandler(CartController.removeCartItem));
-// cartRoutes.delete(
-//   "/all",
-//   isOptionalAuthorized,
-//   asyncHandler(CartController.clearCart)
-// );
+//! USER + GUEST
+cartRoutes.get(
+  "/simple",
+  isOptionallyAuthorized,
+  asyncHandler(CartController.getSimpleCart)
+);
+cartRoutes.get(
+  "/detail",
+  isOptionallyAuthorized,
+  asyncHandler(CartController.getCartDetail)
+);
+cartRoutes.post(
+  "/item",
+  isOptionallyAuthorized,
+  asyncHandler(CartController.addToCart)
+);
+cartRoutes.delete("/item", asyncHandler(CartController.removeCartItem));
+cartRoutes.put("/item-quantity", asyncHandler(CartController.updateCartItemQuantity));
+cartRoutes.delete(
+  "/all-items",
+  isOptionallyAuthorized,
+  asyncHandler(CartController.clearCart)
+);
 
-// export default cartRoutes;
+export default cartRoutes;

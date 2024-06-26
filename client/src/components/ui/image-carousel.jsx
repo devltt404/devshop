@@ -110,7 +110,9 @@ const ImageCarousel = React.forwardRef(
           canScrollNext,
         }}
       >
-        <img src={images[currentImage]} className="mb-4" />
+        <div className="mb-4 aspect-square">
+          <img src={images[currentImage]} className="object-cover" />
+        </div>
         <div
           ref={ref}
           onKeyDownCapture={handleKeyDown}

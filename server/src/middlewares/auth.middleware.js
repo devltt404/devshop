@@ -64,7 +64,7 @@ export const checkPermission = ({ roles }) => {
 
 // Middleware combinations
 export const isAuthorized = checkAuthentication();
-export const isOptionalAuthorized = checkAuthentication({ optional: true });
+export const isOptionallyAuthorized = checkAuthentication({ optional: true });
 export const isCustomer = [
   checkAuthentication(),
   checkPermission({ roles: [USER.ROLE.CUSTOMER] }),

@@ -10,8 +10,7 @@ export default class CategoryService {
 
   // #endregion QUERY
 
-  // #region HELPERS
-
+  // #region HELPER METHODS
   /**
    * Retrieves the descendant IDs of a given category.
    *
@@ -51,8 +50,7 @@ export default class CategoryService {
 
     return findQueries;
   }
-
-  // #endregion HELPERS
+  // #endregion HELPER METHODS
 
   // #region BUSINESS LOGIC
 

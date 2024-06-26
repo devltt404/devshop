@@ -39,7 +39,6 @@ const CategoriesSection = () => {
               <CarouselItem
                 key={category._id}
                 className="basis-auto select-none"
-                asChild
               >
                 <Link to={`/category/${category.slug}-${category._id}`}>
                   <div className="group inline-flex flex-col items-center gap-2">

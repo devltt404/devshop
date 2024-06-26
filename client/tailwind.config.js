@@ -21,6 +21,14 @@ module.exports = {
         inner: "0px 0px 0px 2px inset",
         outer: "0px 0px 0px 0.5px",
       },
+      screens: {
+        "max-2xl": { max: "1535px" },
+        "max-xl": { max: "1279px" },
+        "max-lg": { max: "1024px" },
+        "max-md": { max: "768px" },
+        "max-sm": { max: "639px" },
+        "max-xs": { max: "360px" },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

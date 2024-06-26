@@ -6,6 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.jsx";
+import { toast } from "@/components/ui/use-toast.js";
 import useAuth from "@/hooks/useAuth.jsx";
 import { useLogoutMutation } from "@/redux/api/auth.api.js";
 import { clearUser } from "@/redux/slices/auth.slice.js";
@@ -47,6 +48,10 @@ const UserMenu = () => {
       .unwrap()
       .then(() => {
         dispatch(clearUser(null));
+        toast({
+          title: "Logout successfully",
+          description: "You can still enjoy shopping with us!",
+        });
       });
   }
 

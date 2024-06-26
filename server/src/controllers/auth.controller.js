@@ -16,25 +16,37 @@ export default class AuthController {
     }).send(res);
   }
 
+  static async login(req, res) {
+    new SuccessResponse({
+      message: "User logged in successfully",
+      metadata: {
+        user: await AuthService.login({
+          ...req.body,
+          guestCartId: req.cookies?.cartId,
+          res,
+        }),
+      },
+    }).send(res);
+  }
+
   static async register(req, res) {
     new SuccessResponse({
       status: 201,
       message: "User registered successfully",
-      metadata: { user: await AuthService.register(req.body, res) },
-    }).send(res);
-  }
-
-  static async login(req, res) {
-    new SuccessResponse({
-      message: "User logged in successfully",
-      metadata: { user: await AuthService.login(req.body, res) },
+      metadata: {
+        user: await AuthService.register({
+          ...req.body,
+          guestCartId: req.cookies?.cartId,
+          res,
+        }),
+      },
     }).send(res);
   }
 
   static async logout(req, res) {
     new SuccessResponse({
       message: "User logged out successfully",
-      metadata: await AuthService.logout(res),
+      metadata: AuthService.logout(res),
     }).send(res);
   }
 }
