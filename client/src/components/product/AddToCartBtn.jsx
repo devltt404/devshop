@@ -27,7 +27,7 @@ const AddToCartBtn = ({ quantity, productId, itemId }) => {
             dispatch(setNumCartItems(metadata.cart?.items.length));
           })
           .catch((error) => {
-            if (error.code === ERROR.CART.INSUFFICIENT_STOCK.CODE) {
+            if (error.code === ERROR.CART.INSUFFICIENT_STOCK.code) {
               toast({
                 variant: "destructive",
                 title: "Uh oh! Insufficient stock!",

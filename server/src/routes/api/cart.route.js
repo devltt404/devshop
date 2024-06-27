@@ -20,8 +20,16 @@ cartRoutes.post(
   isOptionallyAuthorized,
   asyncHandler(CartController.addToCart)
 );
-cartRoutes.delete("/item", asyncHandler(CartController.removeCartItem));
-cartRoutes.put("/item-quantity", asyncHandler(CartController.updateCartItemQuantity));
+cartRoutes.delete(
+  "/item",
+  isOptionallyAuthorized,
+  asyncHandler(CartController.removeCartItem)
+);
+cartRoutes.put(
+  "/item-quantity",
+  isOptionallyAuthorized,
+  asyncHandler(CartController.updateCartItemQuantity)
+);
 cartRoutes.delete(
   "/all-items",
   isOptionallyAuthorized,

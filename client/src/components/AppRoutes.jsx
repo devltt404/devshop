@@ -3,6 +3,7 @@ import GuestWrapper from "@/components/wrappers/GuestWrapper.jsx";
 import ShopWrapper from "@/components/wrappers/ShopWrapper.jsx";
 import {
   LazyCart,
+  LazyCheckout,
   LazyIndex,
   LazyLogin,
   LazyNotFound,
@@ -22,6 +23,7 @@ const AppRoutes = () => {
           <Route path="*" element={<LazyNotFound />} />
           <Route path="/" element={<LazyIndex />} />
           <Route path="/cart" element={<LazyCart />} />
+          <Route path="/checkout" element={<LazyCheckout />} />
           <Route path="/product/:slug" element={<LazyProduct />} />
 
           {/* GUEST ONLY */}

@@ -35,7 +35,7 @@ const CategoriesSection = () => {
             <CategoriesSkeleton />
           ) : (
             data &&
-            data.metadata.categories.map((category) => (
+            data.metadata?.categories?.map((category) => (
               <CarouselItem
                 key={category._id}
                 className="basis-auto select-none"

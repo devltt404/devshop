@@ -18,7 +18,7 @@ const ProductsCarousel = ({ products, isLoading }) => {
                 <ProductCardSkeleton />
               </CarouselItem>
             ))
-          : products.map((product) => (
+          : products?.map((product) => (
               <CarouselItem key={product._id} className="basis-1/5">
                 <ProductCard product={product} />
               </CarouselItem>

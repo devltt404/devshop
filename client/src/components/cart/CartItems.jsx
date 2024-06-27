@@ -23,7 +23,7 @@ import { Button } from "../ui/button.jsx";
 import { toast } from "../ui/use-toast.js";
 import CartQuantityInput from "./CartQuantityInput.jsx";
 
-const CartItems = ({ cartItems, setCartItems, isClearingCart }) => {
+const CartItems = ({ cartItems, setCartItems }) => {
   const dispatch = useDispatch();
 
   const [updateQuantity, { isLoading: isUpdatingQuantity }] =
@@ -55,9 +55,7 @@ const CartItems = ({ cartItems, setCartItems, isClearingCart }) => {
   };
 
   return (
-    <LoadingOverlay
-      isLoading={isRemovingItem || isUpdatingQuantity || isClearingCart}
-    >
+    <LoadingOverlay isLoading={isRemovingItem || isUpdatingQuantity}>
       <div className="grid flex-1 grid-cols-[6rem,1fr,8rem] gap-y-8 border-gray-100 py-4">
         {cartItems.map((cartItem, index) => {
           return (

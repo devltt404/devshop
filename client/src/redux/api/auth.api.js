@@ -1,3 +1,4 @@
+import { invalidateCartTagsAfterAuth } from "@/utils/cart.util.js";
 import { api } from "./index.js";
 
 const baseAuthEndpoint = "/auth";
@@ -18,7 +19,7 @@ export const authApi = api.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["SIMPLE_CART", "CART"],
+      onQueryStarted: invalidateCartTagsAfterAuth,
     }),
 
     register: builder.mutation({
@@ -27,7 +28,7 @@ export const authApi = api.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["SIMPLE_CART", "CART"],
+      onQueryStarted: invalidateCartTagsAfterAuth,
     }),
 
     logout: builder.mutation({
@@ -35,7 +36,7 @@ export const authApi = api.injectEndpoints({
         url: baseAuthEndpoint + "/logout",
         method: "POST",
       }),
-      invalidatesTags: ["SIMPLE_CART", "CART"],
+      onQueryStarted: invalidateCartTagsAfterAuth,
     }),
   }),
 });

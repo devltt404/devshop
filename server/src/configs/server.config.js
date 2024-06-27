@@ -14,6 +14,9 @@ const env = cleanEnv(process.env, {
   ACCESS_TOKEN_EXPIRATION: str({ default: "30m" }),
   REFRESH_TOKEN_EXPIRATION: str({ default: "1d" }),
 
+  STRIPE_PK: str(),
+  STRIPE_SK: str(),
+
   DATABASE_URL: str(),
 
   CLIENT_BASE_URL: str(),
@@ -25,6 +28,7 @@ const serverConfig = {
   server: {
     port: env.SERVER_PORT,
     apiBasePath: env.API_BASE_PATH,
+    apiBaseUrl: `${env.SERVER_BASE_URL}:${env.SERVER_PORT}${env.API_BASE_PATH}`,
     jwtSecret: env.JWT_SECRET,
     accessTokenExpiration: env.ACCESS_TOKEN_EXPIRATION,
     refreshTokenExpiration: env.REFRESH_TOKEN_EXPIRATION,
@@ -34,6 +38,10 @@ const serverConfig = {
   },
   client: {
     baseUrl: env.CLIENT_BASE_URL,
+  },
+  stripe: {
+    pk: env.STRIPE_PK,
+    sk: env.STRIPE_SK,
   },
 };
 

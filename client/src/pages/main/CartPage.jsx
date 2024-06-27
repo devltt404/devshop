@@ -16,10 +16,18 @@ import {
   useClearCartMutation,
   useGetDetailedCartQuery,
 } from "@/redux/api/cart.api.js";
+import { setNumCartItems } from "@/redux/slices/cart.slice.js";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const CartPage = () => {
-  const { data, isLoading, error } = useGetDetailedCartQuery();
+  const dispatch = useDispatch();
+  const {
+    data,
+    isLoading,
+    error,
+    refetch: refetchGetCart,
+  } = useGetDetailedCartQuery();
   const [clearCart, { isLoading: isClearingCart }] = useClearCartMutation();
 
   const [cartItems, setCartItems] = useState(null);
@@ -32,7 +40,7 @@ const CartPage = () => {
     error && setCartItems([]);
   }, [error]);
 
-  if (isLoading) {
+  if (isLoading || isClearingCart) {
     return <LoadingArea />;
   }
 
@@ -79,6 +87,7 @@ const CartPage = () => {
                           .unwrap()
                           .then(() => {
                             setCartItems([]);
+                            dispatch(setNumCartItems(0));
                           })
                       }
                     >
@@ -91,16 +100,13 @@ const CartPage = () => {
           )}
         </div>
         {cartItems?.length > 0 && (
-          <CartItems
-            isClearingCart={isClearingCart}
-            cartItems={cartItems}
-            setCartItems={setCartItems}
-          />
+          <CartItems cartItems={cartItems} setCartItems={setCartItems} />
         )}
       </div>
 
       {cartItems?.length > 0 && (
         <CartSummary
+          refetchGetCart={refetchGetCart}
           subtotal={cartItems.reduce((acc, item) => {
             return acc + item.price * item.quantity;
           }, 0)}

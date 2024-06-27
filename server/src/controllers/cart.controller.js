@@ -21,7 +21,6 @@ export default class CartController {
       metadata: {
         cart: await CartService.getCartDetail({
           ...getCommonCartParams(req),
-          res,
         }),
       },
     }).send(res);
@@ -71,7 +70,8 @@ export default class CartController {
       metadata: {
         cart: await CartService.clearCart({
           ...getCommonCartParams(req),
-          res
+
+          res,
         }),
       },
     }).send(res);

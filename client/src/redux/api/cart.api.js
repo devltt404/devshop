@@ -17,6 +17,7 @@ const cartApi = api.injectEndpoints({
         url: baseCartEndpoint + "/detail",
         method: "GET",
       }),
+      keepUnusedDataFor: 0,
       providesTags: ["CART"],
     }),
 
@@ -26,7 +27,6 @@ const cartApi = api.injectEndpoints({
         method: "POST",
         data: { productId, itemId, quantity },
       }),
-      invalidatesTags: ["CART"],
     }),
 
     removeCartItem: builder.mutation({

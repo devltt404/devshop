@@ -1,6 +1,6 @@
 import ERROR from "../constants/error.constant.js";
 import PRODUCT from "../constants/product.constant.js";
-import { BadRequestError } from "../core/error.response.js";
+import { BadRequestError, ErrorResponse } from "../core/error.response.js";
 import CartModel from "../models/cart.model.js";
 import { clearCartCookie, setCartCookie } from "../utils/cart.util.js";
 import ProductService from "./product.service.js";
@@ -19,6 +19,7 @@ export default class CartService {
   static async deleteCartById({ cartId }) {
     return await CartModel.findByIdAndDelete(cartId);
   }
+
   // #endregion QUERIES
 
   // #region HELPER METHODS
@@ -61,17 +62,16 @@ export default class CartService {
     return simpleCart;
   }
 
-  static async getCartDetail({ userId, guestCartId, res }) {
+  static async getCartDetail({ userId, guestCartId, lean = true }) {
     const cart = await CartModel.findOne(
       this.genFindCartQuery({ userId, guestCartId })
     )
-      .lean()
+      .lean(lean)
       .populate("items.productId", "-description -details")
       .populate("items.itemId");
 
-    //Clear cart cookie if guest cart is not found
-    if (!userId && guestCartId && !cart) {
-      clearCartCookie(res);
+    if (!cart) {
+      throw new BadRequestError("Invalid cart");
     }
 
     return {
@@ -153,7 +153,7 @@ export default class CartService {
           existingQty > 0 && " You already have " + existingQty + " in cart."
         }`,
         {
-          code: ERROR.CART.INSUFFICIENT_STOCK.CODE,
+          code: ERROR.CART.INSUFFICIENT_STOCK.code,
         }
       );
 
@@ -177,7 +177,6 @@ export default class CartService {
   }) {
     if (quantity < 1) throw new BadRequestError("Quantity must be at least 1.");
     await this.validateProductAndItem({ productId, itemId });
-
     const updatedCart = await CartModel.findOneAndUpdate(
       {
         ...this.genFindCartQuery({ userId, guestCartId }),
@@ -193,7 +192,9 @@ export default class CartService {
         new: true,
       }
     );
-
+    if (!updatedCart) {
+      throw new ErrorResponse(ERROR.CART.INVALID_CART);
+    }
     return updatedCart;
   }
 
@@ -213,7 +214,9 @@ export default class CartService {
         new: true,
       }
     );
-
+    if (!updatedCart) {
+      throw new ErrorResponse(ERROR.CART.INVALID_CART);
+    }
     return updatedCart;
   }
 
@@ -225,7 +228,9 @@ export default class CartService {
     );
 
     if (guestCartId) clearCartCookie(res);
-
+    if (!cart) {
+      throw new ErrorResponse(ERROR.CART.INVALID_CART);
+    }
     return cart;
   }
   // #endregion BUSINESS LOGIC
