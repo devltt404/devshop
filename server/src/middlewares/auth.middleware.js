@@ -8,6 +8,7 @@ const checkAuthentication =
   ({ optional } = { optional: false }) =>
   async (req, res, next) => {
     try {
+    
       const selectedUserFields = "_id name email cart role";
 
       const { accessToken } = req.cookies;

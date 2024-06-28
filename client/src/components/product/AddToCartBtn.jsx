@@ -1,4 +1,3 @@
-import ERROR from "@/constants/error.constant.js";
 import { useAddToCartMutation } from "@/redux/api/cart.api.js";
 import { setNumCartItems } from "@/redux/slices/cart.slice.js";
 import { ShoppingCart } from "lucide-react";
@@ -27,7 +26,7 @@ const AddToCartBtn = ({ quantity, productId, itemId }) => {
             dispatch(setNumCartItems(metadata.cart?.items.length));
           })
           .catch((error) => {
-            if (error.code === ERROR.CART.INSUFFICIENT_STOCK.code) {
+            if (error.code === "ca001") {
               toast({
                 variant: "destructive",
                 title: "Uh oh! Insufficient stock!",

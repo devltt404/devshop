@@ -1,3 +1,4 @@
+import shopConfig from "../configs/shop.config.js";
 import ERROR from "../constants/error.constant.js";
 import PRODUCT from "../constants/product.constant.js";
 import { BadRequestError, ErrorResponse } from "../core/error.response.js";
@@ -62,42 +63,68 @@ export default class CartService {
     return simpleCart;
   }
 
-  static async getCartDetail({ userId, guestCartId, lean = true }) {
+  static async getCartDetail({ userId, guestCartId }) {
     const cart = await CartModel.findOne(
       this.genFindCartQuery({ userId, guestCartId })
     )
-      .lean(lean)
       .populate("items.productId", "-description -details")
       .populate("items.itemId");
 
     if (!cart) {
-      throw new BadRequestError("Invalid cart");
+      throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }
 
+    let isAnItemExceedsStock = false;
+
+    const items = cart.items.map((cartItem) => {
+      let stock =
+        cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
+          ? cartItem.itemId.stock
+          : cartItem.productId.stock;
+
+      if (stock < cartItem.quantity) {
+        cartItem.quantity = stock;
+        stock = cartItem.quantity;
+        isAnItemExceedsStock = true;
+      }
+
+      return {
+        productId: cartItem.productId._id,
+        slug: cartItem.productId.slug,
+        type: cartItem.productId.type,
+        itemId: cartItem.itemId?._id,
+        quantity: cartItem.quantity,
+        name: cartItem.productId.name,
+        price:
+          cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
+            ? cartItem.itemId.price
+            : cartItem.productId.price,
+        image:
+          cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
+            ? cartItem.itemId.images[0]
+            : cartItem.productId.images[0],
+        stock,
+        variationSelection: cartItem.itemId?.variationSelection,
+      };
+    });
+
+    if (isAnItemExceedsStock) {
+      await cart.save();
+    }
+
+    const subtotal = parseFloat(
+      items
+        .reduce((acc, item) => acc + item.price * item.quantity, 0)
+        .toFixed(2)
+    );
+    const shipping =
+      subtotal >= shopConfig.freeShipThreshold ? 0 : shopConfig.shippingFee;
+
     return {
-      items: cart.items.map((cartItem) => {
-        return {
-          productId: cartItem.productId._id,
-          slug: cartItem.productId.slug,
-          type: cartItem.productId.type,
-          itemId: cartItem.itemId?._id,
-          quantity: cartItem.quantity,
-          name: cartItem.productId.name,
-          price:
-            cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
-              ? cartItem.itemId.price
-              : cartItem.productId.price,
-          image:
-            cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
-              ? cartItem.itemId.images[0]
-              : cartItem.productId.images[0],
-          stock:
-            cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
-              ? cartItem.itemId.stock
-              : cartItem.productId.stock,
-          variationSelection: cartItem.itemId?.variationSelection,
-        };
-      }),
+      items,
+      subtotal,
+      shipping,
+      total: subtotal + shipping,
     };
   }
 

@@ -8,6 +8,7 @@ import { ImageCarousel } from "@/components/ui/image-carousel.jsx";
 import { Separator } from "@/components/ui/separator.jsx";
 import { cn } from "@/lib/utils.js";
 import { useGetProductDetailQuery } from "@/redux/api/product.api.js";
+import { displayPrice } from "@/utils/helper.util.js";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -87,18 +88,18 @@ const ProductPage = () => {
             {/* PRICE */}
             <div className="mb-4">
               <p className="mb-1 text-3xl font-semibold">
-                ${selectedItem?.price?.toFixed(2)}
+                ${displayPrice(selectedItem?.price?.toFixed(2))}
               </p>
               {selectedItem?.originalPrice && (
                 <p>
                   <span className="text-gray-400 line-through">
-                    ${selectedItem?.originalPrice.toFixed(2)}
+                    ${displayPrice(selectedItem?.originalPrice)}
                   </span>{" "}
                   <span className="font-medium text-green-600">
                     Save $
-                    {(
-                      selectedItem?.originalPrice - selectedItem?.price
-                    ).toFixed(2)}
+                    {displayPrice(
+                      selectedItem?.originalPrice - selectedItem?.price,
+                    )}
                   </span>
                 </p>
               )}
@@ -183,7 +184,7 @@ const ProductPage = () => {
             <div className="mt-4">
               <h3 className="mb-1 text-lg font-semibold">Total</h3>
               <p className="text-2xl font-medium">
-                ${(selectedItem?.price * (quantity || 1)).toFixed(2)}
+                ${displayPrice(selectedItem?.price * (quantity || 1))}
               </p>
             </div>
             <AddToCartBtn

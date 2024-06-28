@@ -1,6 +1,6 @@
 const shopConfig = {
-  freeShipThreshold: 100,
-  shippingFee: 10,
+  freeShipThreshold: 10000,
+  shippingFee: 1000,
 };
 
 export default shopConfig;

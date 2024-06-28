@@ -21,6 +21,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
     new winston.transports.DailyRotateFile({
+      level: "http",
       filename: path.join(__dirname, `/logs/devshop-%DATE%.log`),
     }),
   ],

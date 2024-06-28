@@ -1,0 +1,47 @@
+@startuml checkout
+
+actor User as u
+participant CheckoutPage as cp
+participant Server as sv
+participant Database as db
+participant Stripe as st
+
+u -> cp: Access checkout page
+cp -> sv: POST /payment-intent
+sv -> db: Get user's cart
+db -> sv: Detailed Cart
+sv -> st: Create payment intent
+st -> sv: PaymentIntent
+sv -> cp: Client Secret + Cart + PaymentIntentId
+cp -> cp: Initialize Stripe form 
+
+loop Checkout Process
+    u -> cp: Trigger checkout
+    cp -> cp: Validate form values
+    alt Valid form
+        cp -> cp: Check if order exists
+        alt Order Does Not Exist
+            cp -> sv: POST /order
+            sv -> db: Create order
+            db -> sv: Order
+            sv -> cp: Order
+        end
+        cp -> st: Confirm payment
+        alt Payment Succeeded
+            st -> cp: PaymentIntent
+            cp -> sv: POST /order/authorize/:orderId
+            sv -> db: Update payment status to on hold
+            db -> sv: Updated order
+            sv -> cp: Updated order
+            cp -> u: Redirect to order page
+            note right: End Checkout Process
+        else Payment Failed
+            st -> cp: PaymentError
+            cp -> u: Display error message
+        end
+    else Invalid form
+        cp -> u: Display validation errors
+    end
+end
+
+@enduml

@@ -14,6 +14,7 @@ import {
   useUpdateCartItemQuantityMutation,
 } from "@/redux/api/cart.api.js";
 import { decrementNumCartItems } from "@/redux/slices/cart.slice.js";
+import { displayPrice } from "@/utils/helper.util.js";
 import { Trash } from "lucide-react";
 import { Fragment, useRef } from "react";
 import { useDispatch } from "react-redux";
@@ -99,7 +100,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
               <div className="flex flex-col justify-between text-right">
                 <p className="truncate text-xl font-medium">
-                  ${(cartItem.price * cartItem.quantity).toFixed(2)}
+                  ${displayPrice(cartItem.price * cartItem.quantity)}
                 </p>
                 <div>
                   <AlertDialog>

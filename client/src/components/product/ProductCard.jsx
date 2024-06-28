@@ -48,15 +48,15 @@ export default function ProductCard({ product }) {
             <p className="text-lg font-semibold">
               $
               {(product.type === "configurable"
-                ? product.defaultItemId.price
-                : product.price
+                ? product.defaultItemId.price / 100
+                : product.price / 100
               ).toFixed(2)}
             </p>
             <p className="text-xs text-muted-foreground line-through">
               $
               {(product.type === "configurable"
-                ? product.defaultItemId.originalPrice
-                : product.originalPrice
+                ? product.defaultItemId.originalPrice / 100
+                : product.originalPrice / 100
               ).toFixed(2)}
             </p>
           </div>

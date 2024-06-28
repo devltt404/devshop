@@ -4,6 +4,7 @@ export function setCartCookie({ cartId, res }) {
   res.cookie("cartId", cartId, {
     httpOnly: true,
     sameSite: "strict",
+    maxAge: 31536000000, // 1 year
   });
 }
 

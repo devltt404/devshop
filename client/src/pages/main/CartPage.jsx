@@ -33,7 +33,9 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState(null);
 
   useEffect(() => {
-    data && !cartItems && setCartItems(data.metadata?.cart?.items);
+    if (data && !cartItems) {
+      setCartItems(data.metadata?.cart?.items);
+    }
   }, [data]);
 
   useEffect(() => {

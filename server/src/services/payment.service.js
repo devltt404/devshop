@@ -1,61 +1,63 @@
 import Stripe from "stripe";
 import serverConfig from "../configs/server.config.js";
 import ERROR from "../constants/error.constant.js";
-import PRODUCT from "../constants/product.constant.js";
 import { ErrorResponse } from "../core/error.response.js";
 import CartService from "./cart.service.js";
 const stripe = Stripe(serverConfig.stripe.sk);
 
 export default class PaymentService {
-  static async createCheckoutSession({ userId, guestCartId, res }) {
+  static async getPaymentIntent(paymentIntentId) {
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    return paymentIntent;
+  }
+
+  static async createPaymentIntent({ userId, guestCartId }) {
     const cart = await CartService.getCartDetail({
       userId,
       guestCartId,
-      lean: false,
     });
 
     if (!cart.items?.length) {
-      throw new ErrorResponse(ERROR.PAYMENT.EMPTY_CART.code);
+      throw new ErrorResponse(ERROR.PAYMENT.EMPTY_CART);
     }
 
-    let isExceedsStock = false;
+    const orderItems = cart.items.map((item) => ({
+      productId: item.productId,
+      itemId: item.itemId,
+      name: item.name,
+      image: item.image,
+      variation: item.variationSelection
+        ? Array.from(item.variationSelection.values()).join(" - ")
+        : undefined,
+      quantity: item.quantity,
+      price: item.price,
+    }));
 
-    const line_items = cart.items.map((cartItem) => {
-      if (cartItem.quantity > cartItem.stock) {
-        isExceedsStock = true;
-        cartItem.quantity = cartItem.stock;
-      }
+    const price = {
+      subtotal: cart.subtotal,
+      shipping: cart.shipping,
+      total: cart.total,
+    };
 
-      return {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name:
-              cartItem.type === PRODUCT.TYPE.CONFIGURABLE
-                ? cartItem.name +
-                  " | " +
-                  Array.from(cartItem.variationSelection.values()).join(" - ")
-                : cartItem.name,
-            images: [cartItem.image],
-          },
-          unit_amount: parseInt(cartItem.price * 100),
-        },
-        quantity: cartItem.quantity,
-      };
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: cart.total,
+      currency: "usd",
+      capture_method: "manual",
+      metadata: {
+        items: JSON.stringify(orderItems),
+        price: JSON.stringify(price),
+      },
     });
 
-    if (isExceedsStock) {
-      await cart.save();
-      throw new ErrorResponse(ERROR.PAYMENT.INSUFFICIENT_STOCK.code);
-    }
+    return {
+      clientSecret: paymentIntent.client_secret,
+      cart,
+      paymentIntentId: paymentIntent.id,
+    };
+  }
 
-    const session = await stripe.checkout.sessions.create({
-      line_items,
-      mode: "payment",
-      success_url: `${serverConfig.server.apiBaseUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${serverConfig.client.baseUrl + "/cart"}`,
-    });
-
-    return session.url;
+  static async cancelPaymentIntent(paymentIntentId) {
+    const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId);
+    return paymentIntent;
   }
 }

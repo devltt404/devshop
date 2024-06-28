@@ -5,14 +5,14 @@ const ERROR = Object.freeze({
     },
     INVALID_CART: {
       status: 400,
-      message: "Invalid cart",
+      message: "Invalid cart. Please try again.",
       code: "ca002",
     },
   },
   PAYMENT: {
     EMPTY_CART: {
       status: 400,
-      message: "Your cart is empty.",
+      message: "Your cart is empty. Please add some items to checkout.",
       code: "pa001",
     },
     INSUFFICIENT_STOCK: {
