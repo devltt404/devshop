@@ -12,7 +12,7 @@ const checkAuthentication =
       if (!session && optional) {
         return next();
       }
-      const selectedUserFields = "_id name email cart role";
+      const selectedUserFields = "_id name email cart role picture";
 
       const { accessToken } = req.cookies;
 

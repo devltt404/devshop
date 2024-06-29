@@ -67,6 +67,7 @@ const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted">
         <User2 className="mr-2 stroke-[1.5px]" />
+
         <TextGroup sub={`Hello, ${user.name.split(" ")[0]}`} main="Account" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-52">

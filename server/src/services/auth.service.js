@@ -12,7 +12,7 @@ export default class AuthService {
   static async authUser(user) {
     if (!user) return null;
 
-    return getFieldsFromObject(["name", "email"], user);
+    return getFieldsFromObject(["name", "email", "picture"], user);
   }
 
   static async refreshToken(oldRefreshToken, res) {
