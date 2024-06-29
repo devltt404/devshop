@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
 import ORDER from "../constants/order.constant.js";
-import PAYMENT from "../constants/payment.constant.js";
+import { AutoIncrement } from "../db/connect.db.js";
 
 const OrderSchema = new mongoose.Schema(
   {
+    _id: {
+      _id: Number,
+      name: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      index: true,
     },
     items: [
       {
@@ -72,20 +77,19 @@ const OrderSchema = new mongoose.Schema(
       enum: Object.values(ORDER.STATUS),
       default: ORDER.STATUS.PENDING,
     },
-    paymentStatus: {
-      type: String,
-      enum: Object.values(PAYMENT.STATUS),
-      default: PAYMENT.STATUS.PENDING,
-    },
     paymentIntentId: {
       type: String,
       unique: true,
     },
   },
   {
+    _id: false,
     timestamps: true,
   }
 );
+
+// Auto increment order number starting from 10000
+OrderSchema.plugin(AutoIncrement, { start_seq: 10000 });
 
 const OrderModel = mongoose.model("Order", OrderSchema);
 export default OrderModel;

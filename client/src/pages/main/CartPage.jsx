@@ -50,7 +50,7 @@ const CartPage = () => {
     <div className="py-container container flex gap-16 max-xl:gap-8 max-lg:flex-col max-lg:gap-12">
       <div className="flex-1">
         <div className="relative">
-          <h1 className="mb-2 text-3xl font-semibold">My Cart</h1>
+          <h1 className="page-title mb-2">My Cart</h1>
           {cartItems?.length === 0 ? (
             <p className="text-muted-foreground">Your cart is empty.</p>
           ) : (

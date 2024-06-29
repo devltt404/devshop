@@ -1,4 +1,5 @@
 import CheckoutForm from "@/components/checkout/CheckoutForm.jsx";
+import CheckoutSummary from "@/components/checkout/CheckoutSummary.jsx";
 import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import LoadingOverlay from "@/components/loading/LoadingOverlay.jsx";
 import { toast } from "@/components/ui/use-toast.js";
@@ -15,7 +16,7 @@ const CheckoutPage = () => {
 
   const [createPaymentIntent, {}] = useCreatePaymentIntentMutation();
 
-  const [cart, setCart] = useState(null);
+  const [orderData, setOrderData] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentIntentId, setPaymentIntentId] = useState("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -26,7 +27,7 @@ const CheckoutPage = () => {
       .then((data) => {
         setClientSecret(data.metadata?.clientSecret);
         setPaymentIntentId(data.metadata?.paymentIntentId);
-        setCart(data.metadata?.cart);
+        setOrderData(data.metadata?.orderData);
       })
       .catch((error) => {
         navigate("/cart");
@@ -47,15 +48,20 @@ const CheckoutPage = () => {
     },
   };
 
-  if (!clientSecret) {
+  if (!clientSecret || !orderData || !paymentIntentId) {
     return <LoadingArea />;
   }
 
   return (
     <Elements stripe={stripePromise} options={options}>
       <LoadingOverlay isLoading={isCheckingOut}>
-        <div className="py-container container">
-          <CheckoutForm paymentIntentId={paymentIntentId} setIsCheckingOut={setIsCheckingOut} />
+        <div className="py-container container grid grid-cols-[60%_40%] gap-x-12 gap-y-12 py-8 max-lg:grid-cols-1">
+          <CheckoutForm
+            paymentIntentId={paymentIntentId}
+            setIsCheckingOut={setIsCheckingOut}
+            orderData={orderData}
+          />
+          <CheckoutSummary orderData={orderData} />
         </div>
       </LoadingOverlay>
     </Elements>

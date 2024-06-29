@@ -7,9 +7,11 @@ const ProductDetails = ({ details }) => {
 
   useEffect(() => {
     if (showFullDetails) {
-      detailsRef.current.scrollIntoView({});
+      detailsRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
     } else {
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [showFullDetails]);
 

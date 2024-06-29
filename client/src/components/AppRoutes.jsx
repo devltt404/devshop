@@ -7,6 +7,8 @@ import {
   LazyIndex,
   LazyLogin,
   LazyNotFound,
+  LazyOrder,
+  LazyOrders,
   LazyProduct,
   LazyRegister,
 } from "@/pages/index.js";
@@ -25,6 +27,7 @@ const AppRoutes = () => {
           <Route path="/cart" element={<LazyCart />} />
           <Route path="/checkout" element={<LazyCheckout />} />
           <Route path="/product/:slug" element={<LazyProduct />} />
+          <Route path="/order/:id" element={<LazyOrder />} />
 
           {/* GUEST ONLY */}
           <Route element={<GuestWrapper />}>
@@ -33,7 +36,9 @@ const AppRoutes = () => {
           </Route>
 
           {/* AUTH ONLY */}
-          <Route element={<AuthWrapper />}></Route>
+          <Route element={<AuthWrapper />}>
+            <Route path="/orders/" element={<LazyOrders />} />
+          </Route>
         </Route>
       </Routes>
     </Suspense>

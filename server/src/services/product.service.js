@@ -72,6 +72,12 @@ export default class ProductService {
       .populate(populate, populateFields)
       .lean(lean);
   }
+
+  static async findProductByIdAndUpdate({ productId, update }) {
+    return await ProductModel.findByIdAndUpdate(productId, update, {
+      new: true,
+    }).lean();
+  }
   // #endregion QUERY
 
   // #region BUSINESS LOGIC

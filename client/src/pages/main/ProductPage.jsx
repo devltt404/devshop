@@ -11,15 +11,15 @@ import { useGetProductDetailQuery } from "@/redux/api/product.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import LoadingArea from "../../components/loading/LoadingArea.jsx";
 import { LazyNotFound } from "../index.js";
 
 const ProductPage = () => {
-  const { pathname } = useLocation();
+  const { slug } = useParams();
 
   const { data, isLoading } = useGetProductDetailQuery({
-    id: pathname.split("/").pop().split("-").pop(),
+    id: slug.slice(slug.lastIndexOf("-") + 1),
   });
 
   const [selectedItem, setSelectedItem] = useState(null);

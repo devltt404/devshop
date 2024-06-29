@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import AutoIncrementFactory from "mongoose-sequence";
 import serverConfig from "../configs/server.config.js";
 import logger from "../logger.js";
 
@@ -29,6 +30,8 @@ class Database {
     return Database.instance;
   }
 }
+
+export const AutoIncrement = AutoIncrementFactory(mongoose);
 
 const dbInstance = Database.getInstance();
 export default dbInstance;

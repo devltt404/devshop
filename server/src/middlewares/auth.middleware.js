@@ -8,7 +8,10 @@ const checkAuthentication =
   ({ optional } = { optional: false }) =>
   async (req, res, next) => {
     try {
-    
+      const { session } = req.cookies;
+      if (!session && optional) {
+        return next();
+      }
       const selectedUserFields = "_id name email cart role";
 
       const { accessToken } = req.cookies;
@@ -41,9 +44,6 @@ const checkAuthentication =
       req.user = foundUser;
       next();
     } catch (error) {
-      if (optional) {
-        return next();
-      }
       next(error);
     }
   };

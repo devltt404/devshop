@@ -11,6 +11,10 @@ export default class PaymentService {
     return paymentIntent;
   }
 
+  static async getPaymentMethod(paymentMethodId) {
+    return await stripe.paymentMethods.retrieve(paymentMethodId);
+  }
+
   static async createPaymentIntent({ userId, guestCartId }) {
     const cart = await CartService.getCartDetail({
       userId,
@@ -21,9 +25,11 @@ export default class PaymentService {
       throw new ErrorResponse(ERROR.PAYMENT.EMPTY_CART);
     }
 
+    // Format order items and price
     const orderItems = cart.items.map((item) => ({
       productId: item.productId,
       itemId: item.itemId,
+      slug: item.slug,
       name: item.name,
       image: item.image,
       variation: item.variationSelection
@@ -43,16 +49,15 @@ export default class PaymentService {
       amount: cart.total,
       currency: "usd",
       capture_method: "manual",
-      metadata: {
-        items: JSON.stringify(orderItems),
-        price: JSON.stringify(price),
-      },
     });
 
     return {
       clientSecret: paymentIntent.client_secret,
-      cart,
       paymentIntentId: paymentIntent.id,
+      orderData: {
+        items: orderItems,
+        price,
+      },
     };
   }
 

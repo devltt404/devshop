@@ -3,6 +3,7 @@ import {
   useAuthorizeOrderMutation,
   useCreateOrderMutation,
 } from "@/redux/api/order.api.js";
+import { setNumCartItems } from "@/redux/slices/cart.slice.js";
 import {
   AddressElement,
   PaymentElement,
@@ -10,11 +11,13 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "../ui/use-toast.js";
 
-const CheckoutForm = ({ paymentIntentId, setIsCheckingOut }) => {
+const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [createOrder] = useCreateOrderMutation();
   const [authorizeOrder] = useAuthorizeOrderMutation();
@@ -55,6 +58,7 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut }) => {
           },
           shippingAddress: addressElementValue.address,
           paymentIntentId,
+          orderData,
         }).unwrap();
 
         orderId = result.metadata?.order?._id;
@@ -88,6 +92,7 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut }) => {
         paymentId: paymentIntent.id,
       }).unwrap();
 
+      dispatch(setNumCartItems(0));
       navigate("/order/" + orderId);
     } catch (error) {
       setIsCheckingOut(false);
@@ -102,8 +107,8 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1 className="mb-2 text-3xl font-semibold">Checkout</h1>
+    <form onSubmit={handleSubmit} className="max-lg:order-1">
+      <h1 className="page-title mb-5">Checkout</h1>
 
       <div className="mb-6">
         <h2 className="mb-2 text-2xl font-medium">Shipping Info</h2>

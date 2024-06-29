@@ -1,6 +1,5 @@
 import ORDER from "../constants/order.constant.js";
-import PAYMENT from "../constants/payment.constant.js";
-import { BadRequestError } from "../core/error.response.js";
+import { BadRequestError, NotFoundError } from "../core/error.response.js";
 import OrderModel from "../models/order.model.js";
 import { checkMissingFields } from "../utils/index.js";
 import CartService from "./cart.service.js";
@@ -9,11 +8,38 @@ import ProductService from "./product.service.js";
 import ProductItemService from "./productItem.service.js";
 
 export class OrderService {
+  static async getOrder({ orderId }) {
+    const order = await OrderModel.findById(orderId).lean();
+    if (!order) {
+      throw new NotFoundError("Order not found.");
+    }
+
+    const { payment_method } = await PaymentService.getPaymentIntent(
+      order.paymentIntentId
+    );
+    const paymentMethod = await PaymentService.getPaymentMethod(payment_method);
+    order.paymentMethod = {
+      brand: paymentMethod.card.brand,
+      last4: paymentMethod.card.last4,
+    };
+
+    return { order };
+  }
+
+  static async getUserOrders({ userId }) {
+    return {
+      orders: await OrderModel.find({ userId })
+        .lean()
+        .select("-paymentIntentId"),
+    };
+  }
+
   static async createOrder({
     paymentIntentId,
     userId,
     customerInfo,
     shippingAddress,
+    orderData,
   }) {
     checkMissingFields({
       paymentIntentId,
@@ -21,11 +47,10 @@ export class OrderService {
       shippingAddress,
     });
 
-    const { metadata } = await PaymentService.getPaymentIntent(paymentIntentId);
     const order = await OrderModel.create({
       userId,
-      items: JSON.parse(metadata.items),
-      price: JSON.parse(metadata.price),
+      items: orderData.items,
+      price: orderData.price,
       customerInfo,
       shippingAddress,
       paymentIntentId,
@@ -41,23 +66,28 @@ export class OrderService {
       throw new BadRequestError("Order is invalid");
     }
 
-    const promises = order.items.map((orderItem) => {
-      if (orderItem.itemId) {
-        return ProductItemService.findProductItemById({
-          itemId: orderItem.itemId,
-        });
-      } else {
-        return ProductService.findProductById({
-          productId: orderItem.productId,
-        });
-      }
-    });
-
-    const foundItems = await Promise.all(promises);
-
     try {
-      for (let index = 0; index < foundItems.length; index++) {
-        const item = foundItems[index];
+      // Check if all items in the order are valid and in stock
+      const promises = order.items.map((orderItem) => {
+        if (orderItem.itemId) {
+          return ProductItemService.findProductItemById({
+            itemId: orderItem.itemId,
+            lean: false,
+          });
+        } else {
+          return ProductService.findProductById({
+            productId: orderItem.productId,
+            lean: false,
+          });
+        }
+      });
+
+      // Object to store the number of sold items of product with sold items
+      const productsNeedToBeUpdated = {};
+
+      const orderItems = await Promise.all(promises);
+      for (let index = 0; index < orderItems.length; index++) {
+        const item = orderItems[index];
         if (!item) {
           throw new BadRequestError(`There's an invalid item in your cart.`);
         }
@@ -66,22 +96,50 @@ export class OrderService {
           throw new BadRequestError(
             `An item is out of stock. Your order is canceled.`
           );
+        } else {
+          item.stock -= order.items[index].quantity;
+
+          // If the item is a simple product, update the number of sold items directly
+          if (!order.items[index].itemId) {
+            item.numSold += order.items[index].quantity;
+          }
+          // If the item is  item of a configurable product, update the number of sold items of the main product
+          else {
+            if (!productsNeedToBeUpdated[item.productId]) {
+              productsNeedToBeUpdated[item.productId] = 0;
+            }
+            productsNeedToBeUpdated[item.productId] +=
+              order.items[index].quantity;
+          }
         }
       }
+
+      // Save the updated stock and numSold
+      orderItems.forEach(async (item) => {
+        item.save();
+      });
+
+      for (const productId in productsNeedToBeUpdated) {
+        ProductService.findProductByIdAndUpdate({
+          productId,
+          update: { $inc: { numSold: productsNeedToBeUpdated[productId] } },
+        });
+      }
+
+      // Clear cart
+      try {
+        await CartService.clearCart({ userId, guestCartId });
+      } catch (error) {}
+
+      // Update order status
+      order.orderStatus = ORDER.STATUS.PROCESSING;
+      await order.save();
+
+      return order;
     } catch (error) {
       OrderModel.findByIdAndDelete(orderId);
       PaymentService.cancelPaymentIntent(order.paymentIntentId);
       throw error;
     }
-
-    try {
-      await CartService.clearCart({ userId, guestCartId });
-    } catch (error) {}
-
-    order.paymentStatus = PAYMENT.STATUS.ON_HOLD;
-    order.orderStatus = ORDER.STATUS.PROCESSING;
-
-    await order.save();
-    return order;
   }
 }
