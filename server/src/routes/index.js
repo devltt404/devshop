@@ -9,6 +9,7 @@ import orderRoutes from "./api/order.route.js";
 import paymentRoutes from "./api/payment.route.js";
 import productRoutes from "./api/product.route.js";
 import testRoutes from "./api/test.route.js";
+import userRoutes from "./api/user.route.js";
 
 const apiRoutes = express.Router();
 
@@ -18,6 +19,7 @@ apiRoutes.use("/product", productRoutes);
 apiRoutes.use("/cart", cartRoutes);
 apiRoutes.use("/payment", paymentRoutes);
 apiRoutes.use("/order", orderRoutes);
+apiRoutes.use("/user", userRoutes);
 
 if (!serverConfig.isPro) {
   apiRoutes.use("/test", testRoutes);

@@ -175,13 +175,8 @@ export default class CartService {
 
     const newQuantity = existingQty + quantity;
     if (newQuantity > availableQty)
-      throw new BadRequestError(
-        `Insufficient stock. Only ${availableQty} available.${
-          existingQty > 0 && " You already have " + existingQty + " in cart."
-        }`,
-        {
-          code: ERROR.CART.INSUFFICIENT_STOCK.code,
-        }
+      throw new ErrorResponse(
+        ERROR.CART.INSUFFICIENT_STOCK({ availableQty, existingQty })
       );
 
     //Update cart

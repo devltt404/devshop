@@ -14,3 +14,4 @@ export const LazyCart = lazy(() => import("../pages/main/CartPage.jsx"));
 export const LazyCheckout = lazy(() => import("../pages/main/CheckoutPage.jsx"));
 export const LazyOrder = lazy(() => import("../pages/main/OrderPage.jsx"));
 export const LazyOrders = lazy(() => import("../pages/main/OrdersPage.jsx"));
+export const LazyProfile = lazy(() => import("../pages/main/ProfilePage.jsx"));

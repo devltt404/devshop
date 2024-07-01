@@ -2,6 +2,7 @@ import VisaIcon from "@/components/icons/VisaIcon.jsx";
 import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import OrderItem from "@/components/order/OrderItem.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
+import PageTitle from "@/components/ui/PageTitle.jsx";
 import { useGetOrderQuery } from "@/redux/api/order.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { Separator } from "@radix-ui/react-dropdown-menu";
@@ -27,18 +28,18 @@ const OrderPage = () => {
   }
 
   return (
-    <div className="py-container container">
+    <div className="container-area">
       <div className="mb-4">
         <OrderStatusBadge status={order.orderStatus} />
       </div>
 
-      <h1 className="page-title">Order #{order._id}</h1>
+      <PageTitle>Order #{order._id}</PageTitle>
 
       <p className="mt-2 text-sm text-gray-500">
         Ordered on {moment(order.createdAt).format("MM/DD/YYYY - hh:mm A")}
       </p>
 
-      <div className="mt-4 mb-6 grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
+      <div className="mb-6 mt-4 grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-medium">Customer Info</h2>
           <p>

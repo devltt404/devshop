@@ -55,7 +55,7 @@ const CheckoutPage = () => {
   return (
     <Elements stripe={stripePromise} options={options}>
       <LoadingOverlay isLoading={isCheckingOut}>
-        <div className="py-container container grid grid-cols-[60%_40%] gap-x-12 gap-y-12 py-8 max-lg:grid-cols-1">
+        <div className="container-area grid grid-cols-[60%_40%] gap-x-12 gap-y-12 py-8 max-lg:grid-cols-1">
           <CheckoutForm
             paymentIntentId={paymentIntentId}
             setIsCheckingOut={setIsCheckingOut}

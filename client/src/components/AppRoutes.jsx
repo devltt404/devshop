@@ -10,6 +10,7 @@ import {
   LazyOrder,
   LazyOrders,
   LazyProduct,
+  LazyProfile,
   LazyRegister,
 } from "@/pages/index.js";
 import { Suspense } from "react";
@@ -37,7 +38,8 @@ const AppRoutes = () => {
 
           {/* AUTH ONLY */}
           <Route element={<AuthWrapper />}>
-            <Route path="/orders/" element={<LazyOrders />} />
+            <Route path="/orders" element={<LazyOrders />} />
+            <Route path="/profile" element={<LazyProfile />} />
           </Route>
         </Route>
       </Routes>

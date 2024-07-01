@@ -1,5 +1,6 @@
 import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
+import PageTitle from "@/components/ui/PageTitle.jsx";
 import { useGetUserOrdersQuery } from "@/redux/api/order.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import moment from "moment";
@@ -19,15 +20,15 @@ const OrdersPage = () => {
 
   return (
     orders && (
-      <div className="py-container container">
-        <h1 className="page-title mb-5">My Orders</h1>
+      <div className="container-area">
+        <PageTitle className="mb-5">Orders</PageTitle>
         {orders.length === 0 ? (
           <p className="text-lg">You don't have any orders yet.</p>
         ) : (
           orders.map((order) => {
             return (
               <Link key={order._id} to={`/order/${order._id}`}>
-                <div className="mb-4 rounded-lg border border-gray-300 px-8 pb-6 pt-4">
+                <div className="mb-4 rounded-lg border px-8 pb-6 pt-4">
                   <div className="mb-2">
                     <OrderStatusBadge status={order.orderStatus} />
                   </div>

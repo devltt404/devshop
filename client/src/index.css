@@ -69,10 +69,6 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.py-container{
-  @apply pt-6 pb-16;
-}
-
-.page-title{
-  @apply text-3xl font-semibold
+.container-area{
+  @apply container pt-6 pb-16;
 }

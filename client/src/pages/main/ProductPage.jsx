@@ -54,7 +54,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="py-container container">
+    <div className="container-area">
       <div>
         <ProductBreadcrumb categories={product.categoryId} />
         <div className="mt-4 flex gap-12">
