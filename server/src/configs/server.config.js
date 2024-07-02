@@ -17,6 +17,10 @@ const env = cleanEnv(process.env, {
   STRIPE_PK: str(),
   STRIPE_SK: str(),
 
+  CLOUDINARY_NAME: str(),
+  CLOUDINARY_API_KEY: str(),
+  CLOUDINARY_API_SECRET: str(),
+
   DATABASE_URL: str(),
 
   CLIENT_BASE_URL: str(),
@@ -42,6 +46,11 @@ const serverConfig = {
   stripe: {
     pk: env.STRIPE_PK,
     sk: env.STRIPE_SK,
+  },
+  cloudinary: {
+    name: env.CLOUDINARY_NAME,
+    apiKey: env.CLOUDINARY_API_KEY,
+    apiSecret: env.CLOUDINARY_API_SECRET,
   },
 };
 

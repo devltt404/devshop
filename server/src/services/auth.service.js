@@ -4,12 +4,12 @@ import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import { clearTokenCookie, setTokenCookie } from "../utils/auth.util.js";
 import { assignCartToUser, clearCartCookie } from "../utils/cart.util.js";
-import { checkMissingFields } from "../utils/index.js";
+import { checkMissingFields } from "../utils/helper.util.js";
 import { compareUserPassword, generateTokens } from "../utils/user.util.js";
 import UserService from "./user.service.js";
 
 export default class AuthService {
-  // #region HELPER METHODS
+  // #region HELPER
   static handleToken({ user, res }) {
     const { accessToken, refreshToken } = generateTokens(user);
     setTokenCookie({ accessToken, refreshToken, res });
@@ -24,11 +24,14 @@ export default class AuthService {
 
     clearCartCookie(res);
   }
-  // #endregion HELPER METHODS
+  // #endregion
 
   // #region BUSINESS LOGIC
   static async authUser(user) {
-    if (!user) return null;
+    if (!user)
+      return {
+        user: null,
+      };
 
     return {
       user: {
@@ -74,6 +77,7 @@ export default class AuthService {
   }
 
   static async authGoogle({ accessToken, guestCartId, res }) {
+    // Fetch user info from Google
     const response = await fetch(
       "https://www.googleapis.com/oauth2/v3/userinfo",
       {
@@ -156,5 +160,5 @@ export default class AuthService {
     clearCartCookie(res);
     return {};
   }
-  // #endregion BUSINESS LOGIC
+  // #endregion
 }

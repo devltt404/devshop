@@ -21,9 +21,9 @@ export default class CartService {
     return await CartModel.findByIdAndDelete(cartId);
   }
 
-  // #endregion QUERIES
+  // #endregion
 
-  // #region HELPER METHODS
+  // #region HELPER
   static genFindCartQuery({ userId, guestCartId }) {
     return userId ? { userId } : { _id: guestCartId };
   }
@@ -44,7 +44,7 @@ export default class CartService {
     }
     return { product, item };
   }
-  //#endregion HELPER METHODS
+  //#endregion HELPER
 
   // #region BUSINESS LOGIC
   static async getSimpleCart({ userId, guestCartId, res }) {
@@ -255,5 +255,5 @@ export default class CartService {
     }
     return cart;
   }
-  // #endregion BUSINESS LOGIC
+  // #endregion
 }

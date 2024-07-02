@@ -1,7 +1,7 @@
 import express from "express";
 import CartController from "../../controllers/cart.controller.js";
 import { isOptionallyAuthorized } from "../../middlewares/auth.middleware.js";
-import { asyncHandler } from "../../utils/index.js";
+import { asyncHandler } from "../../utils/helper.util.js";
 const cartRoutes = express.Router();
 
 //! USER + GUEST

@@ -1,7 +1,7 @@
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import UserModel from "../models/user.model.js";
-import { checkMissingFields } from "../utils/index.js";
+import { checkMissingFields } from "../utils/helper.util.js";
 
 const profileSelect = "name email picture";
 
@@ -56,5 +56,5 @@ export default class UserService {
 
     return { profile: await user.save() };
   }
-  // #endregion BUSINESS LOGIC
+  // #endregion
 }

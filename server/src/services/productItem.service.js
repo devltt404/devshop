@@ -8,5 +8,5 @@ export default class ProductItemService {
       .lean(lean);
   }
 
-  // #endregion QUERY
+  // #endregion
 }

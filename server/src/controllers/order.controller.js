@@ -3,16 +3,16 @@ import { OrderService } from "../services/order.service.js";
 import { getCommonCartParams } from "../utils/cart.util.js";
 
 export default class OrderController {
-  static async getOrder(req, res) {
+  static async getOrderDetail(req, res) {
     return new SuccessResponse({
       message: "Order fetched successfully",
-      metadata: await OrderService.getOrder({
+      metadata: await OrderService.getOrderDetail({
         orderId: req.params.orderId,
       }),
     }).send(res);
   }
 
-  static async getOrders(req, res) {
+  static async getOrderDetails(req, res) {
     return new SuccessResponse({
       message: "User orders fetched successfully",
       metadata: await OrderService.getUserOrders({

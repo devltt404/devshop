@@ -4,7 +4,7 @@ const baseOrderEndpoint = "/order";
 
 export const orderApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getOrder: builder.query({
+    getOrderDetail: builder.query({
       query: (orderId) => ({
         url: `${baseOrderEndpoint}/${orderId}`,
       }),
@@ -37,7 +37,7 @@ export const orderApi = api.injectEndpoints({
 });
 
 export const {
-  useGetOrderQuery,
+  useGetOrderDetailQuery,
   useCreateOrderMutation,
   useAuthorizeOrderMutation,
   useGetUserOrdersQuery,

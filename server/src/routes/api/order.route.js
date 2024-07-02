@@ -4,11 +4,15 @@ import {
   isAuthorized,
   isOptionallyAuthorized,
 } from "../../middlewares/auth.middleware.js";
-import { asyncHandler } from "../../utils/index.js";
+import { asyncHandler } from "../../utils/helper.util.js";
 const orderRoutes = express.Router();
 
 //USER
-orderRoutes.get("/user", isAuthorized, asyncHandler(OrderController.getOrders));
+orderRoutes.get(
+  "/user",
+  isAuthorized,
+  asyncHandler(OrderController.getOrderDetails)
+);
 
 // USER + GUEST
 orderRoutes.post(
@@ -21,6 +25,6 @@ orderRoutes.post(
   isOptionallyAuthorized,
   asyncHandler(OrderController.authorizeOrder)
 );
-orderRoutes.get("/:orderId", asyncHandler(OrderController.getOrder));
+orderRoutes.get("/:orderId", asyncHandler(OrderController.getOrderDetail));
 
 export default orderRoutes;

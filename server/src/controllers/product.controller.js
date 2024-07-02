@@ -9,11 +9,11 @@ export default class ProductController {
     }).send(res);
   }
 
-  static async getProductDetailById(req, res) {
+  static async getProductDetail(req, res) {
     return new SuccessResponse({
       message: "Product retrieved successfully",
       metadata: {
-        product: await ProductService.getProductDetailById(req.params.id),
+        product: await ProductService.getProductDetail(req.params.id),
       },
     }).send(res);
   }

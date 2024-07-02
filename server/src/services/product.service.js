@@ -66,10 +66,10 @@ export default class ProductService {
       new: true,
     }).lean();
   }
-  // #endregion QUERY
+  // #endregion
 
   // #region BUSINESS LOGIC
-  static async getProductDetailById(productId) {
+  static async getProductDetail(productId) {
     const [product, items] = await Promise.all([
       ProductModel.findById(productId)
         .lean()

@@ -9,9 +9,9 @@ export default class CategoryService {
     return await CategoryModel.findOne(filter).select(select).lean(lean);
   }
 
-  // #endregion QUERY
+  // #endregion
 
-  // #region HELPER METHODS
+  // #region HELPER
   static async getDescendantIds(categoryId) {
     let descendantIds = await CategoryModel.find({
       path: { $regex: `,${categoryId},` },
@@ -38,7 +38,7 @@ export default class CategoryService {
 
     return findQueries;
   }
-  // #endregion HELPER METHODS
+  // #endregion
 
   // #region BUSINESS LOGIC
 

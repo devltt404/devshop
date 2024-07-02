@@ -2,14 +2,15 @@ import ORDER from "../constants/order.constant.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import OrderModel from "../models/order.model.js";
-import { checkMissingFields } from "../utils/index.js";
+import { checkMissingFields } from "../utils/helper.util.js";
 import CartService from "./cart.service.js";
 import PaymentService from "./payment.service.js";
 import ProductService from "./product.service.js";
 import ProductItemService from "./productItem.service.js";
 
 export class OrderService {
-  static async getOrder({ orderId }) {
+  // #region BUSINESS LOGIC
+  static async getOrderDetail({ orderId }) {
     const order = await OrderModel.findById(orderId).lean();
     if (!order) {
       throw new ErrorResponse(ERROR.ORDER.ORDER_NOT_FOUND);
@@ -141,4 +142,5 @@ export class OrderService {
       throw error;
     }
   }
+  // #endregion
 }

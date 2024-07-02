@@ -3,7 +3,7 @@ import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import OrderItem from "@/components/order/OrderItem.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
 import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
-import { useGetOrderQuery } from "@/redux/api/order.api.js";
+import { useGetOrderDetailQuery } from "@/redux/api/order.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import moment from "moment";
@@ -13,7 +13,7 @@ import { LazyNotFound } from "../index.js";
 
 const OrderPage = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetOrderQuery(id);
+  const { data, isLoading } = useGetOrderDetailQuery(id);
 
   const order = useMemo(() => {
     return data?.metadata?.order;

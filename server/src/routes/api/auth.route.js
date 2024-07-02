@@ -1,7 +1,7 @@
 import express from "express";
 import AuthController from "../../controllers/auth.controller.js";
 import { isAuthorized } from "../../middlewares/auth.middleware.js";
-import { asyncHandler } from "../../utils/index.js";
+import { asyncHandler } from "../../utils/helper.util.js";
 
 const authRoutes = express.Router();
 
