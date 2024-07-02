@@ -7,6 +7,7 @@ const authRoutes = express.Router();
 
 authRoutes.post("/refresh-token", asyncHandler(AuthController.refreshToken));
 authRoutes.post("/register", asyncHandler(AuthController.register));
+authRoutes.post("/google", asyncHandler(AuthController.authGoogle));
 authRoutes.post("/login", asyncHandler(AuthController.login));
 authRoutes.post("/logout", asyncHandler(AuthController.logout));
 

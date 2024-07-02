@@ -1,11 +1,12 @@
-import { SuccessResponse } from "../core/success.response.js";
+import { SuccessResponse } from "../core/response.js";
 import AuthService from "../services/auth.service.js";
+import { getCommonAuthParams } from "../utils/auth.util.js";
 
 export default class AuthController {
   static async authUser(req, res) {
     new SuccessResponse({
       message: "User authenticated successfully",
-      metadata: { user: await AuthService.authUser(req.user) },
+      metadata: await AuthService.authUser(req.user),
     }).send(res);
   }
 
@@ -16,16 +17,17 @@ export default class AuthController {
     }).send(res);
   }
 
+  static async authGoogle(req, res) {
+    new SuccessResponse({
+      message: "User authenticated with Google successfully",
+      metadata: await AuthService.authGoogle(getCommonAuthParams(req, res)),
+    }).send(res);
+  }
+
   static async login(req, res) {
     new SuccessResponse({
       message: "User logged in successfully",
-      metadata: {
-        user: await AuthService.login({
-          ...req.body,
-          guestCartId: req.cookies?.cartId,
-          res,
-        }),
-      },
+      metadata: await AuthService.login(getCommonAuthParams(req, res)),
     }).send(res);
   }
 
@@ -33,13 +35,7 @@ export default class AuthController {
     new SuccessResponse({
       status: 201,
       message: "User registered successfully",
-      metadata: {
-        user: await AuthService.register({
-          ...req.body,
-          guestCartId: req.cookies?.cartId,
-          res,
-        }),
-      },
+      metadata: await AuthService.register(getCommonAuthParams(req, res)),
     }).send(res);
   }
 

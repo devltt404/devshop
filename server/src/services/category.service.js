@@ -1,5 +1,6 @@
 import slugify from "slugify";
-import { BadRequestError } from "../core/error.response.js";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse } from "../core/response.js";
 import CategoryModel from "../models/category.model.js";
 
 export default class CategoryService {
@@ -11,12 +12,6 @@ export default class CategoryService {
   // #endregion QUERY
 
   // #region HELPER METHODS
-  /**
-   * Retrieves the descendant IDs of a given category.
-   *
-   * @param {string} categoryId - The ID of the category.
-   * @returns {Promise<string[]>} - A promise that resolves to an array of descendant IDs.
-   */
   static async getDescendantIds(categoryId) {
     let descendantIds = await CategoryModel.find({
       path: { $regex: `,${categoryId},` },
@@ -30,13 +25,6 @@ export default class CategoryService {
     return descendantIds;
   }
 
-  /**
-   * Retrieves the JSON tree structure of a single category organised
-   * in materialized path tree model structure of Mongo.
-   *
-   * @param {Object} category - The category object.
-   * @returns {Object} The JSON tree structure of the category.
-   */
   static async getTreeOfSingleCategory(category) {
     let categoryIds = category.path.split(",").slice(1, -1);
 
@@ -54,10 +42,6 @@ export default class CategoryService {
 
   // #region BUSINESS LOGIC
 
-  /**
-   * Retrieves all categories in JSON tree structure from the database.
-   * @returns {Promise<Array>} A promise that resolves to a JSON tree of categories.
-   */
   static async getAllCategories() {
     const categories = await CategoryModel.find({}).lean();
 
@@ -95,27 +79,13 @@ export default class CategoryService {
     return tree;
   }
 
-  /**
-   * Creates a new category.
-   *
-   * @param {Object} options - The options for creating the category.
-   * @param {string} options.name - The name of the category.
-   * @param {string} [options.description=""] - The description of the category.
-   * @param {string} [options.parent] - The ID of the parent category.
-   * @returns {Promise<Object>} - A promise that resolves to the created category name and path.
-   * @throws {BadRequestError} - If the category name already exists or the parent category is not found.
-   */
   static async createCategory({ name, description = "", parent }) {
     // Check if the category name already exists
     const isCategoryExist = await CategoryModel.findOne({
       $or: [{ name }, { slug: slugify(name, { lower: true }) }],
     }).lean();
     if (isCategoryExist) {
-      throw new BadRequestError("Category name already exists", {
-        errors: {
-          name: "Category name already exists",
-        },
-      });
+      throw new ErrorResponse(ERROR.CATEGORY.NAME_ALREADY_EXISTS);
     }
 
     // Check if the parent category exists
@@ -123,11 +93,7 @@ export default class CategoryService {
     if (parent) {
       parentCategory = await CategoryModel.findById(parent).lean();
       if (!parentCategory) {
-        throw new BadRequestError("Parent category not found", {
-          errors: {
-            parent: "Parent category not found",
-          },
-        });
+        throw new ErrorResponse(ERROR.CATEGORY.INVALID_PARENT_CATEGORY);
       }
     }
 

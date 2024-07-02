@@ -1,12 +1,5 @@
-import { RESPONSE_MESSAGES } from "../constants/http/responseMessages.constant.js";
-import { STATUS_CODES } from "../constants/http/statusCodes.constant.js";
-
 export class SuccessResponse {
-  constructor({
-    message = RESPONSE_MESSAGES.OK,
-    status = STATUS_CODES.OK,
-    metadata = {},
-  }) {
+  constructor({ message = "Success", status = 200, metadata = {} }) {
     this.message = message;
     this.status = status;
     this.metadata = metadata;
@@ -18,5 +11,14 @@ export class SuccessResponse {
       message: this.message,
       metadata: this.metadata,
     });
+  }
+}
+
+export class ErrorResponse extends Error {
+  constructor({ message, status, errors, code }) {
+    super(message);
+    this.status = status;
+    this.errors = errors;
+    this.code = code;
   }
 }

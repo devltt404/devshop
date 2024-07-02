@@ -1,5 +1,5 @@
-import ERROR from "../constants/error.constant.js";
-import { ErrorResponse } from "../core/error.response.js";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse } from "../core/response.js";
 import UserModel from "../models/user.model.js";
 import { checkMissingFields } from "../utils/index.js";
 
@@ -7,11 +7,11 @@ const profileSelect = "name email picture";
 
 export default class UserService {
   //#region QUERY
-  static async findUserById({ lean = true, userId, select = "_id" }) {
+  static async findUserById({ lean = true, userId, select = profileSelect }) {
     return await UserModel.findById(userId).select(select).lean(lean);
   }
 
-  static async findUserByEmail({ lean = true, email, select = "_id" }) {
+  static async findUserByEmail({ lean = true, email, select = profileSelect }) {
     return await UserModel.findOne({ email }).select(select).lean(lean);
   }
 

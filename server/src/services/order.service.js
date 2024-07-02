@@ -1,5 +1,6 @@
 import ORDER from "../constants/order.constant.js";
-import { BadRequestError, NotFoundError } from "../core/error.response.js";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse } from "../core/response.js";
 import OrderModel from "../models/order.model.js";
 import { checkMissingFields } from "../utils/index.js";
 import CartService from "./cart.service.js";
@@ -11,7 +12,7 @@ export class OrderService {
   static async getOrder({ orderId }) {
     const order = await OrderModel.findById(orderId).lean();
     if (!order) {
-      throw new NotFoundError("Order not found.");
+      throw new ErrorResponse(ERROR.ORDER.ORDER_NOT_FOUND);
     }
 
     const { payment_method } = await PaymentService.getPaymentIntent(
@@ -63,7 +64,7 @@ export class OrderService {
     const order = await OrderModel.findById(orderId);
 
     if (!order) {
-      throw new BadRequestError("Order is invalid");
+      throw new ErrorResponse(ERROR.ORDER.INVALID_ORDER);
     }
 
     try {
@@ -89,13 +90,11 @@ export class OrderService {
       for (let index = 0; index < orderItems.length; index++) {
         const item = orderItems[index];
         if (!item) {
-          throw new BadRequestError(`There's an invalid item in your cart.`);
+          throw new ErrorResponse(ERROR.ORDER.INVALID_ORDER_ITEM);
         }
 
         if (item.stock < order.items[index].quantity) {
-          throw new BadRequestError(
-            `An item is out of stock. Your order is canceled.`
-          );
+          throw new ErrorResponse(ERROR.ORDER.INSUFFICIENT_STOCK);
         } else {
           item.stock -= order.items[index].quantity;
 

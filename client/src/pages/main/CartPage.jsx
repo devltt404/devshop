@@ -1,7 +1,7 @@
 import CartItems from "@/components/cart/CartItems.jsx";
 import CartSummary from "@/components/cart/CartSummary.jsx";
 import LoadingArea from "@/components/loading/LoadingArea.jsx";
-import PageTitle from "@/components/ui/PageTitle.jsx";
+import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,16 +51,16 @@ const CartPage = () => {
     <div className="container-area flex gap-16 max-xl:gap-8 max-lg:flex-col max-lg:gap-12">
       <div className="flex-1">
         <div className="relative">
-          <PageTitle className="mb-2">Cart</PageTitle>
+          <PageTitle>Cart</PageTitle>
           {cartItems?.length === 0 ? (
-            <p className="text-muted-foreground text-sm">Your cart is empty.</p>
+            <PageDescription>Your cart is empty.</PageDescription>
           ) : (
             <>
-              <p className="text-muted-foreground text-sm">
+              <PageDescription>
                 You have{" "}
                 <span className="font-medium">{cartItems?.length}</span>{" "}
                 {cartItems?.length > 1 ? "items" : "item"} in your cart.
-              </p>
+              </PageDescription>
 
               <AlertDialog>
                 <AlertDialogTrigger

@@ -6,9 +6,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server.js --trace-warnings",
+    "server-dev": "nodemon --env-file=.env.development server.js --trace-warnings",
     "client": "cd ../client && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
+    "production": "node --env-file=.env.production server.js --trace-warnings"
   },
   "keywords": [],
   "author": "",

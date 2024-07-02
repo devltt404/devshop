@@ -1,4 +1,5 @@
-import { BadRequestError, NotFoundError } from "../core/error.response.js";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse } from "../core/response.js";
 import ProductModel from "../models/product.model.js";
 import ProductItemModel from "../models/productItem.model.js";
 import ProductVariationGroupModel from "../models/productVariationGroup.model.js";
@@ -8,19 +9,6 @@ ProductItemModel;
 ProductVariationGroupModel;
 export default class ProductService {
   // #region QUERY
-  /**
-   * Finds product with pagination.
-   *
-   * @param {Object} options - The options for pagination.
-   * @param {Object} options.filter - The filter object for querying product.
-   * @param {Object} options.projection - The projection object for selecting fields.
-   * @param {Object} [options.sortBy={ createdAt: -1 }] - The sort object for sorting product.
-   * @param {number} [options.page=1] - The page number for pagination.
-   * @param {number} [options.limit=10] - The maximum number of product per page.
-   * @param {boolean} [options.lean=true] - Whether to return plain JavaScript objects instead of Mongoose documents.
-   * @param {string} [options.select="_id name price originalPrice percentageDiscount avgRating images category numSold"] - The fields to select for each product.
-   * @returns {Object} - The paginated result containing the pagination information and the product.
-   */
   static async findProductsWithPagination({
     filter,
     projection,
@@ -81,14 +69,6 @@ export default class ProductService {
   // #endregion QUERY
 
   // #region BUSINESS LOGIC
-
-  /**
-   * Retrieves the detailed information of a product by its ID.
-   *
-   * @param {string} productId - The ID of the product to retrieve.
-   * @returns {Promise<Object>} The detailed information of the product.
-   * @throws {NotFoundError} If the product with the given ID is not found.
-   */
   static async getProductDetailById(productId) {
     const [product, items] = await Promise.all([
       ProductModel.findById(productId)
@@ -102,7 +82,7 @@ export default class ProductService {
     ]);
 
     if (!product) {
-      throw new NotFoundError("Product not found");
+      throw new ErrorResponse(ERROR.PRODUCT.PRODUCT_NOT_FOUND);
     }
 
     product.categoryId = await CategoryService.getTreeOfSingleCategory(
@@ -112,21 +92,6 @@ export default class ProductService {
     return product;
   }
 
-  /**
-   * Retrieves product based on the provided filters and pagination options.
-   *
-   * @param {Object} options - The options for filtering and pagination.
-   * @param {string} options.key - The search keyword.
-   * @param {number} [options.page=1] - The page number.
-   * @param {number} [options.limit=10] - The maximum number of product per page.
-   * @param {string} options.sortBy - The sorting option for the product.
-   * @param {string} options.categoryId - The ID of the category to filter by.
-   * @param {number} options.minRating - The minimum rating for the product.
-   * @param {number} options.minPrice - The minimum price for the product.
-   * @param {number} options.maxPrice - The maximum price for the product.
-   * @returns {Promise<Array>} The array of product that match the provided filters and pagination options.
-   * @throws {BadRequestError} If the specified category is not found.
-   */
   static async getProducts({
     key,
     page = 1,
@@ -169,9 +134,7 @@ export default class ProductService {
       });
 
       if (!foundCategory) {
-        throw new BadRequestError("Category not found", {
-          errors: { categoryId: "Category not found" },
-        });
+        throw new ErrorResponse(ERROR.PRODUCT.INVALID_CATEGORY);
       }
 
       const descendantIds = await CategoryService.getDescendantIds(

@@ -2,8 +2,11 @@
 
 /server/node_modules
 /client/node_modules
-/server/.env
-/client/.env
+
+/server/.env.development
+/server/.env.production
+/client/.env.development
+/client/.env.production
 
 /server/src/logs
 

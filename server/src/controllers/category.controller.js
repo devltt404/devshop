@@ -1,4 +1,4 @@
-import { SuccessResponse } from "../core/success.response.js";
+import { SuccessResponse } from "../core/response.js";
 import CategoryService from "../services/category.service.js";
 
 export default class CategoryController {

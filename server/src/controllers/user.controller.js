@@ -1,4 +1,4 @@
-import { SuccessResponse } from "../core/success.response.js";
+import { SuccessResponse } from "../core/response.js";
 import UserService from "../services/user.service.js";
 
 export default class UserController {

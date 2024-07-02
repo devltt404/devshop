@@ -1,6 +1,6 @@
 import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import LoadingOverlay from "@/components/loading/LoadingOverlay.jsx";
-import PageTitle from "@/components/ui/PageTitle.jsx";
+import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -90,10 +90,8 @@ const ProfilePage = () => {
 
   return (
     <div className="container-area">
-      <PageTitle className="mb-1">Profile</PageTitle>
-      <p className="mb-6 text-sm text-muted-foreground">
-        You can update your basic info here
-      </p>
+      <PageTitle>Profile</PageTitle>
+      <PageDescription className="mb-6">You can update your basic info here</PageDescription>
 
       <LoadingOverlay isLoading={false}>
         <Form {...form}>
@@ -126,7 +124,7 @@ const ProfilePage = () => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input error={form.formState.errors.name} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -139,7 +137,7 @@ const ProfilePage = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input error={form.formState.errors.email} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

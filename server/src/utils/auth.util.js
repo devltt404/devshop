@@ -1,3 +1,11 @@
+export function getCommonAuthParams( req, res ) {
+  return {
+    ...req.body,
+    guestCartId: req.cookies?.cartId,
+    res,
+  };
+}
+
 export function setTokenCookie({ res, accessToken, refreshToken }) {
   res.cookie("accessToken", accessToken, {
     httpOnly: true,

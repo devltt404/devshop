@@ -1,4 +1,4 @@
-import { SuccessResponse } from "../core/success.response.js";
+import { SuccessResponse } from "../core/response.js";
 import PaymentService from "../services/payment.service.js";
 import { getCommonCartParams } from "../utils/cart.util.js";
 

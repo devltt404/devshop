@@ -2,7 +2,7 @@ import VisaIcon from "@/components/icons/VisaIcon.jsx";
 import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import OrderItem from "@/components/order/OrderItem.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
-import PageTitle from "@/components/ui/PageTitle.jsx";
+import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import { useGetOrderQuery } from "@/redux/api/order.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { Separator } from "@radix-ui/react-dropdown-menu";
@@ -33,11 +33,11 @@ const OrderPage = () => {
         <OrderStatusBadge status={order.orderStatus} />
       </div>
 
-      <PageTitle>Order #{order._id}</PageTitle>
+      <PageTitle className="mb-2">Order #{order._id}</PageTitle>
 
-      <p className="mt-2 text-sm text-gray-500">
+      <PageDescription>
         Ordered on {moment(order.createdAt).format("MM/DD/YYYY - hh:mm A")}
-      </p>
+      </PageDescription>
 
       <div className="mb-6 mt-4 grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
         <div className="flex flex-col gap-1">

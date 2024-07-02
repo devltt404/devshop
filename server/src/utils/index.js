@@ -1,14 +1,10 @@
-import lodash from "lodash";
-import { BadRequestError } from "../core/error.response.js";
+import { STATUS_CODE } from "../constants/statusCodes.constant.js";
+import { ErrorResponse } from "../core/response.js";
 
 export function asyncHandler(fn) {
   return (req, res, next) => {
     fn(req, res, next).catch(next);
   };
-}
-
-export function getFieldsFromObject(fields, obj) {
-  return lodash.pick(obj, fields);
 }
 
 export function checkMissingFields({ ...requiredFields }) {
@@ -19,7 +15,9 @@ export function checkMissingFields({ ...requiredFields }) {
     }
   }
   if (Object.keys(missingFields).length > 0) {
-    throw new BadRequestError("Please provide all required fields", {
+    throw new ErrorResponse({
+      status: STATUS_CODE.BAD_REQUEST,
+      message: "Please provide all required fields",
       errors: missingFields,
     });
   }

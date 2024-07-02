@@ -13,8 +13,8 @@ import {
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { PageDescription, PageTitle } from "../ui/PageTitle.jsx";
 import { toast } from "../ui/use-toast.js";
-import PageTitle from "../ui/PageTitle.jsx";
 
 const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
   const navigate = useNavigate();
@@ -109,7 +109,10 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
 
   return (
     <form onSubmit={handleSubmit} className="max-lg:order-1">
-      <PageTitle className="mb-4">Checkout</PageTitle>
+      <PageTitle className="mb-1">Checkout</PageTitle>
+      <PageDescription>
+        Powered with Stripe
+      </PageDescription>
 
       <div className="mb-6">
         <h2 className="mb-2 text-2xl font-medium">Shipping Info</h2>

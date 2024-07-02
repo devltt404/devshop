@@ -1,7 +1,7 @@
 import shopConfig from "../configs/shop.config.js";
-import ERROR from "../constants/error.constant.js";
 import PRODUCT from "../constants/product.constant.js";
-import { BadRequestError, ErrorResponse } from "../core/error.response.js";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse } from "../core/response.js";
 import CartModel from "../models/cart.model.js";
 import { clearCartCookie, setCartCookie } from "../utils/cart.util.js";
 import ProductService from "./product.service.js";
@@ -34,13 +34,13 @@ export default class CartService {
       productId,
       select: "-description -details",
     });
-    if (!product) throw new BadRequestError("Product ID is invalid.");
+    if (!product) throw new ErrorResponse(ERROR.CART.INVALID_PRODUCT_ID);
 
     //Validate item
     let item;
     if (product.type === PRODUCT.TYPE.CONFIGURABLE) {
       item = await ProductItemService.findProductItemById({ itemId });
-      if (!item) throw new BadRequestError("Item ID is invalid.");
+      if (!item) throw new ErrorResponse(ERROR.CART.INVALID_ITEM_ID);
     }
     return { product, item };
   }
@@ -136,7 +136,7 @@ export default class CartService {
     guestCartId,
     res,
   }) {
-    if (quantity < 1) throw new BadRequestError("Quantity must be at least 1.");
+    if (quantity < 1) throw new ErrorResponse(ERROR.CART.INVALID_QUANTITY);
 
     const { product, item } = await this.validateProductAndItem({
       productId,

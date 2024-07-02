@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import serverConfig from "../configs/server.config.js";
 import USER from "../constants/user.constant.js";
-import { ForbiddenError, UnauthorizedError } from "../core/error.response.js";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse } from "../core/response.js";
 import UserService from "../services/user.service.js";
 
 const checkAuthentication =
@@ -18,7 +19,7 @@ const checkAuthentication =
 
       // Check if access token is missing
       if (!accessToken) {
-        throw new UnauthorizedError("Tokens are missing.");
+        throw new ErrorResponse(ERROR.AUTH.MISSING_ACCESS_TOKEN);
       }
 
       // Verify access token
@@ -26,7 +27,7 @@ const checkAuthentication =
       try {
         decode = jwt.verify(accessToken, serverConfig.server.jwtSecret);
       } catch (error) {
-        throw new UnauthorizedError("Invalid access token");
+        throw new ErrorResponse(ERROR.AUTH.UNABLE_DECODE_ACCESS_TOKEN);
       }
 
       const { userId } = decode;
@@ -38,7 +39,7 @@ const checkAuthentication =
       });
 
       if (!foundUser) {
-        throw new UnauthorizedError("Invalid access token");
+        throw new ErrorResponse(ERROR.AUTH.INVALID_CREDENTIAL);
       }
 
       req.user = foundUser;
@@ -52,9 +53,7 @@ export const checkPermission = ({ roles }) => {
   return (req, res, next) => {
     try {
       if (!roles.includes(req.user.role)) {
-        return next(
-          new ForbiddenError("You don't have permission to access this path.")
-        );
+        return next(new ErrorResponse(ERROR.AUTH.INVALID_PERMISSION));
       }
       next();
     } catch (error) {

@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,9 +31,11 @@ export default function App() {
   }, [data, error, isLoading]);
 
   return (
-    <ScrollToTopWrapper>
-      {isAuthLoading ? <LoadingScreen /> : <AppRoutes />}
-      <Toaster />
-    </ScrollToTopWrapper>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <ScrollToTopWrapper>
+        {isAuthLoading ? <LoadingScreen /> : <AppRoutes />}
+        <Toaster />
+      </ScrollToTopWrapper>
+    </GoogleOAuthProvider>
   );
 }

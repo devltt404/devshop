@@ -1,4 +1,4 @@
-import { SuccessResponse } from "../core/success.response.js";
+import { SuccessResponse } from "../core/response.js";
 import ProductService from "../services/product.service.js";
 
 export default class ProductController {
