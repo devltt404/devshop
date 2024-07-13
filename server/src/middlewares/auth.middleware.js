@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import serverConfig from "../configs/server.config.js";
-import USER from "../constants/user.constant.js";
+import { USER } from "../constants/index.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import UserService from "../services/user.service.js";

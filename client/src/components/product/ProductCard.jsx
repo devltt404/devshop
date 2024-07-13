@@ -16,15 +16,15 @@ export default function ProductCard({ product }) {
           className="aspect-square select-none object-contain py-8 transition group-hover:scale-105"
           src={product.images[0]}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
         />
 
         <div className="flex flex-1 flex-col px-4 pb-4">
           <TooltipProvider delayDuration={100}>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <p className="line-clamp-2 font-medium group-hover:underline">
-                  {product.name}
-                </p>
+                <p className="line-clamp-2 font-semibold">{product.name}</p>
               </TooltipTrigger>
 
               <TooltipContent>
@@ -34,7 +34,9 @@ export default function ProductCard({ product }) {
           </TooltipProvider>
           <div className="my-[4px] flex items-center gap-1 text-sm">
             <Star className="h-4 w-4 fill-orange-400" strokeWidth={0} />
-            <span className="font-medium">{product.avgRating.toFixed(1)}</span>
+            <span className="font-semibold">
+              {product.avgRating.toFixed(1)}
+            </span>
             <Separator
               orientation="vertical"
               className="mx-1 h-3 bg-gray-400"
@@ -45,7 +47,7 @@ export default function ProductCard({ product }) {
           </div>
 
           <div className="mb-2 mt-auto flex items-center gap-2">
-            <p className="text-lg font-semibold">
+            <p className="text-lg font-bold text-primary">
               $
               {(product.type === "configurable"
                 ? product.defaultItemId.price / 100

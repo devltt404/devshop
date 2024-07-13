@@ -64,78 +64,84 @@ const LoginPage = () => {
   useValidateForm({ error, form });
 
   return (
-    <Card className="mx-auto my-12 max-w-lg">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl">Login</CardTitle>
-            <CardDescription>
-              Not a member yet?{" "}
-              <Link to="/register" className="font-medium hover:underline">
-                Register
-              </Link>
-            </CardDescription>
-          </CardHeader>
+    <div className="min-h-screen bg-muted pt-12">
+      <Card className="mx-auto max-w-lg shadow-lg">
+        <Form {...form}>
+          <form className="px-4 py-8" onSubmit={form.handleSubmit(onSubmit)}>
+            <CardHeader className="text-center">
+              <CardTitle className="mb-3 text-3xl">Login</CardTitle>
 
-          <CardContent>
-            <ProviderButtons />
+              <CardDescription className="text-base">
+                Not a member yet?{" "}
+                <Link
+                  to="/register"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  Register
+                </Link>
+              </CardDescription>
+            </CardHeader>
 
-            <div className="my-5 flex items-center gap-2 text-xs text-muted-foreground">
-              <Separator className="flex-1" />
-              <span>OR CONTINUE WITH</span>
-              <Separator className="flex-1" />
-            </div>
+            <CardContent>
+              <div className="grid gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          error={form.formState.errors.email}
+                          type="email"
+                          placeholder="name@example.com"
+                          autoComplete="email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <div className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        error={form.formState.errors.email}
-                        type="email"
-                        placeholder="name@example.com"
-                        autoComplete="email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          error={form.formState.errors.password}
+                          type="password"
+                          autoComplete="password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        error={form.formState.errors.password}
-                        type="password"
-                        autoComplete="password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </CardContent>
+            <CardFooter className="mt-3 flex-col items-stretch">
+              <Button disabled={isLoading} type="submit" className="w-full">
+                Login
+              </Button>
 
-          <CardFooter>
-            <Button disabled={isLoading} type="submit" className="w-full">
-              Login
-            </Button>
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+              <div className="my-6 flex items-center gap-2 self-stretch text-sm text-muted-foreground">
+                <Separator className="flex-1" />
+                <span className="mx-20">or</span>
+                <Separator className="flex-1" />
+              </div>
+
+              <ProviderButtons />
+            </CardFooter>
+          </form>
+        </Form>
+      </Card>
+    </div>
   );
 };
 

@@ -1,4 +1,3 @@
-import { STATUS_CODE } from "../constants/statusCodes.constant.js";
 import { ErrorResponse } from "../core/response.js";
 
 export function asyncHandler(fn) {
@@ -16,7 +15,7 @@ export function checkMissingFields({ ...requiredFields }) {
   }
   if (Object.keys(missingFields).length > 0) {
     throw new ErrorResponse({
-      status: STATUS_CODE.BAD_REQUEST,
+      status: 400,
       message: "Please provide all required fields",
       errors: missingFields,
     });

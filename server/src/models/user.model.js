@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-import USER from "../constants/user.constant.js";
+import {USER} from "../constants/index.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema(
     },
     picture: {
       type: String,
-      default: "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg",
+      default:
+        "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg",
     },
     role: {
       type: String,

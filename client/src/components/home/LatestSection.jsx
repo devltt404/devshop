@@ -1,6 +1,7 @@
 import ProductCard from "@/components/product/ProductCard.jsx";
 import ProductCardSkeleton from "@/components/product/ProductCardSkeleton.jsx";
 import { useGetProductsQuery } from "@/redux/api/product.api.js";
+import { ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 
@@ -23,9 +24,9 @@ const LatestSection = () => {
   }, [data]);
 
   return (
-    <section>
-      <h2 className="mb-6 text-3xl font-semibold">Latest Products</h2>
-      <div className="grid grid-cols-5 gap-x-4 gap-y-8">
+    <section className="container">
+      <h2 className="mb-8 text-3xl font-bold text-primary">Latest Products</h2>
+      <div className="grid grid-cols-5 gap-x-6 gap-y-6">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
@@ -39,6 +40,7 @@ const LatestSection = () => {
       {currentPage < data?.metadata?.pagination.totalPages && (
         <div className="mt-8 text-center">
           <Button
+            size="lg"
             variant="secondary"
             className="px-16"
             onClick={() => {
@@ -47,6 +49,7 @@ const LatestSection = () => {
             }}
           >
             Load More
+            <ArrowDown className="ml-2 h-4 w-4 stroke-[3px]" />
           </Button>
         </div>
       )}

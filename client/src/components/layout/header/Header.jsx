@@ -10,13 +10,15 @@ export default function Header() {
       {/* Headline */}
       <Headline />
 
-      <div className="container flex items-center justify-between py-4">
-        <Logo />
-        <SearchInput />
+      <div className="shadow-md">
+        <div className="container flex items-center justify-between py-4">
+          <Logo />
+          <SearchInput />
 
-        <div className="flex gap-2">
-          <UserMenu />
-          <CartButton />
+          <div className="flex gap-2">
+            <UserMenu />
+            <CartButton />
+          </div>
         </div>
       </div>
     </header>

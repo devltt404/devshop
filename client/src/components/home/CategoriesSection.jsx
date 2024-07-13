@@ -23,9 +23,12 @@ const CategoriesSection = () => {
   const { data, isLoading } = useGetCategoriesQuery();
 
   return (
-    <section>
-      <h2 className="mb-2 text-center text-3xl font-semibold">Categories</h2>
-      <p className="mb-10 text-center text-muted-foreground">
+    <section className="container">
+      <h2 className="mb-3 text-center text-3xl font-bold text-primary">
+        Categories
+      </h2>
+
+      <p className="mb-14 text-center text-muted-foreground">
         We offer a wide range of categories to choose from, let's explore!
       </p>
 
@@ -49,7 +52,7 @@ const CategoriesSection = () => {
                         className="transition group-hover:scale-110"
                       />
                     </div>
-                    <p className="text-lg font-medium">{category.name}</p>
+                    <p className="text-lg font-semibold">{category.name}</p>
                   </div>
                 </Link>
               </CarouselItem>

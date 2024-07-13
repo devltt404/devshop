@@ -5,13 +5,13 @@ const LoadingSpinner = ({ className }) => {
     <div className="relative">
       <div
         className={cn(
-          "h-28 w-28 rounded-full border-y-[9px] border-gray-300",
+          "h-28 w-28 rounded-full border-y-[9px] border-primary/30",
           className,
         )}
       ></div>
       <div
         className={cn(
-          "absolute left-0 top-0 h-28 w-28 animate-spin rounded-full border-y-[9px] border-black",
+          "absolute left-0 top-0 h-28 w-28 animate-spin rounded-full border-y-[9px] border-primary",
           className,
         )}
       ></div>

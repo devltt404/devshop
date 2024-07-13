@@ -1,5 +1,5 @@
 import shopConfig from "../configs/shop.config.js";
-import PRODUCT from "../constants/product.constant.js";
+import {PRODUCT} from "../constants/index.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import CartModel from "../models/cart.model.js";

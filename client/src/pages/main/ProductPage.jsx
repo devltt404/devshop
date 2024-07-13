@@ -65,7 +65,7 @@ const ProductPage = () => {
 
           {/* MID */}
           <div className="flex-1">
-            <h1 className="text-3xl font-medium">{product.name}</h1>
+            <h1 className="text-3xl font-semibold">{product.name}</h1>
 
             <div className="mt-2 flex items-center text-sm text-gray-400">
               <span className="mr-2 text-yellow-500">
@@ -87,7 +87,7 @@ const ProductPage = () => {
 
             {/* PRICE */}
             <div className="mb-4">
-              <p className="mb-1 text-3xl font-semibold">
+              <p className="mb-1 text-3xl font-bold">
                 ${displayPrice(selectedItem?.price?.toFixed(2))}
               </p>
               {selectedItem?.originalPrice && (
@@ -95,7 +95,7 @@ const ProductPage = () => {
                   <span className="text-gray-400 line-through">
                     ${displayPrice(selectedItem?.originalPrice)}
                   </span>{" "}
-                  <span className="font-medium text-green-600">
+                  <span className="font-semibold text-green-600">
                     Save $
                     {displayPrice(
                       selectedItem?.originalPrice - selectedItem?.price,
@@ -110,7 +110,7 @@ const ProductPage = () => {
               <div>
                 {product.variationGroupId?.variations?.map((variation, i) => (
                   <div className="mb-4" key={i}>
-                    <h3 className="mb-1 font-medium">{variation.label}</h3>
+                    <h3 className="mb-1 font-semibold">{variation.label}</h3>
                     <div className="flex flex-wrap gap-4">
                       {variation.options.map((option, i2) => {
                         return (
@@ -168,7 +168,7 @@ const ProductPage = () => {
           <div className="h-fit w-72 rounded-lg border px-6 py-4">
             {/* Quantity */}
             <div>
-              <h3 className="text-lg font-semibold">Quantity</h3>
+              <h3 className="text-lg font-bold">Quantity</h3>
               <p className="mb-2 text-sm text-gray-400">
                 There are {selectedItem?.stock} items left.
               </p>
@@ -182,8 +182,8 @@ const ProductPage = () => {
 
             {/* Total */}
             <div className="mt-4">
-              <h3 className="mb-1 text-lg font-semibold">Total</h3>
-              <p className="text-2xl font-medium">
+              <h3 className="mb-1 text-lg font-bold">Total</h3>
+              <p className="text-2xl font-semibold">
                 ${displayPrice(selectedItem?.price * (quantity || 1))}
               </p>
             </div>

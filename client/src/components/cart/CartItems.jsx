@@ -75,7 +75,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
               <div className="me-10 flex justify-between gap-6 px-6 max-xl:me-4 max-xl:flex-col">
                 <div>
                   <Link to={`/product/${cartItem.slug}-${cartItem.productId}`}>
-                    <h3 className="line-clamp-2 text-lg font-medium">
+                    <h3 className="line-clamp-2 text-lg font-semibold">
                       {cartItem.name}
                     </h3>
                     {cartItem.type === "configurable" && (
@@ -99,7 +99,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
               </div>
 
               <div className="flex flex-col justify-between text-right">
-                <p className="truncate text-xl font-medium">
+                <p className="truncate text-xl font-semibold">
                   ${displayPrice(cartItem.price * cartItem.quantity)}
                 </p>
                 <div>

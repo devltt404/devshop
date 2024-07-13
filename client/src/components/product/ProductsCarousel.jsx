@@ -14,12 +14,12 @@ const ProductsCarousel = ({ products, isLoading }) => {
       <CarouselContent>
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index} className="basis-1/5">
+              <CarouselItem key={index} className="basis-1/5 pl-6">
                 <ProductCardSkeleton />
               </CarouselItem>
             ))
           : products?.map((product) => (
-              <CarouselItem key={product._id} className="basis-1/5">
+              <CarouselItem key={product._id} className="basis-1/5 pl-6">
                 <ProductCard product={product} />
               </CarouselItem>
             ))}

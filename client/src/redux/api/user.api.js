@@ -16,7 +16,15 @@ const userApi = api.injectEndpoints({
         data,
       }),
     }),
+
+    updateUserPicture: builder.mutation({
+      query: (data) => ({
+        url: "/user/picture",
+        method: "PUT",
+        data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation } = userApi;
+export const { useGetUserProfileQuery, useUpdateUserProfileMutation, useUpdateUserPictureMutation } = userApi;

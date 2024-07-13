@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import ORDER from "../constants/order.constant.js";
+import {ORDER} from "../constants/index.js";
 import { AutoIncrement } from "../db/connect.db.js";
 
 const OrderSchema = new mongoose.Schema(

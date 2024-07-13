@@ -1,4 +1,4 @@
-import ORDER from "../constants/order.constant.js";
+import {ORDER} from "../constants/index.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import OrderModel from "../models/order.model.js";

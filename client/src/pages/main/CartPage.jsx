@@ -58,7 +58,7 @@ const CartPage = () => {
             <>
               <PageDescription>
                 You have{" "}
-                <span className="font-medium">{cartItems?.length}</span>{" "}
+                <span className="font-semibold">{cartItems?.length}</span>{" "}
                 {cartItems?.length > 1 ? "items" : "item"} in your cart.
               </PageDescription>
 

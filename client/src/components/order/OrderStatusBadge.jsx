@@ -1,4 +1,4 @@
-import ORDER from "@/constants/order.constant.js";
+import { ORDER } from "@/constants/index.js";
 import { cn } from "@/lib/utils.js";
 
 //-------------------------------------------------------------------------
@@ -18,7 +18,7 @@ const OrderStatusBadge = ({ status, className }) => {
   return (
     <span
       className={cn(
-        `rounded-full px-4 py-1 text-xs font-medium ${badgeVariants[status]}`,
+        `rounded-full px-4 py-1 text-xs font-semibold ${badgeVariants[status]}`,
         className,
       )}
     >

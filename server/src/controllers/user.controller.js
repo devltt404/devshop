@@ -20,4 +20,14 @@ export default class UserController {
       }),
     }).send(res);
   }
+
+  static async updateUserPicture(req, res) {
+    new SuccessResponse({
+      message: "User picture updated successfully",
+      metadata: await UserService.updateUserPicture({
+        newPicturePath: req.file?.path,
+        userId: req.user?._id,
+      }),
+    }).send(res);
+  }
 }

@@ -7,7 +7,7 @@ export default function SearchInput() {
       <Input
         type="text"
         placeholder="Search for products..."
-        className="peer pl-4 pr-12"
+        className="peer pl-4 pr-12 bg-muted"
       />
       <SearchIcon className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 stroke-[1.5px] text-muted-foreground transition peer-focus:stroke-2 peer-focus:text-black" />
     </div>

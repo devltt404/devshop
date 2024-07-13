@@ -41,7 +41,7 @@ const OrderPage = () => {
 
       <div className="mb-6 mt-4 grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-medium">Customer Info</h2>
+          <h2 className="text-lg font-semibold">Customer Info</h2>
           <p>
             <span className="text-gray-500">Name: </span>
             {order.customerInfo?.name}
@@ -55,7 +55,7 @@ const OrderPage = () => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-medium">Shipping Address</h2>
+          <h2 className="text-lg font-semibold">Shipping Address</h2>
           <p>
             <span className="text-gray-500">Address: </span>
             {`${order.shippingAddress?.line1}, ${order.shippingAddress?.city}, ${order.shippingAddress?.state}, ${order.shippingAddress?.country}`}
@@ -67,7 +67,7 @@ const OrderPage = () => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-medium">Payment Method</h2>
+          <h2 className="text-lg font-semibold">Payment Method</h2>
           <p className="flex items-center gap-2">
             <VisaIcon />
             Visa ending in {order.paymentMethod?.last4}
@@ -75,7 +75,7 @@ const OrderPage = () => {
         </div>
       </div>
 
-      <h2 className="mb-5 text-xl font-medium">Order Items</h2>
+      <h2 className="mb-5 text-xl font-semibold">Order Items</h2>
 
       <div className="mb-4 flex flex-col gap-4">
         {order.items?.map((item) => (
@@ -90,10 +90,8 @@ const OrderPage = () => {
         <p className="">${displayPrice(order.price?.subtotal)}</p>
         <p className="">Shipping</p>
         <p className="">${displayPrice(order.price?.shipping)}</p>
-        <p className="text-xl font-semibold">Total</p>
-        <p className="text-xl font-semibold">
-          ${displayPrice(order.price?.total)}
-        </p>
+        <p className="text-xl font-bold">Total</p>
+        <p className="text-xl font-bold">${displayPrice(order.price?.total)}</p>
       </div>
     </div>
   );

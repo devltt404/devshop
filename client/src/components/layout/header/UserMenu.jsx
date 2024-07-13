@@ -30,9 +30,9 @@ const dropdownItems = [
 
 const TextGroup = ({ sub, main }) => {
   return (
-    <div className="flex flex-col items-start">
-      <span className="text-xs text-muted-foreground">{sub}</span>
-      <span className="-mt-1 text-sm font-semibold">{main}</span>
+    <div className="hover flex flex-col items-start text-muted-foreground group-hover:text-primary">
+      <span className="text-xs">{sub}</span>
+      <span className="-mt-1 text-sm font-bold">{main}</span>
     </div>
   );
 };
@@ -58,18 +58,18 @@ const UserMenu = () => {
   return !user ? (
     <Link
       to="/login"
-      className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
+      className="group flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
     >
-      <User2 className="mr-2 stroke-[1.5px]" />
+      <User2 className="mr-2 stroke-[1.5px] text-muted-foreground transition group-hover:text-primary" />
       <TextGroup sub="Login" main="Account" />
     </Link>
   ) : (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted">
-        <User2 className="mr-2 stroke-[1.5px]" />
-
+      <DropdownMenuTrigger className="group flex items-center rounded-md px-4 py-3 transition hover:bg-muted">
+        <User2 className="mr-2 stroke-[1.5px] text-muted-foreground transition group-hover:text-primary" />
         <TextGroup sub={`Hello, ${user.name.split(" ")[0]}`} main="Account" />
       </DropdownMenuTrigger>
+
       <DropdownMenuContent className="w-52">
         <DropdownMenuLabel className="px-4 py-3 text-base">
           {user.name}

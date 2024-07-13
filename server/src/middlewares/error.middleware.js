@@ -1,4 +1,9 @@
 import serverConfig from "../configs/server.config.js";
+import logger from "../logger.js";
+import {
+  deleteUploadByFile,
+  deleteUploadByFiles,
+} from "../utils/cloudinary.util.js";
 
 // 404 Not Found Handler
 export const notFoundHandler = (req, res, next) => {
@@ -9,7 +14,15 @@ export const notFoundHandler = (req, res, next) => {
 
 // Error Handling Middleware
 export const errorHandler = (error, req, res, next) => {
-  console.error(error);
+  logger.error(error);
+
+  // Delete uploaded files if error occurs
+  if (req.file) {
+    deleteUploadByFile(req.file);
+  }
+  if (req.files) {
+    deleteUploadByFiles(req.files);
+  }
 
   //Handle mongoose validation error
   if (error.name === "ValidationError") {

@@ -17,7 +17,7 @@ const ProductDetails = ({ details }) => {
 
   return (
     <div id="details" ref={detailsRef}>
-      <h2 className="mb-2 text-lg font-semibold">Details</h2>
+      <h2 className="mb-2 text-lg font-bold">Details</h2>
       <div className="relative">
         <div
           className={cn(
@@ -27,7 +27,7 @@ const ProductDetails = ({ details }) => {
         >
           {Object.keys(details).map((key, i) => (
             <Fragment key={i}>
-              <span className="font-medium">{key}</span>
+              <span className="font-semibold">{key}</span>
               <span
                 dangerouslySetInnerHTML={{
                   __html: details[key],

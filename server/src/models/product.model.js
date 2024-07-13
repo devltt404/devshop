@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
-import PRODUCT from "../constants/product.constant.js";
+import {PRODUCT} from "../constants/index.js";
 
 const productSchema = new mongoose.Schema(
   {

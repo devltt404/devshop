@@ -22,10 +22,10 @@ const CartButton = () => {
   return (
     <Link
       to="/cart"
-      className="flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
+      className="group flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
     >
       <div className="relative">
-        <ShoppingBag className="stroke-[1.5px]" />
+        <ShoppingBag className="stroke-[1.5px] text-muted-foreground transition group-hover:text-primary" />
         {numCartItems > 0 && (
           <span className="absolute -right-1 -top-1 h-4 w-4 scale-90 rounded-full bg-red-600 text-center font-mono text-sm leading-4 text-white">
             {numCartItems}

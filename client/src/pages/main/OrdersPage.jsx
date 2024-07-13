@@ -27,7 +27,7 @@ const OrdersPage = () => {
       ) : (
         <>
           <PageDescription className="mb-5">
-            You have <span className="font-medium">{orders?.length}</span>{" "}
+            You have <span className="font-semibold">{orders?.length}</span>{" "}
             {orders?.length > 1 ? "orders" : "order"}.
           </PageDescription>
 
@@ -39,15 +39,16 @@ const OrdersPage = () => {
                 </div>
 
                 <div className="grid grid-cols-[1fr_auto] justify-between gap-x-4 gap-y-1">
-                  <h2 className="truncate text-xl font-medium">
-                    Order ID: #{order._id}
+                  <h2 className="truncate text-xl font-semibold">
+                    Order ID:{" "}
+                    <span className="text-secondary">#{order._id}</span>
                   </h2>
                   <p className="text-right">
                     {order.items?.length}{" "}
                     {order.items?.length === 1 ? "Item" : "Items"}
                   </p>
                   <p>{moment(order.createdAt).format("MMMM DD, YYYY")}</p>
-                  <p className="text-right text-xl font-semibold">
+                  <p className="text-right text-xl font-bold">
                     ${displayPrice(order.price?.total)}
                   </p>
                 </div>
@@ -60,7 +61,7 @@ const OrdersPage = () => {
                         alt={item.name}
                         className="h-16 w-16 object-contain"
                       />
-                      <span className="absolute -right-2 -top-2 flex aspect-square h-4 items-center justify-center rounded-full bg-black text-xs font-medium text-white">
+                      <span className="absolute -right-2 -top-2 flex aspect-square h-4 items-center justify-center rounded-full bg-black text-xs font-semibold text-white">
                         {item.quantity}
                       </span>
                     </li>

@@ -19,20 +19,12 @@ const logger = winston.createLogger({
     })
   ),
   transports: [
-    new winston.transports.Console(),
+    new winston.transports.Console({
+      level: "info",
+    }),
     new winston.transports.DailyRotateFile({
-      level: "http",
-      filename: path.join(__dirname, `/logs/devshop-%DATE%.log`),
-    }),
-  ],
-  exceptionHandlers: [
-    new winston.transports.File({
-      filename: path.join(__dirname, "/logs/exceptions.log"),
-    }),
-  ],
-  rejectionHandlers: [
-    new winston.transports.File({
-      filename: path.join(__dirname, "/logs/rejections.log"),
+      level: "debug",
+      filename: path.join(__dirname, `/logs/%DATE%/combined.log`),
     }),
   ],
 });
