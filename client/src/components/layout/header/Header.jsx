@@ -1,16 +1,32 @@
 import LogoIcon from "@/components/icons/LogoIcon.jsx";
+import { cn } from "@/lib/utils.js";
+import { useEffect, useState } from "react";
 import CartButton from "./CartButton.jsx";
-import Headline from "./Headline.jsx";
 import SearchInput from "./SearchInput.jsx";
 import UserMenu from "./UserMenu.jsx";
 
 export default function Header() {
-  return (
-    <header>
-      {/* Headline */}
-      <Headline />
+  const [isSticky, setSticky] = useState(false);
 
-      <div className="border-b shadow-sm">
+  useEffect(() => {
+    const handleScroll = () => {
+      setSticky(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <header
+      className={cn(
+        "bg-white",
+        isSticky && "animate-drop-down sticky top-0 z-10",
+      )}
+    >
+      <div className="border-b shadow-md">
         <div className="container flex items-center justify-between py-3">
           <LogoIcon className="w-52" />
 

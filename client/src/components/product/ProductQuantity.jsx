@@ -4,7 +4,6 @@ import { Input } from "../ui/input.jsx";
 import { toast } from "../ui/use-toast.js";
 
 const ProductQuantity = ({ quantity, setQuantity, stock }) => {
-  console.log(quantity);
   return (
     <div className="flex gap-2">
       <Button

@@ -24,9 +24,14 @@ module.exports = {
           "80%": { transform: "rotateY(360deg)", opacity: 1 },
           "100%": { transform: "rotateY(360deg)", opacity: 1 },
         },
+        "drop-down": {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
       animation: {
         "pulse-and-rotate": "pulse-and-rotate 2s ease-in-out infinite",
+        "drop-down": "drop-down 0.25s ease-in-out",
       },
       boxShadow: {
         inner: "0px 0px 0px 2px inset",
