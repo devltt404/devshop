@@ -1,5 +1,4 @@
 import LogoIcon from "@/components/icons/LogoIcon.jsx";
-import { Link } from "react-router-dom";
 import CartButton from "./CartButton.jsx";
 import Headline from "./Headline.jsx";
 import SearchInput from "./SearchInput.jsx";
@@ -13,9 +12,7 @@ export default function Header() {
 
       <div className="border-b shadow-sm">
         <div className="container flex items-center justify-between py-3">
-          <Link to="/">
-            <LogoIcon className="w-52" />
-          </Link>
+          <LogoIcon className="w-52" />
 
           <SearchInput />
 

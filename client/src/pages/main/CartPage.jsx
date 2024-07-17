@@ -13,12 +13,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Progress } from "@/components/ui/progress.jsx";
+import shopConfig from "@/configs/shop.config.js";
 import {
   useClearCartMutation,
   useGetDetailedCartQuery,
 } from "@/redux/api/cart.api.js";
 import { setNumCartItems } from "@/redux/slices/cart.slice.js";
-import { useEffect, useState } from "react";
+import { displayPrice } from "@/utils/helper.util.js";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const CartPage = () => {
@@ -32,6 +35,11 @@ const CartPage = () => {
   const [clearCart, { isLoading: isClearingCart }] = useClearCartMutation();
 
   const [cartItems, setCartItems] = useState(null);
+
+  const subtotal = useMemo(
+    () => cartItems?.reduce((acc, item) => acc + item.price * item.quantity, 0),
+    [cartItems],
+  );
 
   useEffect(() => {
     if (data && !cartItems) {
@@ -50,12 +58,13 @@ const CartPage = () => {
   return (
     <div className="container-area flex gap-16 max-xl:gap-8 max-lg:flex-col max-lg:gap-12">
       <div className="flex-1">
-        <div className="relative">
-          <PageTitle>Cart</PageTitle>
-          {cartItems?.length === 0 ? (
-            <PageDescription>Your cart is empty.</PageDescription>
-          ) : (
-            <>
+        <PageTitle>Cart</PageTitle>
+
+        {cartItems?.length === 0 ? (
+          <PageDescription>Your cart is empty.</PageDescription>
+        ) : (
+          <>
+            <div className="relative">
               <PageDescription>
                 You have{" "}
                 <span className="font-semibold">{cartItems?.length}</span>{" "}
@@ -99,21 +108,49 @@ const CartPage = () => {
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-            </>
-          )}
-        </div>
+            </div>
+
+            {/* Free ship progress  */}
+            <div className="mb-6">
+              <p className="mb-2">
+                {subtotal < shopConfig.freeShipThreshold ? (
+                  <>
+                    Add
+                    <span className="font-bold">
+                      {" "}
+                      ${displayPrice(
+                        shopConfig.freeShipThreshold - subtotal,
+                      )}{" "}
+                    </span>
+                    more to get free shipping
+                  </>
+                ) : (
+                  <>
+                    Congratulation! You qualify for
+                    <span className="font-bold"> Free Shipping</span>
+                  </>
+                )}
+              </p>
+
+              <Progress
+                className="h-2"
+                value={
+                  subtotal < shopConfig.freeShipThreshold
+                    ? (subtotal / shopConfig.freeShipThreshold) * 100
+                    : 100
+                }
+              />
+            </div>
+          </>
+        )}
+
         {cartItems?.length > 0 && (
           <CartItems cartItems={cartItems} setCartItems={setCartItems} />
         )}
       </div>
 
       {cartItems?.length > 0 && (
-        <CartSummary
-          refetchGetCart={refetchGetCart}
-          subtotal={cartItems.reduce((acc, item) => {
-            return acc + item.price * item.quantity;
-          }, 0)}
-        />
+        <CartSummary refetchGetCart={refetchGetCart} subtotal={subtotal} />
       )}
     </div>
   );

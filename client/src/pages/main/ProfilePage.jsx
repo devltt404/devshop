@@ -9,10 +9,12 @@ import {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
 } from "@/redux/api/user.api.js";
+import { setUser } from "@/redux/slices/auth.slice.js";
 import { setValidationErrors } from "@/utils/helper.util.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { z } from "zod";
 
@@ -22,6 +24,8 @@ const formSchema = z.object({
 });
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+
   const { data, isLoading } = useGetUserProfileQuery();
   const [updateProfile] = useUpdateUserProfileMutation();
 
@@ -41,6 +45,8 @@ const ProfilePage = () => {
       const {
         metadata: { profile },
       } = await updateProfile(updateData).unwrap();
+
+      dispatch(setUser(profile));
       form.reset(profile);
 
       toast({

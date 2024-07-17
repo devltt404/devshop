@@ -1,7 +1,7 @@
 import ProviderButtons from "@/components/auth/ProviderButtons.jsx";
+import LogoIcon from "@/components/icons/LogoIcon.jsx";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -79,114 +79,111 @@ const RegisterPage = () => {
   useValidateForm({ error, form });
 
   return (
-    <div className="min-h-screen bg-muted pt-12">
-      <Card className="mx-auto max-w-lg shadow-lg">
-        <Form {...form}>
-          <form className="px-4 py-8" onSubmit={form.handleSubmit(onSubmit)}>
-            <CardHeader className="text-center">
-              <CardTitle className="mb-3 text-3xl">Register</CardTitle>
-              <CardDescription className="text-base">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="font-semibold text-primary hover:underline"
-                >
-                  Login
-                </Link>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="name@example.com"
-                          autoComplete="email"
-                          error={form.formState.errors.email}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="name"
-                          error={form.formState.errors.name}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          autoComplete="new-password"
-                          error={form.formState.errors.password}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          autoComplete="new-password"
-                          error={form.formState.errors.confirmPassword}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-            <CardFooter className="mt-3 flex-col items-stretch">
-              <Button disabled={isLoading} type="submit" className="w-full">
-                Register
-              </Button>
-              <div className="my-6 flex items-center gap-2 self-stretch text-sm text-muted-foreground">
-                <Separator className="flex-1" />
-                <span className="mx-20">or</span>
-                <Separator className="flex-1" />
-              </div>
-              <ProviderButtons />
-            </CardFooter>
-          </form>
-        </Form>
-      </Card>
-    </div>
+    <Form {...form}>
+      <form className="px-4 py-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <CardHeader className="text-center">
+          <LogoIcon className="mx-auto mb-2 w-52" />
+          <CardTitle className="mb-3 text-3xl">Register</CardTitle>
+          <CardDescription className="text-base">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-semibold text-primary hover:underline"
+            >
+              Login
+            </Link>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="name@example.com"
+                      autoComplete="email"
+                      error={form.formState.errors.email}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="name"
+                      error={form.formState.errors.name}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      autoComplete="new-password"
+                      error={form.formState.errors.password}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      autoComplete="new-password"
+                      error={form.formState.errors.confirmPassword}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </CardContent>
+        <CardFooter className="mt-3 flex-col items-stretch">
+          <Button disabled={isLoading} type="submit" className="w-full">
+            Register
+          </Button>
+          <div className="my-6 flex items-center gap-2 self-stretch text-sm text-muted-foreground">
+            <Separator className="flex-1" />
+            <span className="mx-20">or</span>
+            <Separator className="flex-1" />
+          </div>
+          <ProviderButtons />
+        </CardFooter>
+      </form>
+    </Form>
   );
 };
 

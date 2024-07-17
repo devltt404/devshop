@@ -2,7 +2,7 @@ import LogoIcon from "../icons/LogoIcon.jsx";
 
 export default function Footer() {
   return (
-    <footer className="bg-muted text-muted-foreground">
+    <footer className="bg-muted text-muted-foreground border-t-2 border-primary">
       <div className="container grid grid-cols-12 py-10">
         <div className="col-span-5">
           <LogoIcon className="w-52" />

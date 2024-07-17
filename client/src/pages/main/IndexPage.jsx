@@ -1,6 +1,5 @@
 import BestSellingSection from "@/components/home/BestSellingSection.jsx";
 import CategoriesSection from "@/components/home/CategoriesSection.jsx";
-import EmailForm from "@/components/home/EmailForm.jsx";
 import LatestSection from "@/components/home/LatestSection.jsx";
 import HeroBg from "../../assets/hero.jpeg";
 
@@ -14,8 +13,6 @@ export default function IndexPage() {
       <CategoriesSection />
       <BestSellingSection />
       <LatestSection />
-
-      <EmailForm />
     </div>
   );
 }

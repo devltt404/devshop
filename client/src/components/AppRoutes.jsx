@@ -15,7 +15,7 @@ import {
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import LoadingScreen from "./loading/LoadingScreen.jsx";
-import GuestWrapper from "./wrappers/GuestWrapper.jsx";
+import AuthFormWrapper from "./wrappers/AuthFormWrapper.jsx";
 
 const AppRoutes = () => {
   return (
@@ -23,7 +23,7 @@ const AppRoutes = () => {
       <Routes>
         <Route>
           {/* GUEST ONLY */}
-          <Route element={<GuestWrapper />}>
+          <Route element={<AuthFormWrapper />}>
             <Route path="/register" element={<LazyRegister />} />
             <Route path="/login" element={<LazyLogin />} />
           </Route>

@@ -9,9 +9,9 @@ const BestSellingSection = () => {
   });
 
   return (
-    <section className="rounded-lg bg-muted px-8 py-16">
+    <section className="container rounded-lg bg-[url(/best-selling-bg.png)] px-8 py-16">
       <div className="container">
-        <div className="mb-8 flex items-center gap-2 text-red-600">
+        <div className="mb-8 flex items-center gap-2 text-white">
           <Flame className="h-7 w-7" />
           <h2 className="text-3xl font-bold">Best Selling!</h2>
         </div>
