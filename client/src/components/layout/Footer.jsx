@@ -1,11 +1,11 @@
-import Logo from "../Logo.jsx";
+import LogoIcon from "../icons/LogoIcon.jsx";
 
 export default function Footer() {
   return (
     <footer className="bg-muted text-muted-foreground">
-      <div className="container grid grid-cols-12 py-12">
+      <div className="container grid grid-cols-12 py-10">
         <div className="col-span-5">
-          <Logo color="white" className="-ml-3" />
+          <LogoIcon className="w-52" />
           <p className="my-4">
             DevShop is an online shop built with ReactJS and NodeJS.
           </p>

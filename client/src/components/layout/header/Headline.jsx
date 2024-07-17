@@ -44,7 +44,7 @@ export default function Headline() {
         loop: true,
       }}
       orientation="vertical"
-      className="w-full bg-muted py-2 text-center text-sm"
+      className="w-full bg-secondary text-white py-2 text-center text-sm"
     >
       <CarouselContent className="-mt-1 h-7">
         {headlineConfig.map((item, index) => (

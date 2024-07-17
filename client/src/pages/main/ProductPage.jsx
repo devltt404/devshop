@@ -12,7 +12,7 @@ import { displayPrice } from "@/utils/helper.util.js";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadingArea from "../../components/loading/LoadingArea.jsx";
+import LoadingScreen from "../../components/loading/LoadingScreen.jsx";
 import { LazyNotFound } from "../index.js";
 
 const ProductPage = () => {
@@ -46,7 +46,7 @@ const ProductPage = () => {
   }, [product]);
 
   if (isLoading || (product && !selectedItem)) {
-    return <LoadingArea />;
+    return <LoadingScreen />;
   }
 
   if (!product) {
@@ -57,7 +57,8 @@ const ProductPage = () => {
     <div className="container-area">
       <div>
         <ProductBreadcrumb categories={product.categoryId} />
-        <div className="mt-4 flex gap-12">
+
+        <div className="mt-6 flex gap-12">
           {/* LEFT */}
           <div className="w-[32rem]">
             <ImageCarousel data={data} images={product.images} />

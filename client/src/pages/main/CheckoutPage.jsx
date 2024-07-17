@@ -1,7 +1,7 @@
 import CheckoutForm from "@/components/checkout/CheckoutForm.jsx";
 import CheckoutSummary from "@/components/checkout/CheckoutSummary.jsx";
-import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import LoadingOverlay from "@/components/loading/LoadingOverlay.jsx";
+import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
 import { toast } from "@/components/ui/use-toast.js";
 import { useCreatePaymentIntentMutation } from "@/redux/api/payment.api.js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -49,7 +49,7 @@ const CheckoutPage = () => {
   };
 
   if (!clientSecret || !orderData || !paymentIntentId) {
-    return <LoadingArea />;
+    return <LoadingScreen />;
   }
 
   return (

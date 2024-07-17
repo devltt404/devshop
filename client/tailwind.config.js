@@ -17,6 +17,17 @@ module.exports = {
       },
     },
     extend: {
+      keyframes: {
+        "pulse-and-rotate": {
+          "0%": { transform: "rotateY(0deg)", opacity: 1 },
+          "40%": { transform: "rotateY(180deg)", opacity: 0.5 },
+          "80%": { transform: "rotateY(360deg)", opacity: 1 },
+          "100%": { transform: "rotateY(360deg)", opacity: 1 },
+        },
+      },
+      animation: {
+        "pulse-and-rotate": "pulse-and-rotate 2s ease-in-out infinite",
+      },
       boxShadow: {
         inner: "0px 0px 0px 2px inset",
         outer: "0px 0px 0px 0.5px",
@@ -68,20 +79,6 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

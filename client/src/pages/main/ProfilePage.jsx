@@ -1,5 +1,5 @@
-import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import LoadingOverlay from "@/components/loading/LoadingOverlay.jsx";
+import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
 import ProfileAvatar from "@/components/profile/ProfileAvatar.jsx";
 import ProfileForm from "@/components/profile/ProfileForm.jsx";
 import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
@@ -64,14 +64,14 @@ const ProfilePage = () => {
     // Reset form with fetched default values
     form.reset(returnProfile);
     setProfilePicture(returnProfile.picture);
-    
+
     return returnProfile;
   }, [data]);
 
   //---------------------------------------------------------------------------------
 
   if (isLoading) {
-    return <LoadingArea />;
+    return <LoadingScreen />;
   }
 
   if (!profile) {

@@ -1,5 +1,5 @@
 import VisaIcon from "@/components/icons/VisaIcon.jsx";
-import LoadingArea from "@/components/loading/LoadingArea.jsx";
+import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
 import OrderItem from "@/components/order/OrderItem.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
 import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
@@ -20,7 +20,7 @@ const OrderPage = () => {
   }, [data]);
 
   if (isLoading) {
-    return <LoadingArea />;
+    return <LoadingScreen />;
   }
 
   if (!order) {

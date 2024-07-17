@@ -1,4 +1,5 @@
-import Logo from "../../Logo.jsx";
+import LogoIcon from "@/components/icons/LogoIcon.jsx";
+import { Link } from "react-router-dom";
 import CartButton from "./CartButton.jsx";
 import Headline from "./Headline.jsx";
 import SearchInput from "./SearchInput.jsx";
@@ -6,13 +7,16 @@ import UserMenu from "./UserMenu.jsx";
 
 export default function Header() {
   return (
-    <header className="border-b">
+    <header>
       {/* Headline */}
       <Headline />
 
-      <div className="shadow-md">
-        <div className="container flex items-center justify-between py-4">
-          <Logo />
+      <div className="border-b shadow-sm">
+        <div className="container flex items-center justify-between py-3">
+          <Link to="/">
+            <LogoIcon className="w-52" />
+          </Link>
+
           <SearchInput />
 
           <div className="flex gap-2">

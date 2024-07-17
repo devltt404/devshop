@@ -1,4 +1,4 @@
-import LoadingArea from "@/components/loading/LoadingArea.jsx";
+import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
 import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import { useGetUserOrdersQuery } from "@/redux/api/order.api.js";
@@ -15,7 +15,7 @@ const OrdersPage = () => {
   }, [data]);
 
   if (isLoading) {
-    return <LoadingArea />;
+    return <LoadingScreen />;
   }
 
   return (

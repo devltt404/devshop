@@ -6,8 +6,8 @@ import HeroBg from "../../assets/hero.jpeg";
 
 export default function IndexPage() {
   return (
-    <div className="mb-24 flex flex-col gap-20">
-      <div className="container mt-12">
+    <div className="mb-24 space-y-14">
+      <div className="container mt-8">
         <img src={HeroBg} alt="hero" className="object-cover" />
       </div>
 

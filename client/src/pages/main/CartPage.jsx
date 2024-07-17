@@ -1,6 +1,6 @@
 import CartItems from "@/components/cart/CartItems.jsx";
 import CartSummary from "@/components/cart/CartSummary.jsx";
-import LoadingArea from "@/components/loading/LoadingArea.jsx";
+import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
 import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import {
   AlertDialog,
@@ -44,7 +44,7 @@ const CartPage = () => {
   }, [error]);
 
   if (isLoading || isClearingCart) {
-    return <LoadingArea />;
+    return <LoadingScreen />;
   }
 
   return (
