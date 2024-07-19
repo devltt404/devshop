@@ -1,9 +1,15 @@
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchInput() {
+  const navigate = useNavigate();
+
+  const inputRef = useRef(null);
+
   const [isFocused, setIsFocused] = useState(false);
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [key, setKey] = useState("");
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -20,6 +26,11 @@ export default function SearchInput() {
   return (
     <form
       className={`transition-outline relative flex w-[35rem] items-stretch overflow-hidden rounded-md border focus-within:border-none focus-within:ring-2 focus-within:ring-primary`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        navigate(`/products?key=${key}`);
+        inputRef.current?.blur();
+      }}
     >
       {/* Overlay */}
       {isOverlayVisible && (
@@ -33,11 +44,14 @@ export default function SearchInput() {
       )}
 
       <input
+        ref={inputRef}
         type="text"
         placeholder="Search for products..."
         className="z-50 flex-1 bg-muted py-2 pl-4 pr-12 focus:outline-none"
         onFocus={handleFocus}
         onBlur={handleBlur}
+        value={key}
+        onChange={(e) => setKey(e.target.value)}
       />
       <button className="z-50 bg-primary px-4 text-primary-foreground">
         <SearchIcon className="h-5 w-5 stroke-2" />

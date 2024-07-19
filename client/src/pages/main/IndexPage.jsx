@@ -6,9 +6,11 @@ import HeroBg from "../../assets/hero.jpeg";
 export default function IndexPage() {
   return (
     <div className="mb-24 space-y-14">
-      <div className="container mt-8">
-        <img src={HeroBg} alt="hero" className="object-cover" />
-      </div>
+      <img
+        src={HeroBg}
+        alt="hero"
+        className="container mt-8 aspect-[1400/500] object-cover"
+      />
 
       <CategoriesSection />
       <BestSellingSection />

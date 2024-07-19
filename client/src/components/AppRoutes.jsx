@@ -9,6 +9,7 @@ import {
   LazyOrder,
   LazyOrders,
   LazyProduct,
+  LazyProductsList,
   LazyProfile,
   LazyRegister,
 } from "@/pages/index.js";
@@ -35,6 +36,7 @@ const AppRoutes = () => {
             <Route path="/cart" element={<LazyCart />} />
             <Route path="/checkout" element={<LazyCheckout />} />
             <Route path="/product/:slug" element={<LazyProduct />} />
+            <Route path="/products" element={<LazyProductsList />} />
             <Route path="/order/:id" element={<LazyOrder />} />
 
             {/* AUTH ONLY */}

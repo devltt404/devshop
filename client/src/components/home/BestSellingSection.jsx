@@ -9,8 +9,8 @@ const BestSellingSection = () => {
   });
 
   return (
-    <section className="container rounded-lg bg-[url(/best-selling-bg.png)] px-8 py-16">
-      <div className="container">
+    <section className="container">
+      <div className="rounded-lg bg-[url(/best-selling-bg.png)] px-14 py-20">
         <div className="mb-8 flex items-center gap-2 text-white">
           <Flame className="h-7 w-7" />
           <h2 className="text-3xl font-bold">Best Selling!</h2>

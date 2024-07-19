@@ -111,7 +111,7 @@ const CartPage = () => {
             </div>
 
             {/* Free ship progress  */}
-            <div className="mb-10">
+            <div className="mb-4 bg-white py-6 px-4">
               <p className="mb-2">
                 {subtotal < shopConfig.freeShipThreshold ? (
                   <>

@@ -24,7 +24,9 @@ const logger = winston.createLogger({
     }),
     new winston.transports.DailyRotateFile({
       level: "debug",
-      filename: path.join(__dirname, `/logs/%DATE%/combined.log`),
+      filename: path.join(__dirname, `/logs/%DATE%-combined.log`),
+      zippedArchive: true, // zip archived logs
+      maxFiles: "3d", // keep logs for 3 days to save space
     }),
   ],
 });

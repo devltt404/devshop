@@ -9,7 +9,7 @@ export default function ShopWrapper() {
       <div className="flex min-h-screen flex-col">
         <Headline />
         <Header />
-        <main className="flex-1">
+        <main className="flex-1 bg-muted">
           <Outlet />
         </main>
       </div>

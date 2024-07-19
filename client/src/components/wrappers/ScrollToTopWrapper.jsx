@@ -2,7 +2,7 @@ import { Fragment, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const ScrollToTopWrapper = ({ children }) => {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   useEffect(() => {
     window.scrollTo({
@@ -10,7 +10,7 @@ const ScrollToTopWrapper = ({ children }) => {
       left: 0,
       behavior: "instant",
     });
-  }, [pathname]);
+  }, [pathname, search]);
 
   return <Fragment>{children}</Fragment>;
 };

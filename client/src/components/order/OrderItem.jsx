@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const OrderItem = ({ item }) => {
   return (
     <Link to={`/product/${item.slug}-${item.productId}`}>
-      <div className="grid grid-cols-[6rem,1fr,auto] gap-2">
+      <div className="grid grid-cols-[6rem_1fr_auto] gap-2">
         <img
           src={item.image}
           alt="product"

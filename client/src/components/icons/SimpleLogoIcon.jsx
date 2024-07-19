@@ -3,7 +3,7 @@ const SimpleLogoIcon = ({ className }) => {
     <svg
       className={className}
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
       zoomAndPan="magnify"
       viewBox="0 0 108 107.999999"
       preserveAspectRatio="xMidYMid meet"
@@ -13,30 +13,30 @@ const SimpleLogoIcon = ({ className }) => {
         <clipPath id="cb208ed3a3">
           <path
             d="M 0 78 L 31 78 L 31 103.398438 L 0 103.398438 Z M 0 78 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
         <clipPath id="ebd9913ffc">
           <path
             d="M 32 4.398438 L 108 4.398438 L 108 103.398438 L 32 103.398438 Z M 32 4.398438 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
       </defs>
-      <g clip-path="url(#cb208ed3a3)">
+      <g clipPath="url(#cb208ed3a3)">
         <path
           fill="#17235b"
           d="M 29.046875 103.597656 L 1.578125 103.597656 C 0.71875 103.597656 0.0234375 102.902344 0.0273438 102.042969 L 0.0820312 80.34375 C 0.0859375 79.488281 0.777344 78.796875 1.628906 78.796875 L 29.101562 78.796875 C 29.957031 78.796875 30.652344 79.492188 30.652344 80.351562 L 30.597656 102.050781 C 30.59375 102.90625 29.902344 103.597656 29.046875 103.597656 "
-          fill-opacity="1"
-          fill-rule="nonzero"
+          fillOpacity="1"
+          fillRule="nonzero"
         />
       </g>
-      <g clip-path="url(#ebd9913ffc)">
+      <g clipPath="url(#ebd9913ffc)">
         <path
           fill="#ff914d"
           d="M 70.28125 54.648438 C 69.988281 54.242188 69.519531 54 69.019531 54 L 33.660156 54 C 32.398438 54 31.667969 55.421875 32.398438 56.445312 L 65.507812 102.945312 C 65.800781 103.355469 66.269531 103.597656 66.769531 103.597656 L 102.128906 103.597656 C 103.386719 103.597656 104.121094 102.175781 103.390625 101.148438 Z M 105.976562 54 L 70.613281 54 C 70.113281 54 69.644531 53.757812 69.355469 53.347656 L 36.242188 6.851562 C 35.511719 5.824219 36.246094 4.402344 37.503906 4.402344 L 72.863281 4.402344 C 73.363281 4.402344 73.835938 4.644531 74.125 5.050781 L 107.238281 51.554688 C 107.964844 52.578125 107.234375 54 105.976562 54 "
-          fill-opacity="1"
-          fill-rule="nonzero"
+          fillOpacity="1"
+          fillRule="nonzero"
         />
       </g>
     </svg>

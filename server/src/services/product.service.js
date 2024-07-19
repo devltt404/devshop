@@ -41,7 +41,7 @@ export default class ProductService {
     return {
       pagination: {
         totalPages,
-        page,
+        currentPage: page,
         limit,
       },
       products,

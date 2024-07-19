@@ -5,7 +5,7 @@ export default function GoogleIcon({ className }) {
       viewBox="-0.5 0 48 48"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <title>Google-color</title>
       <desc>Created with Sketch.</desc>
@@ -15,7 +15,7 @@ export default function GoogleIcon({ className }) {
         stroke="none"
         stroke-width="1"
         fill="none"
-        fill-rule="evenodd"
+        fillRule="evenodd"
       >
         <g id="Color-" transform="translate(-401.000000, -860.000000)">
           <g id="Google" transform="translate(401.000000, 860.000000)">

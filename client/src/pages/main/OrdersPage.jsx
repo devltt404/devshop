@@ -33,7 +33,7 @@ const OrdersPage = () => {
 
           {orders.map((order) => (
             <Link key={order._id} to={`/order/${order._id}`}>
-              <div className="mb-4 rounded-lg border px-8 pb-6 pt-4">
+              <div className="mb-4 rounded-lg border bg-white px-8 pb-6 pt-4">
                 <div className="mb-2">
                   <OrderStatusBadge status={order.orderStatus} />
                 </div>

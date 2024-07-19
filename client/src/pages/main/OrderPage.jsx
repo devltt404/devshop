@@ -28,7 +28,7 @@ const OrderPage = () => {
   }
 
   return (
-    <div className="container-area">
+    <div className="container-area bg-white mt-6">
       <div className="mb-4">
         <OrderStatusBadge status={order.orderStatus} />
       </div>

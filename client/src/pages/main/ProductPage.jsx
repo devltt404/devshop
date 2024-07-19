@@ -166,7 +166,7 @@ const ProductPage = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="h-fit w-72 rounded-lg border px-6 py-4">
+          <div className="h-fit w-72 rounded-lg border px-6 py-4 bg-white">
             {/* Quantity */}
             <div>
               <h3 className="text-lg font-bold">Quantity</h3>

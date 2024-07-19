@@ -6,7 +6,7 @@ import { Input } from "../ui/input.jsx";
 const CheckoutSummary = ({ orderData }) => {
   return (
     orderData && (
-      <div className="h-fit rounded-lg border border-gray-300 p-6">
+      <div className="h-fit rounded-lg border border-gray-300 p-6 bg-white">
         <h2 className="mb-6 text-2xl font-semibold text-primary">
           Order Summary
         </h2>
