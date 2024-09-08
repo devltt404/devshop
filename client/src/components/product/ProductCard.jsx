@@ -47,7 +47,7 @@ export default function ProductCard({ product }) {
           </div>
 
           <div className="mb-2 mt-auto flex items-center gap-2">
-            <p className="text-lg font-bold">
+            <p className="text-lg font-bold text-red-600">
               $
               {(product.type === "configurable"
                 ? product.defaultItemId.price / 100

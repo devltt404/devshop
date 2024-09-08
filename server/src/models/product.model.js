@@ -1,6 +1,32 @@
 import mongoose from "mongoose";
-import slugify from "slugify";
-import {PRODUCT} from "../constants/index.js";
+
+const variationOptionSchema = new mongoose.Schema(
+  {
+    value: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const variationSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    options: [variationOptionSchema],
+  },
+  {
+    _id: false,
+  }
+);
 
 const productSchema = new mongoose.Schema(
   {
@@ -15,116 +41,41 @@ const productSchema = new mongoose.Schema(
         "Product name must not be more than 100 characters long",
       ],
     },
-    type: {
-      type: String,
-      enum: Object.values(PRODUCT.TYPE),
-      required: [true, "Product type is required"],
-    },
-    slug: {
-      type: String,
-      unique: true,
-    },
     description: {
       type: String,
       trim: true,
     },
-    images: {
-      type: [String],
-      default: [],
+    slug: {
+      type: String,
     },
-
-    variationGroupId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product_Variation_Group",
-    },
-    defaultItemId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product_Item",
-    },
-
-    minPrice: {
-      type: Number,
-    },
-    maxPrice: {
-      type: Number,
-      validator: {
-        $gt: ["$minPrice", "Max price must be greater than min price"],
-      },
-    },
-
     details: {
       type: Map,
       of: String,
+      required: true,
     },
-    isOutOfStock: {
-      type: Boolean,
-      default: false,
+    features: {
+      type: [String],
+      required: true,
     },
-
     avgRating: {
       type: Number,
       default: 0,
       min: [0, "Average rating can not be less than 0"],
       max: [5, "Average rating can not be greater than 5"],
+      set: (val) => Math.round(val * 10) / 10, // Round to 1 decimal place. E.g. 4.6667 => 4.7
     },
-    numReviews: {
-      type: Number,
-      default: 0,
-      min: [0, "Number of reviews can not be less than 0"],
-    },
-
-    categoryId: {
+    variations: [variationSchema],
+    category: {
       type: String,
       ref: "Category",
-      required: [true, "Product category is required"],
+      required: true,
       index: true,
-    },
-    numSold: {
-      type: Number,
-      default: 0,
-      min: [0, "Number of product sold can not be less than 0"],
-    },
-
-    crawlId: {
-      type: String,
-      unique: true,
-      select: false,
-    },
-
-    //Fields for product without variations
-    originalPrice: {
-      type: Number,
-      min: [0, "Original price can not be less than 0"],
-    },
-    price: {
-      type: Number,
-      min: [0, "Price can not be less than 0"],
-    },
-    stock: {
-      type: Number,
-      default: 0,
-      min: [0, "Stock can not be less than 0"],
     },
   },
   {
     timestamps: true,
   }
 );
-
-productSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
-
-  if (
-    this.isModified("originalPrice") ||
-    (this.isModified("price") && this.originalPrice)
-  ) {
-    this.percentageDiscount = Math.round(
-      ((this.originalPrice - this.price) / this.originalPrice) * 100
-    );
-  }
-
-  next();
-});
 
 productSchema.index(
   { name: "text", description: "text" },
@@ -133,5 +84,5 @@ productSchema.index(
   }
 );
 
-const ProductModel = mongoose.model("Product", productSchema);
+const ProductModel = mongoose.model("product", productSchema);
 export default ProductModel;

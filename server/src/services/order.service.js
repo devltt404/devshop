@@ -6,7 +6,6 @@ import { checkMissingFields } from "../utils/helper.util.js";
 import CartService from "./cart.service.js";
 import PaymentService from "./payment.service.js";
 import ProductService from "./product.service.js";
-import ProductItemService from "./productItem.service.js";
 
 export class OrderService {
   // #region BUSINESS LOGIC

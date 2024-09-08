@@ -36,20 +36,20 @@ const CartPage = () => {
 
   const [cartItems, setCartItems] = useState(null);
 
-  const subtotal = useMemo(
-    () => cartItems?.reduce((acc, item) => acc + item.price * item.quantity, 0),
-    [cartItems],
-  );
-
   useEffect(() => {
-    if (data && !cartItems) {
-      setCartItems(data.metadata?.cart?.items);
+    if (data) {
+      setCartItems(data.metadata?.cart?.items || []);
     }
-  }, [data]);
+    if (error) {
+      setCartItems([]);
+    }
+  }, [data, error]);
 
-  useEffect(() => {
-    error && setCartItems([]);
-  }, [error]);
+  const subtotal = useMemo(() => {
+    return (
+      cartItems?.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0
+    );
+  }, [cartItems]);
 
   if (isLoading || isClearingCart) {
     return <LoadingScreen />;
@@ -60,93 +60,91 @@ const CartPage = () => {
       <div className="flex-1">
         <PageTitle>Cart</PageTitle>
 
-        {cartItems?.length === 0 ? (
-          <PageDescription>Your cart is empty.</PageDescription>
-        ) : (
-          <>
-            <div className="relative">
-              <PageDescription>
-                You have{" "}
-                <span className="font-semibold">{cartItems?.length}</span>{" "}
-                {cartItems?.length > 1 ? "items" : "item"} in your cart.
-              </PageDescription>
+        {cartItems &&
+          (cartItems.length === 0 ? (
+            <PageDescription>Your cart is empty.</PageDescription>
+          ) : (
+            <>
+              <div className="relative">
+                <PageDescription>
+                  You have{" "}
+                  <span className="font-semibold">{cartItems?.length}</span>{" "}
+                  {cartItems?.length > 1 ? "items" : "item"} in your cart.
+                </PageDescription>
 
-              <AlertDialog>
-                <AlertDialogTrigger
-                  className="absolute bottom-0 right-0"
-                  asChild
-                >
-                  <button
-                    className="text-destructive hover:underline"
-                    disabled={isClearingCart}
+                <AlertDialog>
+                  <AlertDialogTrigger
+                    className="absolute bottom-0 right-0"
+                    asChild
                   >
-                    Clear cart
-                  </button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Clear cart</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to clear your cart? This action can
-                      not be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() =>
-                        clearCart()
-                          .unwrap()
-                          .then(() => {
-                            setCartItems([]);
-                            dispatch(setNumCartItems(0));
-                          })
-                      }
+                    <button
+                      className="text-destructive hover:underline"
+                      disabled={isClearingCart}
                     >
-                      Clear
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+                      Clear cart
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Clear cart</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to clear your cart? This action
+                        cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() =>
+                          clearCart()
+                            .unwrap()
+                            .then(() => {
+                              setCartItems([]);
+                              dispatch(setNumCartItems(0));
+                            })
+                        }
+                      >
+                        Clear
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
 
-            {/* Free ship progress  */}
-            <div className="mb-4 bg-white py-6 px-4">
-              <p className="mb-2">
-                {subtotal < shopConfig.freeShipThreshold ? (
-                  <>
-                    Add
-                    <span className="font-bold">
-                      {" "}
-                      ${displayPrice(
-                        shopConfig.freeShipThreshold - subtotal,
-                      )}{" "}
-                    </span>
-                    more to get free shipping
-                  </>
-                ) : (
-                  <>
-                    Congratulation! You qualify for
-                    <span className="font-bold"> Free Shipping</span>
-                  </>
-                )}
-              </p>
+              {/* Free ship progress  */}
+              <div className="mb-4 bg-white px-4 py-6">
+                <p className="mb-2">
+                  {subtotal < shopConfig.freeShipThreshold ? (
+                    <>
+                      Add
+                      <span className="font-bold">
+                        {" "}
+                        ${displayPrice(
+                          shopConfig.freeShipThreshold - subtotal,
+                        )}{" "}
+                      </span>
+                      more to get free shipping
+                    </>
+                  ) : (
+                    <>
+                      Congratulations! You qualify for
+                      <span className="font-bold"> Free Shipping</span>
+                    </>
+                  )}
+                </p>
 
-              <Progress
-                className="h-2"
-                value={
-                  subtotal < shopConfig.freeShipThreshold
-                    ? (subtotal / shopConfig.freeShipThreshold) * 100
-                    : 100
-                }
-              />
-            </div>
-          </>
-        )}
-
-        {cartItems?.length > 0 && (
-          <CartItems cartItems={cartItems} setCartItems={setCartItems} />
-        )}
+                <Progress
+                  className="h-2"
+                  value={
+                    subtotal < shopConfig.freeShipThreshold
+                      ? (subtotal / shopConfig.freeShipThreshold) * 100
+                      : 100
+                  }
+                />
+              </div>
+              <CartItems cartItems={cartItems} setCartItems={setCartItems} />
+            </>
+          ))}
       </div>
 
       {cartItems?.length > 0 && (

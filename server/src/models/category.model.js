@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
+import { customAlphabet } from "nanoid";
 import slugify from "slugify";
-import { genCategoryId } from "../utils/category.util.js";
 
 const categorySchema = new mongoose.Schema(
   {
     _id: {
       type: String,
-      default: genCategoryId,
+      // Generate a custom ID (cat-xxxxx; x = 0-9)
+      default: () => {
+        const nanoid = customAlphabet("0123456789", 5);
+        return "cat-" + nanoid();
+      },
     },
     name: {
       type: String,
@@ -20,13 +24,6 @@ const categorySchema = new mongoose.Schema(
     },
     image: {
       type: String,
-    },
-    icon: {
-      type: String,
-    },
-    description: {
-      type: String,
-      trim: true,
     },
     // Using materialized path to store the hierarchy of categories (,parentCategoryID,subCategoryID,subSubCategoryID,...)
     path: {

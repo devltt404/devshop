@@ -58,14 +58,14 @@ const ProductPage = () => {
       <div>
         <ProductBreadcrumb categories={product.categoryId} />
 
-        <div className="mt-6 flex gap-12">
+        <div className="mt-6 flex gap-8 items-start">
           {/* LEFT */}
-          <div className="w-[32rem]">
+          <div className="w-[28rem] bg-white px-4 py-6">
             <ImageCarousel data={data} images={product.images} />
           </div>
 
           {/* MID */}
-          <div className="flex-1">
+          <div className="flex-1 bg-white px-8 py-6">
             <h1 className="text-3xl font-semibold">{product.name}</h1>
 
             <div className="mt-2 flex items-center text-sm text-gray-400">

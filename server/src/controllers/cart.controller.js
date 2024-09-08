@@ -70,7 +70,6 @@ export default class CartController {
       metadata: {
         cart: await CartService.clearCart({
           ...getCommonCartParams(req),
-
           res,
         }),
       },

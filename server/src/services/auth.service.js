@@ -3,7 +3,7 @@ import serverConfig from "../configs/server.config.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import { clearTokenCookie, setTokenCookie } from "../utils/auth.util.js";
-import { assignCartToUser, clearCartCookie } from "../utils/cart.util.js";
+import { assignGuestCartToUser, clearCartCookie } from "../utils/cart.util.js";
 import { checkMissingFields } from "../utils/helper.util.js";
 import { compareUserPassword, generateTokens } from "../utils/user.util.js";
 import UserService from "./user.service.js";
@@ -16,7 +16,7 @@ export default class AuthService {
   }
 
   static async handleCart({ user, guestCartId, res }) {
-    await assignCartToUser({
+    await assignGuestCartToUser({
       userId: user._id,
       cartId: guestCartId,
       res,

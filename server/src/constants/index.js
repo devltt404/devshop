@@ -1,22 +1,8 @@
-export const CATEGORY = Object.freeze({
-  ID: {
-    ALPHABET: "0123456789",
-    LENGTH: 5,
-  },
-});
-
 export const ORDER = Object.freeze({
   STATUS: {
     PENDING: "pending",
     PROCESSING: "processing",
     PROCESSED: "processed",
-  },
-});
-
-export const PRODUCT = Object.freeze({
-  TYPE: {
-    SIMPLE: "simple",
-    CONFIGURABLE: "configurable",
   },
 });
 

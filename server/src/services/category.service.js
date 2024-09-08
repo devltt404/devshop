@@ -20,7 +20,6 @@ export default class CategoryService {
       .lean();
 
     descendantIds = descendantIds.map((category) => category._id);
-    descendantIds.push(categoryId);
 
     return descendantIds;
   }

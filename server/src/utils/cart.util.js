@@ -15,7 +15,7 @@ export function clearCartCookie(res) {
   });
 }
 
-export async function assignCartToUser({ cartId, userId, res }) {
+export async function assignGuestCartToUser({ cartId, userId, res }) {
   const userCart = await CartService.findCartByUserId({ userId });
 
   if (cartId) {

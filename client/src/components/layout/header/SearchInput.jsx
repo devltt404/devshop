@@ -53,7 +53,11 @@ export default function SearchInput() {
         value={key}
         onChange={(e) => setKey(e.target.value)}
       />
-      <button className="z-50 bg-primary px-4 text-primary-foreground">
+      <button
+        type="submit"
+        disabled={!key}
+        className="z-50 bg-primary px-4 text-primary-foreground"
+      >
         <SearchIcon className="h-5 w-5 stroke-2" />
       </button>
     </form>

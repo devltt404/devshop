@@ -1,11 +1,11 @@
 import shopConfig from "../configs/shop.config.js";
-import {PRODUCT} from "../constants/index.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import CartModel from "../models/cart.model.js";
 import { clearCartCookie, setCartCookie } from "../utils/cart.util.js";
+import { getVariationString } from "../utils/sku.util.js";
 import ProductService from "./product.service.js";
-import ProductItemService from "./productItem.service.js";
+import SkuService from "./sku.service.js";
 
 export default class CartService {
   // #region QUERIES
@@ -28,7 +28,7 @@ export default class CartService {
     return userId ? { userId } : { _id: guestCartId };
   }
 
-  static async validateProductAndItem({ productId, itemId }) {
+  static async validateCartItem({ productId, skuId }) {
     //Validate product
     const product = await ProductService.findProductById({
       productId,
@@ -36,13 +36,11 @@ export default class CartService {
     });
     if (!product) throw new ErrorResponse(ERROR.CART.INVALID_PRODUCT_ID);
 
-    //Validate item
-    let item;
-    if (product.type === PRODUCT.TYPE.CONFIGURABLE) {
-      item = await ProductItemService.findProductItemById({ itemId });
-      if (!item) throw new ErrorResponse(ERROR.CART.INVALID_ITEM_ID);
-    }
-    return { product, item };
+    //Validate sku
+    const sku = await SkuService.findSkuById({ skuId });
+    if (!sku) throw new ErrorResponse(ERROR.CART.INVALID_SKU_ID);
+
+    return { product, sku };
   }
   //#endregion HELPER
 
@@ -67,8 +65,8 @@ export default class CartService {
     const cart = await CartModel.findOne(
       this.genFindCartQuery({ userId, guestCartId })
     )
-      .populate("items.productId", "-description -details")
-      .populate("items.itemId");
+      .populate("items.product", "-description -details")
+      .populate("items.sku");
 
     if (!cart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
@@ -76,47 +74,40 @@ export default class CartService {
 
     let isAnItemExceedsStock = false;
 
-    const items = cart.items.map((cartItem) => {
-      let stock =
-        cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
-          ? cartItem.itemId.stock
-          : cartItem.productId.stock;
+    const items = cart.items.map((item) => {
+      const { product, sku } = item;
 
-      if (stock < cartItem.quantity) {
-        cartItem.quantity = stock;
-        stock = cartItem.quantity;
+      if (sku.stock < item.quantity) {
+        item.quantity = sku.stock;
+        stock = item.quantity;
         isAnItemExceedsStock = true;
       }
 
       return {
-        productId: cartItem.productId._id,
-        slug: cartItem.productId.slug,
-        type: cartItem.productId.type,
-        itemId: cartItem.itemId?._id,
-        quantity: cartItem.quantity,
-        name: cartItem.productId.name,
-        price:
-          cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
-            ? cartItem.itemId.price
-            : cartItem.productId.price,
-        image:
-          cartItem.productId.type === PRODUCT.TYPE.CONFIGURABLE
-            ? cartItem.itemId.images[0]
-            : cartItem.productId.images[0],
-        stock,
-        variationSelection: cartItem.itemId?.variationSelection,
+        productId: product._id,
+        slug: product.slug,
+        skuId: sku._id,
+        quantity: quantity,
+        name: product.name,
+        price: sku.price,
+        image: sku.images[0],
+        stock: sku.stock,
+        variationSelection: getVariationString({ product, sku }),
       };
     });
 
     if (isAnItemExceedsStock) {
+      // Remove items that out of stock
+      cart = cart.filter((item) => item.quantity > 0);
+
       await cart.save();
     }
 
-    const subtotal = parseFloat(
-      items
-        .reduce((acc, item) => acc + item.price * item.quantity, 0)
-        .toFixed(2)
+    const subtotal = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
     );
+
     const shipping =
       subtotal >= shopConfig.freeShipThreshold ? 0 : shopConfig.shippingFee;
 
@@ -131,59 +122,45 @@ export default class CartService {
   static async addToCart({
     userId,
     productId,
-    itemId,
+    skuId,
     quantity,
     guestCartId,
     res,
   }) {
     if (quantity < 1) throw new ErrorResponse(ERROR.CART.INVALID_QUANTITY);
 
-    const { product, item } = await this.validateProductAndItem({
+    const { product, sku } = await this.validateCartItem({
       productId,
-      itemId,
+      skuId,
     });
 
-    let cart;
-    if (userId) {
-      cart = await CartModel.findOne({ userId });
+    let cart = await CartModel.findOne(
+      this.genFindCartQuery({ userId, guestCartId })
+    );
 
-      if (!cart) {
+    if (!cart) {
+      if (userId) {
         cart = new CartModel({ userId, items: [] });
-      }
-    } else {
-      cart = await CartModel.findById(guestCartId);
-
-      if (!cart) {
+      } else {
         cart = new CartModel({ items: [] });
-        setCartCookie({ cartId: cart._id, res });
+        setCartCookie({ res, cartId: cart._id });
       }
     }
 
     const existingItem = cart.items.find((i) => {
-      if (i.itemId) return i.productId == productId && i.itemId == itemId;
-      return i.productId == productId;
+      return i.product == product._id && i.sku == sku._id;
     });
 
-    //Validate quantity
-    const availableQty =
-      product.type === PRODUCT.TYPE.CONFIGURABLE ? item.stock : product.stock;
-    const existingQty = existingItem?.quantity || 0;
-
-    if (existingQty > availableQty) {
-      existingItem.quantity = availableQty;
-    }
-
-    const newQuantity = existingQty + quantity;
-    if (newQuantity > availableQty)
+    const newQuantity = existingItem?.quantity || 0 + quantity;
+    if (newQuantity > sku.stock)
       throw new ErrorResponse(
-        ERROR.CART.INSUFFICIENT_STOCK({ availableQty, existingQty })
+        ERROR.CART.INSUFFICIENT_STOCK({ stock: sku.stock })
       );
 
-    //Update cart
     if (existingItem) {
       existingItem.quantity = newQuantity;
     } else {
-      cart.items.push({ productId, itemId, quantity });
+      cart.items.push({ product, sku, quantity });
     }
 
     await cart.save();
@@ -195,15 +172,22 @@ export default class CartService {
     guestCartId,
     quantity,
     productId,
-    itemId,
+    skuId,
   }) {
     if (quantity < 1) throw new BadRequestError("Quantity must be at least 1.");
-    await this.validateProductAndItem({ productId, itemId });
+    const { sku } = await this.validateCartItem({ productId, skuId });
+
+    if (quantity > sku.stock) {
+      throw new ErrorResponse(
+        ERROR.CART.INSUFFICIENT_STOCK({ stock: sku.stock })
+      );
+    }
+
     const updatedCart = await CartModel.findOneAndUpdate(
       {
         ...this.genFindCartQuery({ userId, guestCartId }),
-        "items.productId": productId,
-        "items.itemId": itemId,
+        "items.product": productId,
+        "items.sku": skuId,
       },
       {
         $set: {
@@ -214,14 +198,15 @@ export default class CartService {
         new: true,
       }
     );
+
     if (!updatedCart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }
     return updatedCart;
   }
 
-  static async removeCartItem({ userId, productId, itemId, guestCartId }) {
-    await this.validateProductAndItem({ productId, itemId });
+  static async removeCartItem({ userId, productId, skuId, guestCartId }) {
+    await this.validateCartItem({ productId, skuId });
 
     const updatedCart = await CartModel.findOneAndUpdate(
       {
@@ -229,13 +214,14 @@ export default class CartService {
       },
       {
         $pull: {
-          items: { productId, itemId },
+          items: { productId, skuId },
         },
       },
       {
         new: true,
       }
     );
+    
     if (!updatedCart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }

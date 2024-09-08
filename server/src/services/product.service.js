@@ -1,53 +1,11 @@
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import ProductModel from "../models/product.model.js";
-import ProductItemModel from "../models/productItem.model.js";
-import ProductVariationGroupModel from "../models/productVariationGroup.model.js";
 import CategoryService from "./category.service.js";
+import SkuService from "./sku.service.js";
 
-ProductItemModel;
-ProductVariationGroupModel;
 export default class ProductService {
   // #region QUERY
-  static async findProductsWithPagination({
-    filter,
-    projection,
-    sortBy = { createdAt: -1 },
-    page = 1,
-    limit = 10,
-    lean = true,
-    select = "-description -details",
-    populate = "defaultItemId",
-    populateFields = "_id productId price originalPrice discountPercent",
-  }) {
-    const skip = (page - 1) * limit;
-    const products = await ProductModel.find(filter, projection)
-      .skip(skip)
-      .limit(limit)
-      .sort(sortBy)
-      .select(select)
-      .populate(populate, populateFields)
-      .lean(lean);
-
-    const totalPages = Math.ceil(
-      (await ProductModel.countDocuments(filter)) / limit
-    );
-
-    // Extract the first 2 images of each product
-    products.forEach((product) => {
-      product.images = product.images.slice(0, 2);
-    });
-
-    return {
-      pagination: {
-        totalPages,
-        currentPage: page,
-        limit,
-      },
-      products,
-    };
-  }
-
   static async findProductById({
     productId,
     select = "",
@@ -73,12 +31,8 @@ export default class ProductService {
     const [product, items] = await Promise.all([
       ProductModel.findById(productId)
         .lean()
-        .populate("variationGroupId")
         .populate("categoryId", "name slug path"),
-
-      ProductItemModel.find({
-        productId,
-      }).lean(),
+      SkuService.findSkusByProductId({ productId }),
     ]);
 
     if (!product) {
@@ -106,26 +60,18 @@ export default class ProductService {
     limit = parseInt(limit);
     page = parseInt(page);
 
-    const filter = {};
-    const projection = {};
-    const sort = {};
+    // Aggregation pipeline
+    const pipeline = [];
+
+    // Object to filter products
+    const matchConditions = {};
 
     if (key) {
-      filter.$text = { $search: key };
-      projection.score = { $meta: "textScore" };
-      sort.score = { $meta: "textScore" };
+      matchConditions.$text = { $search: key };
     }
 
     if (minRating) {
-      filter.avgRating = { $gte: minRating };
-    }
-
-    if (minPrice) {
-      filter.minPrice = { $gte: minPrice };
-    }
-
-    if (maxPrice) {
-      filter.maxPrice = { $lte: maxPrice };
+      matchConditions.avgRating = { $gte: minRating };
     }
 
     if (categoryId) {
@@ -140,25 +86,77 @@ export default class ProductService {
       const descendantIds = await CategoryService.getDescendantIds(
         foundCategory._id
       );
-      filter.categoryId = { $in: descendantIds };
+      matchConditions.categoryId = { $in: [...descendantIds, categoryId] };
     }
 
-    if (sortBy === "priceAsc") {
-      sort.price = 1;
-    } else if (sortBy === "priceDesc") {
-      sort.price = -1;
-    } else if (sortBy === "ctimeDesc") {
-      sort.createdAt = -1;
-    } else if (sortBy === "soldDesc") {
-      sort.numSold = -1;
+    if (Object.keys(matchConditions).length !== 0) {
+      pipeline.push({
+        $match: matchConditions,
+      });
     }
 
-    return await this.findProductsWithPagination({
-      filter,
-      projection,
-      sortBy: sort,
-      page,
-      limit,
+    // Lookup SKUs to get the minimum and maximum prices for each product
+    pipeline.push({
+      $lookup: {
+        from: "skus", // The collection name for SKUs
+        localField: "_id",
+        foreignField: "productId",
+        as: "skus",
+      },
     });
+
+    pipeline.push({
+      $addFields: {
+        minPrice: {
+          $min: "$skus.price",
+        },
+        maxPrice: {
+          $max: "$skus.price",
+        },
+      },
+    });
+
+    // Filter products by price range
+    if (minPrice || maxPrice) {
+      pipeline.push({
+        $match: {
+          $expr: {
+            $and: [
+              { $gte: ["$minPrice", minPrice || 0] },
+              { $lte: ["$maxPrice", maxPrice || Infinity] },
+            ],
+          },
+        },
+      });
+    }
+
+    // Sort
+    if (sortBy === "priceAsc") {
+      pipeline.push({
+        $sort: { minPrice: 1 },
+      });
+    } else if (sortBy === "priceDesc") {
+      pipeline.push({
+        $sort: { minPrice: -1 },
+      });
+    } else if (sortBy === "ctimeDesc") {
+      pipeline.push({
+        $sort: { createdAt: -1 },
+      });
+    } else if (sortBy === "soldDesc") {
+      pipeline.push({
+        $sort: { numSold: -1 },
+      });
+    }
+
+    // Pagination
+    pipeline.push({
+      $facet: {
+        pagination: [{ $count: "totalPages" }, { $addFields: { page, limit } }],
+        products: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+      },
+    });
+
+    return (await ProductModel.aggregate(pipeline))[0];
   }
 }

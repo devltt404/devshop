@@ -72,12 +72,10 @@ const ERROR = {
     },
   },
   CART: {
-    INSUFFICIENT_STOCK: ({ existingQty, availableQty }) => ({
+    INSUFFICIENT_STOCK: ({  stock }) => ({
       status: 400,
       code: "cart-001",
-      message: `Insufficient stock. Only ${availableQty} available.${
-        existingQty > 0 && " You already have " + existingQty + " in cart."
-      }`,
+      message: `Insufficient stock. Only ${stock} available.`,
     }),
     INVALID_CART: {
       status: 400,

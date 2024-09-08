@@ -38,7 +38,7 @@ const ProductDetails = ({ details }) => {
         </div>
 
         {!showFullDetails && (
-          <div className="absolute bottom-0 h-12 w-full bg-gradient-to-t from-muted to-transparent"></div>
+          <div className="absolute bottom-0 h-12 w-full bg-gradient-to-t from-white to-transparent"></div>
         )}
       </div>
 

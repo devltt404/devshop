@@ -110,7 +110,7 @@ const ImageCarousel = React.forwardRef(
           canScrollNext,
         }}
       >
-        <div className="mb-4 aspect-square">
+        <div className="mb-8 aspect-square border-2 border-primary">
           <img src={images[currentImage]} className="object-cover" />
         </div>
         <div
