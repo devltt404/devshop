@@ -28,22 +28,22 @@ export default class ProductService {
 
   // #region BUSINESS LOGIC
   static async getProductDetail(productId) {
-    const [product, items] = await Promise.all([
-      ProductModel.findById(productId)
-        .lean()
-        .populate("categoryId", "name slug path"),
-      SkuService.findSkusByProductId({ productId }),
-    ]);
-
+    const product = await ProductModel.findById(productId)
+      .populate("category")
+      .lean();
     if (!product) {
-      throw new ErrorResponse(ERROR.PRODUCT.PRODUCT_NOT_FOUND);
+      throw new ErrorResponse(ERROR.PRODUCT.NOT_FOUND);
     }
 
-    product.categoryId = await CategoryService.getTreeOfSingleCategory(
-      product.categoryId
-    );
-    product.items = items;
-    return product;
+    const [skus, category] = await Promise.all([
+      SkuService.findSkusByProductId({ productId }),
+      CategoryService.getTreeOfSingleCategory(product.category),
+    ]);
+
+    product.skus = skus;
+    product.category = category;
+
+    return {product};
   }
 
   static async getProducts({

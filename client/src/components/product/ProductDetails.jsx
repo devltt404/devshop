@@ -1,19 +1,9 @@
 import { cn } from "@/lib/utils.js";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 
 const ProductDetails = ({ details }) => {
   const detailsRef = useRef(null);
   const [showFullDetails, setShowFullDetails] = useState(false);
-
-  useEffect(() => {
-    if (showFullDetails) {
-      detailsRef.current.scrollIntoView({
-        behavior: "smooth",
-      });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [showFullDetails]);
 
   return (
     <div id="details" ref={detailsRef}>

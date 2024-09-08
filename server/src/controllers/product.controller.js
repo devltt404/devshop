@@ -1,4 +1,6 @@
-import { SuccessResponse } from "../core/response.js";
+import mongoose from "mongoose";
+import ERROR from "../core/error.response.js";
+import { ErrorResponse, SuccessResponse } from "../core/response.js";
 import ProductService from "../services/product.service.js";
 
 export default class ProductController {
@@ -10,11 +12,13 @@ export default class ProductController {
   }
 
   static async getProductDetail(req, res) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      throw new ErrorResponse(ERROR.PRODUCT.PRODUCT_NOT_FOUND);
+    }
+
     return new SuccessResponse({
       message: "Product retrieved successfully",
-      metadata: {
-        product: await ProductService.getProductDetail(req.params.id),
-      },
+      metadata: await ProductService.getProductDetail(req.params.id),
     }).send(res);
   }
 

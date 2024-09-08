@@ -11,7 +11,9 @@ import { Separator } from "../ui/separator.jsx";
 
 export default function ProductCard({ product }) {
   return (
-    <Link to={`/product/${product.slug}-${product.defaultSku._id}`}>
+    <Link
+      to={`/product/${product.slug}-${product._id}?skuId=${product.defaultSku._id}`}
+    >
       <div className="group flex h-full flex-col overflow-hidden rounded-md border bg-white transition hover:shadow-md">
         <img
           className="aspect-square select-none object-contain py-8 transition group-hover:scale-105"

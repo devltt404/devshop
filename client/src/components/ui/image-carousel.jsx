@@ -110,9 +110,14 @@ const ImageCarousel = React.forwardRef(
           canScrollNext,
         }}
       >
-        <div className="mb-8 aspect-square border-2 border-primary">
-          <img src={images[currentImage]} className="object-cover" />
+        <div className="mb-10 flex aspect-square items-center justify-center rounded-lg border-2">
+          <img
+            src={images[currentImage]}
+            className="max-h-full max-w-full object-contain p-6"
+            alt="Main product image"
+          />
         </div>
+
         <div
           ref={ref}
           onKeyDownCapture={handleKeyDown}
@@ -171,22 +176,26 @@ const ImageCarouselItem = React.forwardRef(
     return (
       <div
         className={cn(
-          "min-w-0 shrink-0 grow-0 basis-1/5 select-none",
+          "shrink-0 grow-0 basis-1/4 select-none",
           orientation === "horizontal" ? "pl-4" : "pt-4",
           className,
         )}
       >
-        <img
-          src={image}
-          ref={ref}
-          role="group"
+        <div
           className={cn(
-            "border-2 transition",
-            isSelected ? "border-primary" : "border-transparent",
+            "flex aspect-square items-center justify-center rounded-md border-2 p-2",
+            isSelected ? "border-primary" : "",
           )}
-          aria-roledescription="slide"
-          {...props}
-        />
+        >
+          <img
+            src={image}
+            ref={ref}
+            role="group"
+            className={cn("max-h-full max-w-full object-contain transition")}
+            aria-roledescription="slide"
+            {...props}
+          />
+        </div>
       </div>
     );
   },

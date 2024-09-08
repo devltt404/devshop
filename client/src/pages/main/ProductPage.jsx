@@ -11,18 +11,19 @@ import { useGetProductDetailQuery } from "@/redux/api/product.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import LoadingScreen from "../../components/loading/LoadingScreen.jsx";
 import { LazyNotFound } from "../index.js";
 
 const ProductPage = () => {
+  const [searchParams] = useSearchParams();
   const { slug } = useParams();
 
   const { data, isLoading } = useGetProductDetailQuery({
     id: slug.slice(slug.lastIndexOf("-") + 1),
   });
 
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedSku, setSelectedSku] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   const product = useMemo(() => {
@@ -30,38 +31,46 @@ const ProductPage = () => {
   }, [data]);
 
   useEffect(() => {
-    if (product) {
-      if (product.type === "configurable") {
-        setSelectedItem(
-          product.items.find((item) => item._id === product.defaultItemId),
-        );
-      } else {
-        setSelectedItem({
-          price: product.price,
-          originalPrice: product.originalPrice,
-          stock: product.stock,
-        });
-      }
-    }
+    if (!product) return;
+    setSelectedSku(
+      product.skus.find((sku) => sku._id === searchParams.get("skuId")),
+    );
   }, [product]);
 
-  if (isLoading || (product && !selectedItem)) {
+  if (isLoading || (product && !selectedSku)) {
     return <LoadingScreen />;
   }
 
-  if (!product) {
+  if (!product || !selectedSku) {
     return <LazyNotFound />;
   }
+
+  const handleSelectSku = (changeIndex, changeValue) => {
+    const newVariationIndex = [...selectedSku.variationIndex];
+    newVariationIndex[changeIndex] = changeValue;
+
+    const newSku = product.skus.find((sku) => {
+      return _.isEqual(sku.variationIndex, newVariationIndex);
+    });
+    setSelectedSku(newSku);
+
+    // Update URL
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + "?skuId=" + newSku._id,
+    );
+  };
 
   return (
     <div className="container-area">
       <div>
-        <ProductBreadcrumb categories={product.categoryId} />
+        <ProductBreadcrumb categories={product.category} />
 
-        <div className="mt-6 flex gap-8 items-start">
+        <div className="mt-6 flex items-start gap-8">
           {/* LEFT */}
           <div className="w-[28rem] bg-white px-4 py-6">
-            <ImageCarousel data={data} images={product.images} />
+            <ImageCarousel data={data} images={selectedSku.images} />
           </div>
 
           {/* MID */}
@@ -89,17 +98,17 @@ const ProductPage = () => {
             {/* PRICE */}
             <div className="mb-4">
               <p className="mb-1 text-3xl font-bold">
-                ${displayPrice(selectedItem?.price?.toFixed(2))}
+                ${displayPrice(selectedSku.price)}
               </p>
-              {selectedItem?.originalPrice && (
+              {selectedSku?.originalPrice && (
                 <p>
                   <span className="text-gray-400 line-through">
-                    ${displayPrice(selectedItem?.originalPrice)}
+                    ${displayPrice(selectedSku.originalPrice)}
                   </span>{" "}
                   <span className="font-semibold text-green-600">
                     Save $
                     {displayPrice(
-                      selectedItem?.originalPrice - selectedItem?.price,
+                      selectedSku?.originalPrice - selectedSku?.price,
                     )}
                   </span>
                 </p>
@@ -107,38 +116,24 @@ const ProductPage = () => {
             </div>
 
             {/* VARIATION */}
-            {product.type === "configurable" && (
+            {
               <div>
-                {product.variationGroupId?.variations?.map((variation, i) => (
+                {product.variations.map((variation, i) => (
                   <div className="mb-4" key={i}>
-                    <h3 className="mb-1 font-semibold">{variation.label}</h3>
+                    <h3 className="mb-1 font-semibold">{variation.name}</h3>
                     <div className="flex flex-wrap gap-4">
                       {variation.options.map((option, i2) => {
                         return (
                           <button
                             key={i2}
                             className={cn(
-                              "rounded-md border px-6 py-2 text-sm shadow-black transition",
-                              selectedItem?.variationSelection?.[
-                                variation.code
-                              ] !== option.value
-                                ? "hover:border-black hover:shadow-outer"
-                                : "border-black shadow-outer",
+                              "rounded-md border px-6 py-2 text-sm",
+                              selectedSku.variationIndex[i] === i2
+                                ? "border-black shadow-outer"
+                                : "hover:border-black hover:shadow-outer",
                             )}
                             onClick={() => {
-                              setSelectedItem(
-                                product.items.find((item) => {
-                                  const newItemVariationSelection = {
-                                    ...selectedItem.variationSelection,
-                                    [variation.code]: option.value,
-                                  };
-
-                                  return _.isEqual(
-                                    newItemVariationSelection,
-                                    item.variationSelection,
-                                  );
-                                }),
-                              );
+                              handleSelectSku(i, i2);
                               setQuantity(1);
                             }}
                           >
@@ -147,7 +142,7 @@ const ProductPage = () => {
                                 <img
                                   src={option.image}
                                   alt={option.value}
-                                  className="h-8 w-8 object-cover"
+                                  className="h-8 w-8 object-contain"
                                 />
                               )}
                               {option.value}
@@ -159,25 +154,25 @@ const ProductPage = () => {
                   </div>
                 ))}
               </div>
-            )}
+            }
 
             <Separator className="my-4" />
             <ProductDetails details={product.details} />
           </div>
 
           {/* RIGHT */}
-          <div className="h-fit w-72 rounded-lg border px-6 py-4 bg-white">
+          <div className="h-fit w-72 rounded-lg border bg-white px-6 py-4">
             {/* Quantity */}
             <div>
               <h3 className="text-lg font-bold">Quantity</h3>
               <p className="mb-2 text-sm text-gray-400">
-                There are {selectedItem?.stock} items left.
+                There are {selectedSku.stock} items left.
               </p>
 
               <ProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
-                stock={selectedItem?.stock}
+                stock={selectedSku.stock}
               />
             </div>
 
@@ -185,13 +180,13 @@ const ProductPage = () => {
             <div className="mt-4">
               <h3 className="mb-1 text-lg font-bold">Total</h3>
               <p className="text-2xl font-semibold">
-                ${displayPrice(selectedItem?.price * (quantity || 1))}
+                ${displayPrice(selectedSku.price * (quantity || 1))}
               </p>
             </div>
             <AddToCartBtn
               quantity={quantity}
               productId={product._id}
-              itemId={selectedItem?._id}
+              itemId={selectedSku._id}
             />
             <br />
             <Button variant="secondary" className="mt-3 w-full py-6">

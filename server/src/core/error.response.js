@@ -72,7 +72,7 @@ const ERROR = {
     },
   },
   CART: {
-    INSUFFICIENT_STOCK: ({  stock }) => ({
+    INSUFFICIENT_STOCK: ({ stock }) => ({
       status: 400,
       code: "cart-001",
       message: `Insufficient stock. Only ${stock} available.`,
@@ -123,6 +123,7 @@ const ERROR = {
       code: "pro-002",
     },
   },
+  SKU: {},
   USER: {
     EMAIL_ALREADY_EXISTS: {
       status: 400,

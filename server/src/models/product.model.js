@@ -65,6 +65,10 @@ const productSchema = new mongoose.Schema(
       max: [5, "Average rating can not be greater than 5"],
       set: (val) => Math.round(val * 10) / 10, // Round to 1 decimal place. E.g. 4.6667 => 4.7
     },
+    numReviews: {
+      type: Number,
+      default: 0,
+    },
     variations: [variationSchema],
     category: {
       type: String,

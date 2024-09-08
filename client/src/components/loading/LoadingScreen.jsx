@@ -13,7 +13,7 @@ const LoadingScreen = () => {
     <>
       <LoadingBar color="#f11946" progress={progress} waitingTime={200} />
       <div className="flex h-[calc(100vh-200px)] items-center justify-center">
-        <SimpleLogoIcon className="animate-pulse-and-rotate w-36" />;
+        <SimpleLogoIcon className="w-36 animate-pulse-and-rotate" />
       </div>
     </>
   );
