@@ -13,7 +13,7 @@ export default function GoogleIcon({ className }) {
       <g
         id="Icons"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
         fillRule="evenodd"
       >

@@ -116,6 +116,34 @@ export default class ProductService {
       },
     });
 
+    pipeline.push({
+      $addFields: {
+        defaultSku: {
+          $arrayElemAt: [
+            {
+              $filter: {
+                input: {
+                  $map: {
+                    input: "$skus",
+                    as: "sku",
+                    in: {
+                      _id: "$$sku._id",
+                      image: { $arrayElemAt: ["$$sku.images", 0] },
+                      price: "$$sku.price",
+                      originalPrice: "$$sku.originalPrice",
+                    },
+                  },
+                },
+                as: "sku",
+                cond: { $eq: ["$$sku.price", "$minPrice"] },
+              },
+            },
+            0,
+          ],
+        },
+      },
+    });
+
     // Filter products by price range
     if (minPrice || maxPrice) {
       pipeline.push({
@@ -129,6 +157,16 @@ export default class ProductService {
         },
       });
     }
+
+    // Exclude some detail fields to reduce the response size
+    pipeline.push({
+      $project: {
+        features: 0,
+        details: 0,
+        skus: 0,
+        variations: 0,
+      },
+    });
 
     // Sort
     if (sortBy === "priceAsc") {

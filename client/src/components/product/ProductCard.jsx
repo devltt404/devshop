@@ -4,17 +4,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip.jsx";
+import { displayPrice } from "@/utils/helper.util.js";
 import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "../ui/separator.jsx";
 
 export default function ProductCard({ product }) {
   return (
-    <Link to={`/product/${product.slug}-${product._id}`}>
+    <Link to={`/product/${product.slug}-${product.defaultSku._id}`}>
       <div className="group flex h-full flex-col overflow-hidden rounded-md border bg-white transition hover:shadow-md">
         <img
           className="aspect-square select-none object-contain py-8 transition group-hover:scale-105"
-          src={product.images[0]}
+          src={product.defaultSku.image}
           alt={product.name}
           loading="lazy"
           decoding="async"
@@ -48,18 +49,10 @@ export default function ProductCard({ product }) {
 
           <div className="mb-2 mt-auto flex items-center gap-2">
             <p className="text-lg font-bold text-red-600">
-              $
-              {(product.type === "configurable"
-                ? product.defaultItemId.price / 100
-                : product.price / 100
-              ).toFixed(2)}
+              ${displayPrice(product.defaultSku.price)}
             </p>
             <p className="text-xs text-muted-foreground line-through">
-              $
-              {(product.type === "configurable"
-                ? product.defaultItemId.originalPrice / 100
-                : product.originalPrice / 100
-              ).toFixed(2)}
+              ${displayPrice(product.defaultSku.originalPrice)}
             </p>
           </div>
         </div>

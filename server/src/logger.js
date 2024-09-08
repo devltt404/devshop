@@ -20,10 +20,10 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console({
-      level: "info",
+      level: "silly",
     }),
     new winston.transports.DailyRotateFile({
-      level: "debug",
+      level: "silly",
       filename: path.join(__dirname, `/logs/%DATE%-combined.log`),
       zippedArchive: true, // zip archived logs
       maxFiles: "3d", // keep logs for 3 days to save space

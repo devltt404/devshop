@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const variationOptionSchema = new mongoose.Schema(
   {
@@ -71,11 +72,20 @@ const productSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    numSold: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+productSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
 
 productSchema.index(
   { name: "text", description: "text" },

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function NotFoundPage() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-      <div className="flex animate-bounce justify-center text-8xl font-bold">
+      <div className="flex justify-center text-8xl font-bold">
         4
         <ShieldAlert className="h-24 w-24 text-red-600" />4
       </div>
