@@ -18,7 +18,6 @@ const ProductsGrid = ({
   onPageChange,
   sortBy,
   onSortByChange,
-  keyword,
 }) => {
   return (
     <div>

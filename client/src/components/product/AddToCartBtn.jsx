@@ -7,7 +7,7 @@ import { toast } from "../ui/use-toast.js";
 
 const AddToCartBtn = ({ quantity, productId, itemId }) => {
   const dispatch = useDispatch();
-  const [addToCart, { isLoading, data }] = useAddToCartMutation();
+  const [addToCart, { isLoading }] = useAddToCartMutation();
 
   return (
     <Button
@@ -35,7 +35,7 @@ const AddToCartBtn = ({ quantity, productId, itemId }) => {
             }
           });
       }}
-      disabled={isLoading}
+      disabled={isLoading || !itemId}
     >
       <ShoppingCart className="mr-2 h-5 w-5" />
       Add to Cart

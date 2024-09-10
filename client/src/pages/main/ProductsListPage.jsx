@@ -19,7 +19,6 @@ const ProductsList = () => {
     ...query,
     limit: 8,
   });
-
   const onQueryChange = (newParams) => {
     setSearchParams({ ...query, ...newParams });
   };

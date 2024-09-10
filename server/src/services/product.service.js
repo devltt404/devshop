@@ -43,7 +43,10 @@ export default class ProductService {
     product.skus = skus;
     product.category = category;
 
-    return {product};
+    product.minPrice = Math.min(...skus.map((sku) => sku.price));
+    product.maxPrice = Math.max(...skus.map((sku) => sku.price));
+
+    return { product };
   }
 
   static async getProducts({
@@ -190,8 +193,18 @@ export default class ProductService {
     // Pagination
     pipeline.push({
       $facet: {
-        pagination: [{ $count: "totalPages" }, { $addFields: { page, limit } }],
+        pagination: [
+          { $count: "totalPages" },
+          { $addFields: { currentPage: page, limit } },
+        ],
         products: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+      },
+    });
+
+    // Flatten the pagination array to an object
+    pipeline.push({
+      $addFields: {
+        pagination: { $arrayElemAt: ["$pagination", 0] },
       },
     });
 

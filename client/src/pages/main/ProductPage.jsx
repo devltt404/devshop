@@ -25,33 +25,58 @@ const ProductPage = () => {
 
   const [selectedSku, setSelectedSku] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariationIndex, setSelectedVariationIndex] = useState([]);
 
   const product = useMemo(() => {
     return data?.metadata?.product;
   }, [data]);
 
   useEffect(() => {
-    if (!product) return;
-    setSelectedSku(
-      product.skus.find((sku) => sku._id === searchParams.get("skuId")),
-    );
-  }, [product]);
+    if (product) {
+      const skuId = searchParams.get("skuId");
+      if (skuId) {
+        const newSku = product.skus.find((sku) => sku._id === skuId);
+        if (!newSku) {
+          window.history.replaceState(null, "", window.location.pathname);
+          setSelectedSku(undefined);
+        } else {
+          setSelectedSku(newSku);
+          setSelectedVariationIndex(newSku.variationIndex);
+        }
+      } else {
+        setSelectedSku(undefined);
+      }
+    }
+  }, [product, searchParams]);
 
-  if (isLoading || (product && !selectedSku)) {
+  if (isLoading || selectedSku === null) {
     return <LoadingScreen />;
   }
 
-  if (!product || !selectedSku) {
+  if (!product) {
     return <LazyNotFound />;
   }
 
   const handleSelectSku = (changeIndex, changeValue) => {
-    const newVariationIndex = [...selectedSku.variationIndex];
-    newVariationIndex[changeIndex] = changeValue;
+    const newVariationIndex = [...selectedVariationIndex];
+    if (newVariationIndex[changeIndex] === changeValue) {
+      newVariationIndex[changeIndex] = undefined;
+    } else {
+      newVariationIndex[changeIndex] = changeValue;
+    }
 
+    for (let i = 0; i < product.variations.length; i++) {
+      if (newVariationIndex[i] === undefined) {
+        setSelectedSku(undefined);
+        setSelectedVariationIndex(newVariationIndex);
+        return;
+      }
+    }
     const newSku = product.skus.find((sku) => {
       return _.isEqual(sku.variationIndex, newVariationIndex);
     });
+
+    if (!newSku) return;
     setSelectedSku(newSku);
 
     // Update URL
@@ -59,6 +84,22 @@ const ProductPage = () => {
       null,
       "",
       window.location.pathname + "?skuId=" + newSku._id,
+    );
+
+    setSelectedVariationIndex(newVariationIndex);
+  };
+
+  const isOptionAvailable = (currentIndex, optionIndex) => {
+    const testVariationIndex = [...selectedVariationIndex];
+    testVariationIndex[currentIndex] = optionIndex;
+
+    return product.skus.some((sku) =>
+      sku.variationIndex.every(
+        (value, i) =>
+          // If a variation is not selected, skip it (treat it as a wildcard)
+          testVariationIndex[i] === undefined ||
+          testVariationIndex[i] === value,
+      ),
     );
   };
 
@@ -70,7 +111,13 @@ const ProductPage = () => {
         <div className="mt-6 flex items-start gap-8">
           {/* LEFT */}
           <div className="w-[28rem] bg-white px-4 py-6">
-            <ImageCarousel data={data} images={selectedSku.images} />
+            <ImageCarousel
+              data={data}
+              images={[
+                ...(selectedSku ? selectedSku.images : []),
+                ...product.images,
+              ]}
+            />
           </div>
 
           {/* MID */}
@@ -98,9 +145,11 @@ const ProductPage = () => {
             {/* PRICE */}
             <div className="mb-4">
               <p className="mb-1 text-3xl font-bold">
-                ${displayPrice(selectedSku.price)}
+                {selectedSku
+                  ? `$${displayPrice(selectedSku.price)}`
+                  : `$${displayPrice(product.minPrice)} - $${displayPrice(product.maxPrice)}`}
               </p>
-              {selectedSku?.originalPrice && (
+              {selectedSku ? (
                 <p>
                   <span className="text-gray-400 line-through">
                     ${displayPrice(selectedSku.originalPrice)}
@@ -111,6 +160,10 @@ const ProductPage = () => {
                       selectedSku?.originalPrice - selectedSku?.price,
                     )}
                   </span>
+                </p>
+              ) : (
+                <p className="text-gray-400">
+                  {`Select a variant to see the exact price`}
                 </p>
               )}
             </div>
@@ -126,9 +179,10 @@ const ProductPage = () => {
                         return (
                           <button
                             key={i2}
+                            disabled={!isOptionAvailable(i, i2)}
                             className={cn(
-                              "rounded-md border px-6 py-2 text-sm",
-                              selectedSku.variationIndex[i] === i2
+                              "rounded-md border px-6 py-3 text-sm disabled:border-gray-300 disabled:bg-muted disabled:text-gray-400 disabled:shadow-none",
+                              selectedVariationIndex[i] === i2
                                 ? "border-black shadow-outer"
                                 : "hover:border-black hover:shadow-outer",
                             )}
@@ -166,13 +220,15 @@ const ProductPage = () => {
             <div>
               <h3 className="text-lg font-bold">Quantity</h3>
               <p className="mb-2 text-sm text-gray-400">
-                There are {selectedSku.stock} items left.
+                {!selectedSku
+                  ? "Please choose a valid variant"
+                  : `There are ${selectedSku?.stock} items left.`}
               </p>
 
               <ProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
-                stock={selectedSku.stock}
+                stock={selectedSku?.stock}
               />
             </div>
 
@@ -180,16 +236,22 @@ const ProductPage = () => {
             <div className="mt-4">
               <h3 className="mb-1 text-lg font-bold">Total</h3>
               <p className="text-2xl font-semibold">
-                ${displayPrice(selectedSku.price * (quantity || 1))}
+                {`$${displayPrice(selectedSku ? selectedSku.price * (quantity || 1) : 0)}`}
               </p>
             </div>
             <AddToCartBtn
               quantity={quantity}
               productId={product._id}
-              itemId={selectedSku._id}
+              itemId={selectedSku?._id}
             />
+
             <br />
-            <Button variant="secondary" className="mt-3 w-full py-6">
+
+            <Button
+              disabled={!selectedSku}
+              variant="secondary"
+              className="mt-3 w-full py-6"
+            >
               Buy Now
             </Button>
           </div>
