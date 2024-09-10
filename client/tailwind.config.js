@@ -46,7 +46,7 @@ module.exports = {
       },
       boxShadow: {
         inner: "0px 0px 0px 2px inset",
-        outer: "0px 0px 0px 0.5px",
+        outer: "0px 0px 0px 1px",
       },
       screens: {
         "max-2xl": { max: "1535px" },

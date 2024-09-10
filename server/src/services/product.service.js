@@ -193,10 +193,7 @@ export default class ProductService {
     // Pagination
     pipeline.push({
       $facet: {
-        pagination: [
-          { $count: "totalPages" },
-          { $addFields: { currentPage: page, limit } },
-        ],
+        pagination: [{ $count: "totalProducts" }],
         products: [{ $skip: (page - 1) * limit }, { $limit: limit }],
       },
     });
@@ -208,6 +205,16 @@ export default class ProductService {
       },
     });
 
-    return (await ProductModel.aggregate(pipeline))[0];
+    const res = (await ProductModel.aggregate(pipeline))[0];
+
+    // Add some more pagination info
+    if (!res.pagination) {
+      res.pagination = { totalProducts: 0 };
+    }
+    res.pagination.currentPage = page;
+    res.pagination.limit = limit;
+    res.pagination.totalPages = Math.ceil(res.pagination.totalProducts / limit);
+
+    return res;
   }
 }

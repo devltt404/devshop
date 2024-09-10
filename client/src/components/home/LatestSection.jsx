@@ -11,7 +11,7 @@ const LatestSection = () => {
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   const { data } = useGetProductsQuery({
-    page: currentPage,
+    currentPage,
     limit: 10,
     sortBy: "ctimeDesc",
   });

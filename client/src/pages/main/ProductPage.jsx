@@ -1,3 +1,4 @@
+import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import AddToCartBtn from "@/components/product/AddToCartBtn.jsx";
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb.jsx";
 import ProductDetails from "@/components/product/ProductDetails.jsx";
@@ -12,7 +13,6 @@ import { displayPrice } from "@/utils/helper.util.js";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import LoadingScreen from "../../components/loading/LoadingScreen.jsx";
 import { LazyNotFound } from "../index.js";
 
 const ProductPage = () => {
@@ -49,8 +49,9 @@ const ProductPage = () => {
     }
   }, [product, searchParams]);
 
+  // Loading
   if (isLoading || selectedSku === null) {
-    return <LoadingScreen />;
+    return <LoadingArea />;
   }
 
   if (!product) {
@@ -108,20 +109,20 @@ const ProductPage = () => {
       <div>
         <ProductBreadcrumb categories={product.category} />
 
-        <div className="mt-6 flex items-start gap-8">
+        <div className="mt-6 flex items-start gap-14 bg-white px-6 pb-12 pt-8">
           {/* LEFT */}
-          <div className="w-[28rem] bg-white px-4 py-6">
+          <div className="max-w-[25rem]">
             <ImageCarousel
               data={data}
               images={[
-                ...(selectedSku ? selectedSku.images : []),
+                ...(selectedSku ? selectedSku.images : product.skus[0].images),
                 ...product.images,
               ]}
             />
           </div>
 
           {/* MID */}
-          <div className="flex-1 bg-white px-8 py-6">
+          <div className="flex-1">
             <h1 className="text-3xl font-semibold">{product.name}</h1>
 
             <div className="mt-2 flex items-center text-sm text-gray-400">
@@ -150,17 +151,19 @@ const ProductPage = () => {
                   : `$${displayPrice(product.minPrice)} - $${displayPrice(product.maxPrice)}`}
               </p>
               {selectedSku ? (
-                <p>
-                  <span className="text-gray-400 line-through">
-                    ${displayPrice(selectedSku.originalPrice)}
-                  </span>{" "}
-                  <span className="font-semibold text-green-600">
-                    Save $
-                    {displayPrice(
-                      selectedSku?.originalPrice - selectedSku?.price,
-                    )}
-                  </span>
-                </p>
+                selectedSku.originalPrice > selectedSku.price && (
+                  <p>
+                    <span className="text-gray-400 line-through">
+                      ${displayPrice(selectedSku.originalPrice)}
+                    </span>{" "}
+                    <span className="font-semibold text-green-600">
+                      Save $
+                      {displayPrice(
+                        selectedSku.originalPrice - selectedSku.price,
+                      )}
+                    </span>
+                  </p>
+                )
               ) : (
                 <p className="text-gray-400">
                   {`Select a variant to see the exact price`}
@@ -215,7 +218,7 @@ const ProductPage = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="h-fit w-72 rounded-lg border bg-white px-6 py-4">
+          <div className="h-fit w-72 rounded-lg border px-6 py-4">
             {/* Quantity */}
             <div>
               <h3 className="text-lg font-bold">Quantity</h3>

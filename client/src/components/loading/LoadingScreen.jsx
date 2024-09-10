@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import SimpleLogoIcon from "../icons/SimpleLogoIcon.jsx";
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ size = "lg" }) => {
+  const sizes = {
+    sm: "w-24",
+    md: "w-32",
+    lg: "w-36",
+  };
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -13,7 +18,7 @@ const LoadingScreen = () => {
     <>
       <LoadingBar color="#f11946" progress={progress} waitingTime={200} />
       <div className="flex h-[calc(100vh-200px)] items-center justify-center">
-        <SimpleLogoIcon className="w-36 animate-pulse-and-rotate" />
+        <SimpleLogoIcon className={"animate-pulse-and-rotate " + sizes[size]} />
       </div>
     </>
   );
