@@ -19,7 +19,7 @@ import {
   useClearCartMutation,
   useGetDetailedCartQuery,
 } from "@/redux/api/cart.api.js";
-import { setNumCartItems } from "@/redux/slices/cart.slice.js";
+import { mutateCart } from "@/utils/cart.util.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -96,12 +96,11 @@ const CartPage = () => {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() =>
-                          clearCart()
-                            .unwrap()
-                            .then(() => {
-                              setCartItems([]);
-                              dispatch(setNumCartItems(0));
-                            })
+                          mutateCart({
+                            mutationFunc: clearCart,
+                            dispatch,
+                            setCartItems,
+                          })
                         }
                       >
                         Clear

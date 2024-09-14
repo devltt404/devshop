@@ -6,6 +6,7 @@ import { checkMissingFields } from "../utils/helper.util.js";
 import CartService from "./cart.service.js";
 import PaymentService from "./payment.service.js";
 import ProductService from "./product.service.js";
+import SkuService from "./sku.service.js";
 
 export class OrderService {
   // #region BUSINESS LOGIC
@@ -69,63 +70,42 @@ export class OrderService {
 
     try {
       // Check if all items in the order are valid and in stock
-      const promises = order.items.map((orderItem) => {
-        if (orderItem.skuId) {
-          return ProductItemService.findProductItemById({
-            skuId: orderItem.skuId,
+      const queryPromises = [];
+      order.items.map((orderItem) => {
+        queryPromises.push(
+          ProductService.findProductById({
+            productId: orderItem.product,
             lean: false,
-          });
-        } else {
-          return ProductService.findProductById({
-            productId: orderItem.productId,
+          }),
+          SkuService.findSkuById({
+            skuId: orderItem.sku,
             lean: false,
-          });
-        }
+          })
+        );
       });
 
-      // Object to store the number of sold items of product with sold items
-      const productsNeedToBeUpdated = {};
+      const productsAndSkus = await Promise.all(queryPromises);
+      for (let i = 0; i < productsAndSkus.length; i += 2) {
+        const item = order.items[i];
+        const product = productsAndSkus[i];
+        const sku = productsAndSkus[i + 1];
 
-      const orderItems = await Promise.all(promises);
-      for (let index = 0; index < orderItems.length; index++) {
-        const item = orderItems[index];
-        if (!item) {
+        if (!product || !sku) {
           throw new ErrorResponse(ERROR.ORDER.INVALID_ORDER_ITEM);
         }
 
-        if (item.stock < order.items[index].quantity) {
+        if (sku.stock < item.quantity) {
           throw new ErrorResponse(ERROR.ORDER.INSUFFICIENT_STOCK);
         } else {
-          item.stock -= order.items[index].quantity;
-
-          // If the item is a simple product, update the number of sold items directly
-          if (!order.items[index].skuId) {
-            item.numSold += order.items[index].quantity;
-          }
-          // If the item is  item of a configurable product, update the number of sold items of the main product
-          else {
-            if (!productsNeedToBeUpdated[item.productId]) {
-              productsNeedToBeUpdated[item.productId] = 0;
-            }
-            productsNeedToBeUpdated[item.productId] +=
-              order.items[index].quantity;
-          }
+          item.stock -= item.quantity;
+          product.numSold += item.quantity;
         }
       }
 
       // Save the updated stock and numSold
-      orderItems.forEach(async (item) => {
-        item.save();
-      });
+      const updatePromises = productsAndSkus.map((item) => item.save());
+      await Promise.all(updatePromises);
 
-      for (const productId in productsNeedToBeUpdated) {
-        ProductService.findProductByIdAndUpdate({
-          productId,
-          update: { $inc: { numSold: productsNeedToBeUpdated[productId] } },
-        });
-      }
-
-      // Clear cart
       try {
         await CartService.clearCart({ userId, guestCartId });
       } catch (error) {}
@@ -136,8 +116,11 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      OrderModel.findByIdAndDelete(orderId);
-      PaymentService.cancelPaymentIntent(order.paymentIntentId);
+      await Promise.all([
+        OrderModel.findByIdAndDelete(orderId),
+        PaymentService.cancelPaymentIntent(order.paymentIntentId),
+      ]);
+
       throw error;
     }
   }

@@ -1,6 +1,6 @@
 import { useGetSimpleCartQuery } from "@/redux/api/cart.api.js";
 import { authSelector } from "@/redux/slices/auth.slice.js";
-import { cartSelector, setNumCartItems } from "@/redux/slices/cart.slice.js";
+import { cartSelector, setTotalQuantity } from "@/redux/slices/cart.slice.js";
 import { ShoppingBag } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const CartButton = () => {
   const { totalQuantity } = useSelector(cartSelector);
   useEffect(() => {
     if (data) {
-      dispatch(setNumCartItems(data.metadata?.cart?.totalQuantity));
+      dispatch(setTotalQuantity(data.metadata?.cart?.totalQuantity));
     }
   }, [data, user]);
 

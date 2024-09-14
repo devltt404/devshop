@@ -16,13 +16,13 @@ const OrderSchema = new mongoose.Schema(
     items: [
       {
         _id: false,
-        productId: {
+        product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "product",
         },
-        skuId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product_Item",
+        sku: {
+          type: String,
+          ref: "sku",
         },
         name: {
           type: String,
@@ -40,7 +40,7 @@ const OrderSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
-        variation: {
+        variationSelection: {
           type: String,
         },
       },

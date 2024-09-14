@@ -23,7 +23,7 @@ export default class CartService {
   // #endregion
 
   // #region HELPER
-  static async returnCartResponse(cart) {
+  static async returnMutatedCart(cart) {
     return {
       cart,
       totalQuantity: await this.getTotalQuantity(cart),
@@ -31,7 +31,7 @@ export default class CartService {
   }
 
   static async getTotalQuantity(cart) {
-    return cart.items.reduce((acc, item) => acc + item.quantity, 0);
+    return cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
   }
 
   static genFindCartQuery({ userId, guestCartId }) {
@@ -52,29 +52,9 @@ export default class CartService {
 
     return { product, sku };
   }
-  //#endregion HELPER
 
-  // #region BUSINESS LOGIC
-  static async getSimpleCart({ userId, guestCartId, res }) {
-    const cart = await CartModel.findOne(
-      this.genFindCartQuery({ userId, guestCartId })
-    ).lean();
-
-    //Clear cart cookie if guest cart is not found
-    if (!userId && guestCartId && !cart) {
-      clearCartCookie(res);
-    }
-
-    let simpleCart = {
-      totalQuantity: this.getTotalQuantity(cart) || 0,
-    };
-    return simpleCart;
-  }
-
-  static async getCartDetail({ userId, guestCartId }) {
-    const cart = await CartModel.findOne(
-      this.genFindCartQuery({ userId, guestCartId })
-    )
+  static async populateCart(cartQuery) {
+    const cart = await cartQuery
       .populate("items.product", "-description -details -features")
       .populate("items.sku");
 
@@ -93,9 +73,9 @@ export default class CartService {
       }
 
       return {
-        productId: product._id,
+        product: product._id,
         slug: product.slug,
-        skuId: sku._id,
+        sku: sku._id,
         quantity: item.quantity,
         name: product.name,
         price: sku.price,
@@ -121,12 +101,38 @@ export default class CartService {
       subtotal >= shopConfig.freeShipThreshold ? 0 : shopConfig.shippingFee;
 
     return {
-      cart: {
-        items,
-        subtotal,
-        shipping,
-        total: subtotal + shipping,
-      },
+      items,
+      subtotal,
+      shipping,
+      total: subtotal + shipping,
+    };
+  }
+  //#endregion HELPER
+
+  // #region BUSINESS LOGIC
+  static async getSimpleCart({ userId, guestCartId, res }) {
+    const cart = await CartModel.findOne(
+      this.genFindCartQuery({ userId, guestCartId })
+    ).lean();
+
+    //Clear cart cookie if guest cart is not found
+    if (!userId && guestCartId && !cart) {
+      clearCartCookie(res);
+    }
+
+    let simpleCart = {
+      totalQuantity: this.getTotalQuantity(cart),
+    };
+    return simpleCart;
+  }
+
+  static async getCartDetail({ userId, guestCartId }) {
+    const cart = await this.populateCart(
+      CartModel.findOne(this.genFindCartQuery({ userId, guestCartId }))
+    );
+
+    return {
+      cart,
     };
   }
 
@@ -172,7 +178,7 @@ export default class CartService {
     }
 
     await cart.save();
-    return this.returnCartResponse(cart);
+    return this.returnMutatedCart(cart);
   }
 
   static async updateCartItemQuantity({
@@ -191,49 +197,47 @@ export default class CartService {
       );
     }
 
-    const updatedCart = await CartModel.findOneAndUpdate(
-      {
-        ...this.genFindCartQuery({ userId, guestCartId }),
-        "items.product": productId,
-        "items.sku": skuId,
-      },
-      {
-        $set: {
-          "items.$.quantity": quantity,
+    const updatedCart = await this.populateCart(
+      CartModel.findOneAndUpdate(
+        {
+          ...this.genFindCartQuery({ userId, guestCartId }),
+          "items.product": productId,
+          "items.sku": skuId,
         },
-      },
-      {
-        new: true,
-      }
+        {
+          $set: {
+            "items.$.quantity": quantity,
+          },
+        },
+        {
+          new: true,
+        }
+      )
     );
 
-    if (!updatedCart) {
-      throw new ErrorResponse(ERROR.CART.INVALID_CART);
-    }
-    return this.returnCartResponse(updatedCart);
+    return this.returnMutatedCart(updatedCart);
   }
 
   static async removeCartItem({ userId, productId, skuId, guestCartId }) {
     await this.validateCartItem({ productId, skuId });
 
-    const updatedCart = await CartModel.findOneAndUpdate(
-      {
-        ...this.genFindCartQuery({ userId, guestCartId }),
-      },
-      {
-        $pull: {
-          items: { product: productId, sku: skuId },
+    const updatedCart = await this.populateCart(
+      CartModel.findOneAndUpdate(
+        {
+          ...this.genFindCartQuery({ userId, guestCartId }),
         },
-      },
-      {
-        new: true,
-      }
+        {
+          $pull: {
+            items: { product: productId, sku: skuId },
+          },
+        },
+        {
+          new: true,
+        }
+      )
     );
 
-    if (!updatedCart) {
-      throw new ErrorResponse(ERROR.CART.INVALID_CART);
-    }
-    return this.returnCartResponse(updatedCart);
+    return this.returnMutatedCart(updatedCart);
   }
 
   static async clearCart({ userId, guestCartId, res }) {
@@ -247,7 +251,7 @@ export default class CartService {
     if (!cart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }
-    return this.returnCartResponse(cart);
+    return this.returnMutatedCart(cart);
   }
   // #endregion
 }

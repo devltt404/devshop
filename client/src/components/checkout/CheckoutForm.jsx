@@ -3,7 +3,7 @@ import {
   useAuthorizeOrderMutation,
   useCreateOrderMutation,
 } from "@/redux/api/order.api.js";
-import { setNumCartItems } from "@/redux/slices/cart.slice.js";
+import { setTotalQuantity } from "@/redux/slices/cart.slice.js";
 import {
   AddressElement,
   PaymentElement,
@@ -88,18 +88,20 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
         variant: "destructive",
       });
     }
+
     try {
       await authorizeOrder({
         orderId,
         paymentId: paymentIntent.id,
       }).unwrap();
 
-      dispatch(setNumCartItems(0));
+      dispatch(setTotalQuantity(0));
       navigate("/order/" + orderId);
     } catch (error) {
       setIsCheckingOut(false);
+      navigate("/cart");
       return toast({
-        title: "Order failed",
+        title: "Checkout failed",
         description: error.message,
         variant: "destructive",
       });

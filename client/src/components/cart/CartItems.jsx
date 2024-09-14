@@ -13,7 +13,7 @@ import {
   useRemoveCartItemMutation,
   useUpdateCartItemQuantityMutation,
 } from "@/redux/api/cart.api.js";
-import { decrementNumCartItems } from "@/redux/slices/cart.slice.js";
+import { mutateCart } from "@/utils/cart.util.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { Trash } from "lucide-react";
 import { Fragment, useRef } from "react";
@@ -21,7 +21,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingOverlay from "../loading/LoadingOverlay.jsx";
 import { Button } from "../ui/button.jsx";
-import { toast } from "../ui/use-toast.js";
 import CartQuantityInput from "./CartQuantityInput.jsx";
 
 const CartItems = ({ cartItems, setCartItems }) => {
@@ -34,36 +33,15 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
   const deleteAlertTriggerRef = useRef(null);
 
-  const handleRemoveCartItem = (cartItem) => {
-    removeCartItem({
-      productId: cartItem.productId,
-      skuId: cartItem.skuId,
-    }).then(() => {
-      toast({
-        title: "Item removed from cart",
-        description: `${cartItem.name} has been removed from your cart.`,
-      });
-
-      setCartItems((prevItems) =>
-        prevItems.filter(
-          (item) =>
-            item.productId !== cartItem.productId &&
-            item.skuId !== cartItem.skuId,
-        ),
-      );
-      dispatch(decrementNumCartItems());
-    });
-  };
-
   return (
     <LoadingOverlay isLoading={isRemovingItem || isUpdatingQuantity}>
       <div className="grid flex-1 grid-cols-[6rem_1fr_8rem] gap-y-8 border-gray-100 bg-white px-4 py-6">
         {cartItems.map((cartItem, index) => {
           return (
-            <Fragment key={cartItem.skuId || cartItem.productId}>
+            <Fragment key={cartItem.sku}>
               <Link
                 className="self-center"
-                to={`/product/${cartItem.slug}-${cartItem.productId}`}
+                to={`/product/${cartItem.slug}-${cartItem.product}`}
               >
                 <img
                   src={cartItem.image}
@@ -74,7 +52,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
               <div className="me-10 flex justify-between gap-6 px-6 max-xl:me-4 max-xl:flex-col">
                 <div>
-                  <Link to={`/product/${cartItem.slug}-${cartItem.productId}`}>
+                  <Link to={`/product/${cartItem.slug}-${cartItem.product}`}>
                     <h3 className="line-clamp-2 text-lg font-semibold">
                       {cartItem.name}
                     </h3>
@@ -90,8 +68,8 @@ const CartItems = ({ cartItems, setCartItems }) => {
                   deleteAlertTriggerRef={deleteAlertTriggerRef}
                   setCartItems={setCartItems}
                   index={index}
-                  productId={cartItem.productId}
-                  skuId={cartItem.skuId}
+                  productId={cartItem.product}
+                  skuId={cartItem.sku}
                   updateQuantity={updateQuantity}
                   quantity={cartItem.quantity}
                   stock={cartItem.stock}
@@ -120,7 +98,17 @@ const CartItems = ({ cartItems, setCartItems }) => {
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleRemoveCartItem(cartItem)}
+                          onClick={() =>
+                            mutateCart({
+                              mutationFunc: () =>
+                                removeCartItem({
+                                  productId: cartItem.product,
+                                  skuId: cartItem.sku,
+                                }),
+                              dispatch,
+                              setCartItems,
+                            })
+                          }
                         >
                           Delete
                         </AlertDialogAction>

@@ -17,7 +17,7 @@ export default class PaymentService {
   }
 
   static async createPaymentIntent({ userId, guestCartId }) {
-    const cart = await CartService.getCartDetail({
+    const { cart } = await CartService.getCartDetail({
       userId,
       guestCartId,
     });
@@ -25,21 +25,7 @@ export default class PaymentService {
     if (!cart.items?.length) {
       throw new ErrorResponse(ERROR.PAYMENT.EMPTY_CART);
     }
-
     // Format order items and price
-    const orderItems = cart.items.map((item) => ({
-      productId: item.productId,
-      skuId: item.skuId,
-      slug: item.slug,
-      name: item.name,
-      image: item.image,
-      variation: item.variationSelection
-        ? Array.from(item.variationSelection.values()).join(" - ")
-        : undefined,
-      quantity: item.quantity,
-      price: item.price,
-    }));
-
     const price = {
       subtotal: cart.subtotal,
       shipping: cart.shipping,
@@ -56,7 +42,7 @@ export default class PaymentService {
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
       orderData: {
-        items: orderItems,
+        items: cart.items,
         price,
       },
     };
