@@ -33,6 +33,11 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (product) {
+      if (product.variations.length === 0) {
+        setSelectedSku(product.skus[0]);
+        return;
+      }
+
       const skuId = searchParams.get("skuId");
       if (skuId) {
         const newSku = product.skus.find((sku) => sku._id === skuId);
@@ -111,7 +116,7 @@ const ProductPage = () => {
 
         <div className="mt-6 flex items-start gap-14 bg-white px-6 pb-12 pt-8">
           {/* LEFT */}
-          <div className="max-w-[25rem]">
+          <div className="w-[25rem]">
             <ImageCarousel
               data={data}
               images={[
@@ -124,11 +129,15 @@ const ProductPage = () => {
           {/* MID */}
           <div className="flex-1">
             <h1 className="text-3xl font-semibold">{product.name}</h1>
-
-            <div className="mt-2 flex items-center text-sm text-gray-400">
-              <span className="mr-2 text-yellow-500">
+            <p className="my-2 text-sm text-muted-foreground">
+              {selectedSku
+                ? "SKU: " + selectedSku._id
+                : "Please select a variant to see the SKU"}
+            </p>
+            <div className="flex items-center text-sm text-gray-400">
+              <p className="mr-2 pt-1 text-yellow-500">
                 {product.avgRating.toFixed(1)}
-              </span>
+              </p>
               <RatingRow rating={product.avgRating} />
 
               <Separator className="mx-2 h-4 w-[1px]" />
@@ -245,7 +254,7 @@ const ProductPage = () => {
             <AddToCartBtn
               quantity={quantity}
               productId={product._id}
-              itemId={selectedSku?._id}
+              skuId={selectedSku?._id}
             />
 
             <br />

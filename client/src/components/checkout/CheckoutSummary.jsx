@@ -6,7 +6,7 @@ import { Input } from "../ui/input.jsx";
 const CheckoutSummary = ({ orderData }) => {
   return (
     orderData && (
-      <div className="h-fit rounded-lg border border-gray-300 p-6 bg-white">
+      <div className="h-fit rounded-lg border border-gray-300 bg-white p-6">
         <h2 className="mb-6 text-2xl font-semibold text-primary">
           Order Summary
         </h2>
@@ -17,9 +17,7 @@ const CheckoutSummary = ({ orderData }) => {
 
         <div className="mb-4 flex flex-col gap-6">
           {orderData.items?.map((item) => {
-            return (
-              <OrderItem key={item.itemId || item.productId} item={item} />
-            );
+            return <OrderItem key={item.skuId || item.productId} item={item} />;
           })}
         </div>
 

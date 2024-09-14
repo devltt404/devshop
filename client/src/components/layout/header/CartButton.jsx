@@ -12,10 +12,10 @@ const CartButton = () => {
 
   const { data } = useGetSimpleCartQuery();
 
-  const { numCartItems } = useSelector(cartSelector);
+  const { totalQuantity } = useSelector(cartSelector);
   useEffect(() => {
     if (data) {
-      dispatch(setNumCartItems(data.metadata?.cart?.numCartItems));
+      dispatch(setNumCartItems(data.metadata?.cart?.totalQuantity));
     }
   }, [data, user]);
 
@@ -26,9 +26,9 @@ const CartButton = () => {
     >
       <div className="relative">
         <ShoppingBag className="stroke-[1.5px] text-secondary transition group-hover:text-primary" />
-        {numCartItems > 0 && (
+        {totalQuantity > 0 && (
           <span className="absolute -right-1 -top-1 h-4 w-4 scale-90 rounded-full bg-red-600 text-center font-mono text-sm leading-4 text-white">
-            {numCartItems}
+            {totalQuantity}
           </span>
         )}
       </div>

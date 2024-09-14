@@ -22,26 +22,26 @@ const cartApi = api.injectEndpoints({
     }),
 
     addToCart: builder.mutation({
-      query: ({ productId, itemId, quantity }) => ({
+      query: ({ productId, skuId, quantity }) => ({
         url: baseCartEndpoint + "/item",
         method: "POST",
-        data: { productId, itemId, quantity },
+        data: { productId, skuId, quantity },
       }),
     }),
 
     removeCartItem: builder.mutation({
-      query: ({ productId, itemId }) => ({
+      query: ({ productId, skuId }) => ({
         url: baseCartEndpoint + "/item",
         method: "DELETE",
-        data: { productId, itemId },
+        data: { productId, skuId },
       }),
     }),
 
     updateCartItemQuantity: builder.mutation({
-      query: ({ productId, itemId, quantity }) => ({
+      query: ({ productId, skuId, quantity }) => ({
         url: baseCartEndpoint + "/item-quantity",
         method: "PUT",
-        data: { productId, itemId, quantity },
+        data: { productId, skuId, quantity },
       }),
     }),
 

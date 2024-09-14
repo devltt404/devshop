@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { Button } from "../ui/button.jsx";
 import { toast } from "../ui/use-toast.js";
 
-const AddToCartBtn = ({ quantity, productId, itemId }) => {
+const AddToCartBtn = ({ quantity, productId, skuId }) => {
   const dispatch = useDispatch();
   const [addToCart, { isLoading }] = useAddToCartMutation();
 
@@ -16,7 +16,7 @@ const AddToCartBtn = ({ quantity, productId, itemId }) => {
         addToCart({
           quantity,
           productId,
-          itemId,
+          skuId,
         })
           .unwrap()
           .then(({ metadata }) => {
@@ -35,7 +35,7 @@ const AddToCartBtn = ({ quantity, productId, itemId }) => {
             }
           });
       }}
-      disabled={isLoading || !itemId}
+      disabled={isLoading || !skuId}
     >
       <ShoppingCart className="mr-2 h-5 w-5" />
       Add to Cart

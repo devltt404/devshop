@@ -20,10 +20,20 @@ export default class CartService {
   static async deleteCartById({ cartId }) {
     return await CartModel.findByIdAndDelete(cartId);
   }
-
   // #endregion
 
   // #region HELPER
+  static async returnCartResponse(cart) {
+    return {
+      cart,
+      totalQuantity: await this.getTotalQuantity(cart),
+    };
+  }
+
+  static async getTotalQuantity(cart) {
+    return cart.items.reduce((acc, item) => acc + item.quantity, 0);
+  }
+
   static genFindCartQuery({ userId, guestCartId }) {
     return userId ? { userId } : { _id: guestCartId };
   }
@@ -56,7 +66,7 @@ export default class CartService {
     }
 
     let simpleCart = {
-      numCartItems: cart?.items?.length || 0,
+      totalQuantity: this.getTotalQuantity(cart) || 0,
     };
     return simpleCart;
   }
@@ -65,7 +75,7 @@ export default class CartService {
     const cart = await CartModel.findOne(
       this.genFindCartQuery({ userId, guestCartId })
     )
-      .populate("items.product", "-description -details")
+      .populate("items.product", "-description -details -features")
       .populate("items.sku");
 
     if (!cart) {
@@ -79,7 +89,6 @@ export default class CartService {
 
       if (sku.stock < item.quantity) {
         item.quantity = sku.stock;
-        stock = item.quantity;
         isAnItemExceedsStock = true;
       }
 
@@ -87,10 +96,10 @@ export default class CartService {
         productId: product._id,
         slug: product.slug,
         skuId: sku._id,
-        quantity: quantity,
+        quantity: item.quantity,
         name: product.name,
         price: sku.price,
-        image: sku.images[0],
+        image: sku.images[0] || product.images[0],
         stock: sku.stock,
         variationSelection: getVariationString({ product, sku }),
       };
@@ -112,10 +121,12 @@ export default class CartService {
       subtotal >= shopConfig.freeShipThreshold ? 0 : shopConfig.shippingFee;
 
     return {
-      items,
-      subtotal,
-      shipping,
-      total: subtotal + shipping,
+      cart: {
+        items,
+        subtotal,
+        shipping,
+        total: subtotal + shipping,
+      },
     };
   }
 
@@ -127,13 +138,12 @@ export default class CartService {
     guestCartId,
     res,
   }) {
-    if (quantity < 1) throw new ErrorResponse(ERROR.CART.INVALID_QUANTITY);
-
-    const { product, sku } = await this.validateCartItem({
+    const {
+      sku: { stock },
+    } = await this.validateCartItem({
       productId,
       skuId,
     });
-
     let cart = await CartModel.findOne(
       this.genFindCartQuery({ userId, guestCartId })
     );
@@ -147,24 +157,22 @@ export default class CartService {
       }
     }
 
-    const existingItem = cart.items.find((i) => {
-      return i.product == product._id && i.sku == sku._id;
+    const existingItem = cart.items.find((item) => {
+      return item.product == productId && item.sku == skuId;
     });
 
-    const newQuantity = existingItem?.quantity || 0 + quantity;
-    if (newQuantity > sku.stock)
-      throw new ErrorResponse(
-        ERROR.CART.INSUFFICIENT_STOCK({ stock: sku.stock })
-      );
+    const newQuantity = (existingItem?.quantity || 0) + quantity;
+    if (newQuantity > stock)
+      throw new ErrorResponse(ERROR.CART.INSUFFICIENT_STOCK({ stock }));
 
     if (existingItem) {
       existingItem.quantity = newQuantity;
     } else {
-      cart.items.push({ product, sku, quantity });
+      cart.items.push({ product: productId, sku: skuId, quantity });
     }
 
     await cart.save();
-    return cart;
+    return this.returnCartResponse(cart);
   }
 
   static async updateCartItemQuantity({
@@ -202,7 +210,7 @@ export default class CartService {
     if (!updatedCart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }
-    return updatedCart;
+    return this.returnCartResponse(updatedCart);
   }
 
   static async removeCartItem({ userId, productId, skuId, guestCartId }) {
@@ -214,18 +222,18 @@ export default class CartService {
       },
       {
         $pull: {
-          items: { productId, skuId },
+          items: { product: productId, sku: skuId },
         },
       },
       {
         new: true,
       }
     );
-    
+
     if (!updatedCart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }
-    return updatedCart;
+    return this.returnCartResponse(updatedCart);
   }
 
   static async clearCart({ userId, guestCartId, res }) {
@@ -239,7 +247,7 @@ export default class CartService {
     if (!cart) {
       throw new ErrorResponse(ERROR.CART.INVALID_CART);
     }
-    return cart;
+    return this.returnCartResponse(cart);
   }
   // #endregion
 }

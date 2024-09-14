@@ -1,4 +1,4 @@
-import {ORDER} from "../constants/index.js";
+import { ORDER } from "../constants/index.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import OrderModel from "../models/order.model.js";
@@ -70,9 +70,9 @@ export class OrderService {
     try {
       // Check if all items in the order are valid and in stock
       const promises = order.items.map((orderItem) => {
-        if (orderItem.itemId) {
+        if (orderItem.skuId) {
           return ProductItemService.findProductItemById({
-            itemId: orderItem.itemId,
+            skuId: orderItem.skuId,
             lean: false,
           });
         } else {
@@ -99,7 +99,7 @@ export class OrderService {
           item.stock -= order.items[index].quantity;
 
           // If the item is a simple product, update the number of sold items directly
-          if (!order.items[index].itemId) {
+          if (!order.items[index].skuId) {
             item.numSold += order.items[index].quantity;
           }
           // If the item is  item of a configurable product, update the number of sold items of the main product

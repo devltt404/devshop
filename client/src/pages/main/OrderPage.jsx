@@ -28,7 +28,7 @@ const OrderPage = () => {
   }
 
   return (
-    <div className="container-area bg-white mt-6">
+    <div className="container-area mt-6 bg-white">
       <div className="mb-4">
         <OrderStatusBadge status={order.orderStatus} />
       </div>
@@ -79,7 +79,7 @@ const OrderPage = () => {
 
       <div className="mb-4 flex flex-col gap-4">
         {order.items?.map((item) => (
-          <OrderItem key={item.itemId || item.productId} item={item} />
+          <OrderItem key={item.skuId || item.productId} item={item} />
         ))}
       </div>
 

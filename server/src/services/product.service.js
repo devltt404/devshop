@@ -51,7 +51,7 @@ export default class ProductService {
 
   static async getProducts({
     key,
-    page = 1,
+    currentPage = 1,
     limit = 10,
     sortBy,
     categoryId,
@@ -61,7 +61,7 @@ export default class ProductService {
   }) {
     // Parse the query number parameters
     limit = parseInt(limit);
-    page = parseInt(page);
+    currentPage = parseInt(currentPage);
 
     // Aggregation pipeline
     const pipeline = [];
@@ -131,7 +131,13 @@ export default class ProductService {
                     as: "sku",
                     in: {
                       _id: "$$sku._id",
-                      image: { $arrayElemAt: ["$$sku.images", 0] },
+                      image: {
+                        $cond: {
+                          if: { $gt: [{ $size: "$$sku.images" }, 0] },
+                          then: { $arrayElemAt: ["$$sku.images", 0] },
+                          else: { $arrayElemAt: ["$images", 0] },
+                        },
+                      },
                       price: "$$sku.price",
                       originalPrice: "$$sku.originalPrice",
                     },
@@ -168,6 +174,8 @@ export default class ProductService {
         details: 0,
         skus: 0,
         variations: 0,
+        description: 0,
+        images: 0,
       },
     });
 
@@ -194,7 +202,7 @@ export default class ProductService {
     pipeline.push({
       $facet: {
         pagination: [{ $count: "totalProducts" }],
-        products: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+        products: [{ $skip: (currentPage - 1) * limit }, { $limit: limit }],
       },
     });
 
@@ -211,7 +219,7 @@ export default class ProductService {
     if (!res.pagination) {
       res.pagination = { totalProducts: 0 };
     }
-    res.pagination.currentPage = page;
+    res.pagination.currentPage = currentPage;
     res.pagination.limit = limit;
     res.pagination.totalPages = Math.ceil(res.pagination.totalProducts / limit);
 

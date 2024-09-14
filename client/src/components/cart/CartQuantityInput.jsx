@@ -8,14 +8,14 @@ const CartQuantityInput = ({
   stock,
   updateQuantity,
   productId,
-  itemId,
+  skuId,
   setCartItems,
   index,
 }) => {
   const [displayQuantity, setDisplayQuantity] = useState(Number(quantity));
 
   const handleUpdateQuantity = (newQuantity) => {
-    updateQuantity({ quantity: newQuantity, productId, itemId })
+    updateQuantity({ quantity: newQuantity, productId, skuId })
       .unwrap()
       .then(() => {
         setDisplayQuantity(newQuantity);

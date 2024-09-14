@@ -29,7 +29,7 @@ export default class PaymentService {
     // Format order items and price
     const orderItems = cart.items.map((item) => ({
       productId: item.productId,
-      itemId: item.itemId,
+      skuId: item.skuId,
       slug: item.slug,
       name: item.name,
       image: item.image,

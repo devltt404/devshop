@@ -37,7 +37,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
   const handleRemoveCartItem = (cartItem) => {
     removeCartItem({
       productId: cartItem.productId,
-      itemId: cartItem.itemId,
+      skuId: cartItem.skuId,
     }).then(() => {
       toast({
         title: "Item removed from cart",
@@ -48,7 +48,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
         prevItems.filter(
           (item) =>
             item.productId !== cartItem.productId &&
-            item.itemId !== cartItem.itemId,
+            item.skuId !== cartItem.skuId,
         ),
       );
       dispatch(decrementNumCartItems());
@@ -60,7 +60,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
       <div className="grid flex-1 grid-cols-[6rem_1fr_8rem] gap-y-8 border-gray-100 bg-white px-4 py-6">
         {cartItems.map((cartItem, index) => {
           return (
-            <Fragment key={cartItem.itemId || cartItem.productId}>
+            <Fragment key={cartItem.skuId || cartItem.productId}>
               <Link
                 className="self-center"
                 to={`/product/${cartItem.slug}-${cartItem.productId}`}
@@ -91,7 +91,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
                   setCartItems={setCartItems}
                   index={index}
                   productId={cartItem.productId}
-                  itemId={cartItem.itemId}
+                  skuId={cartItem.skuId}
                   updateQuantity={updateQuantity}
                   quantity={cartItem.quantity}
                   stock={cartItem.stock}

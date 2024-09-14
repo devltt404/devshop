@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {ORDER} from "../constants/index.js";
+import { ORDER } from "../constants/index.js";
 import { AutoIncrement } from "../db/connect.db.js";
 
 const OrderSchema = new mongoose.Schema(
@@ -20,7 +20,7 @@ const OrderSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
         },
-        itemId: {
+        skuId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product_Item",
         },
