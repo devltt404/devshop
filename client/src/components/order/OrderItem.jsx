@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const OrderItem = ({ item }) => {
   return (
-    <Link to={`/product/${item.slug}-${item.productId}`}>
+    <Link to={`/product/${item.slug}-${item.product}`}>
       <div className="grid grid-cols-[6rem_1fr_auto] gap-2">
         <img
           src={item.image}

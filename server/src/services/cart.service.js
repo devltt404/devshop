@@ -30,7 +30,7 @@ export default class CartService {
     };
   }
 
-  static async getTotalQuantity(cart) {
+  static getTotalQuantity(cart) {
     return cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
   }
 
@@ -120,10 +120,11 @@ export default class CartService {
       clearCartCookie(res);
     }
 
-    let simpleCart = {
-      totalQuantity: this.getTotalQuantity(cart),
+    return {
+      cart: {
+        totalQuantity: this.getTotalQuantity(cart),
+      },
     };
-    return simpleCart;
   }
 
   static async getCartDetail({ userId, guestCartId }) {

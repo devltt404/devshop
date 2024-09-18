@@ -16,7 +16,7 @@ import {
 import { mutateCart } from "@/utils/cart.util.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { Trash } from "lucide-react";
-import { Fragment, useRef } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingOverlay from "../loading/LoadingOverlay.jsx";
@@ -31,7 +31,11 @@ const CartItems = ({ cartItems, setCartItems }) => {
   const [removeCartItem, { isLoading: isRemovingItem }] =
     useRemoveCartItemMutation();
 
-  const deleteAlertTriggerRef = useRef(null);
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState({
+    ...cartItems.map((item) => ({
+      [item.sku]: false,
+    })),
+  });
 
   return (
     <LoadingOverlay isLoading={isRemovingItem || isUpdatingQuantity}>
@@ -66,7 +70,14 @@ const CartItems = ({ cartItems, setCartItems }) => {
                 </div>
 
                 <CartQuantityInput
-                  deleteAlertTriggerRef={deleteAlertTriggerRef}
+                  openDeleteAlert={() => {
+                    setDeleteAlertOpen((prev) => {
+                      return {
+                        ...prev,
+                        [cartItem.sku]: true,
+                      };
+                    });
+                  }}
                   setCartItems={setCartItems}
                   index={index}
                   productId={cartItem.product}
@@ -82,15 +93,26 @@ const CartItems = ({ cartItems, setCartItems }) => {
                   ${displayPrice(cartItem.price * cartItem.quantity)}
                 </p>
                 <div>
-                  <AlertDialog>
-                    <AlertDialogTrigger ref={deleteAlertTriggerRef} asChild>
+                  <AlertDialog
+                    open={deleteAlertOpen[cartItem.sku]}
+                    onDismiss={() => {
+                      setDeleteAlertOpen((prev) => {
+                        const newOpen = [...prev];
+                        newOpen[index] = false;
+                        return newOpen;
+                      });
+                    }}
+                  >
+                    <AlertDialogTrigger asChild>
                       <Button size="icon" variant="outline">
                         <Trash className="h-4 w-4" />
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete cart item?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          Delete {cartItem.name}?
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
                           Are you sure you want to remove this cart item from
                           your cart?

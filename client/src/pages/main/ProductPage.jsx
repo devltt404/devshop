@@ -182,10 +182,25 @@ const ProductPage = () => {
 
             {/* VARIATION */}
             {
-              <div>
+              <ul className="space-y-4">
                 {product.variations.map((variation, i) => (
-                  <div className="mb-4" key={i}>
-                    <h3 className="mb-2 font-semibold">{variation.name}</h3>
+                  <li key={i}>
+                    <h3
+                      className={cn(
+                        "mb-2 font-normal",
+                        selectedVariationIndex[i] ??
+                          "font-semibold text-destructive",
+                      )}
+                    >
+                      {variation.name}:{" "}
+                      <span className="font-semibold">
+                        {
+                          variation.options.find((opt, index) => {
+                            return index === selectedVariationIndex[i];
+                          })?.value
+                        }
+                      </span>
+                    </h3>
                     <div className="flex flex-wrap gap-4">
                       {variation.options.map((option, i2) => {
                         return (
@@ -204,22 +219,23 @@ const ProductPage = () => {
                             }}
                           >
                             <div className="flex items-center gap-2">
-                              {option.image && (
+                              {option.image ? (
                                 <img
                                   src={option.image}
                                   alt={option.value}
-                                  className="h-8 w-8 object-contain"
+                                  className="h-10 w-10 object-contain"
                                 />
+                              ) : (
+                                <p> {option.value}</p>
                               )}
-                              {option.value}
                             </div>
                           </button>
                         );
                       })}
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             }
 
             <Separator className="my-6" />
@@ -259,11 +275,7 @@ const ProductPage = () => {
 
             <br />
 
-            <Button
-              disabled={!selectedSku}
-              variant="secondary"
-              className="mt-3 w-full py-6"
-            >
+            <Button variant="secondary" className="mt-3 w-full py-6">
               Buy Now
             </Button>
           </div>

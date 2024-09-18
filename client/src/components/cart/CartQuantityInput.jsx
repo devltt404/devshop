@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "../ui/use-toast.js";
 
 const CartQuantityInput = ({
-  deleteAlertTriggerRef,
+  openDeleteAlert,
   quantity,
   stock,
   updateQuantity,
@@ -38,7 +38,7 @@ const CartQuantityInput = ({
           if (quantity > 1) {
             handleUpdateQuantity(quantity - 1);
           } else {
-            deleteAlertTriggerRef.current?.click();
+            openDeleteAlert();
           }
         }}
       >

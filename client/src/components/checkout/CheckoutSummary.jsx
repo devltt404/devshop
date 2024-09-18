@@ -17,7 +17,7 @@ const CheckoutSummary = ({ orderData }) => {
 
         <div className="mb-4 flex flex-col gap-6">
           {orderData.items?.map((item) => {
-            return <OrderItem key={item.skuId || item.productId} item={item} />;
+            return <OrderItem key={item.sku} item={item} />;
           })}
         </div>
 

@@ -6,7 +6,7 @@ import _ from "lodash";
 import { Lightbulb } from "lucide-react";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-
+  
 const ProductsList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 

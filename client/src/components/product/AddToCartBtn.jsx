@@ -13,6 +13,15 @@ const AddToCartBtn = ({ quantity, productId, skuId }) => {
     <Button
       className="mt-4 w-full py-6"
       onClick={() => {
+        if (!skuId) {
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Invalid variant!",
+            description: "Please select a valid variant.",
+          });
+          return;
+        }
+
         addToCart({
           quantity,
           productId,
@@ -35,7 +44,7 @@ const AddToCartBtn = ({ quantity, productId, skuId }) => {
             }
           });
       }}
-      disabled={isLoading || !skuId}
+      disabled={isLoading}
     >
       <ShoppingCart className="mr-2 h-5 w-5" />
       Add to Cart
