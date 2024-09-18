@@ -35,8 +35,12 @@ const AppRoutes = () => {
             <Route path="/" element={<LazyIndex />} />
             <Route path="/cart" element={<LazyCart />} />
             <Route path="/checkout" element={<LazyCheckout />} />
-            <Route path="/product/:slug" element={<LazyProduct />} />
-            <Route path="/products" element={<LazyProductsList />} />
+            <Route path="/product/:productSlug" element={<LazyProduct />} />
+            <Route path="/search" element={<LazyProductsList />} />
+            <Route
+              path="/category/:categorySlug"
+              element={<LazyProductsList />}
+            />
             <Route path="/order/:id" element={<LazyOrder />} />
 
             {/* AUTH ONLY */}

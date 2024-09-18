@@ -28,14 +28,14 @@ export default function SearchInput() {
       className={`transition-outline relative flex w-[35rem] items-stretch overflow-hidden rounded-md border focus-within:border-none focus-within:ring-2 focus-within:ring-primary`}
       onSubmit={(e) => {
         e.preventDefault();
-        navigate(`/products?key=${key}`);
+        navigate(`/search?key=${key}`);
         inputRef.current?.blur();
       }}
     >
       {/* Overlay */}
       {isOverlayVisible && (
         <div
-          className={`fixed inset-0 z-50 bg-black/50 ${
+          className={`fixed inset-0 z-50 bg-black/50  ${
             !isFocused
               ? "animate-out fade-out-0 fill-mode-forwards"
               : "animate-in fade-in-0"

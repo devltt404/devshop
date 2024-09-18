@@ -89,7 +89,8 @@ export default class ProductService {
       const descendantIds = await CategoryService.getDescendantIds(
         foundCategory._id
       );
-      matchConditions.categoryId = { $in: [...descendantIds, categoryId] };
+
+      matchConditions.category = { $in: [...descendantIds, categoryId] };
     }
 
     if (Object.keys(matchConditions).length !== 0) {

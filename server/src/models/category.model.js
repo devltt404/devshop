@@ -8,8 +8,7 @@ const categorySchema = new mongoose.Schema(
       type: String,
       // Generate a custom ID (cat-xxxxx; x = 0-9)
       default: () => {
-        const nanoid = customAlphabet("0123456789", 5);
-        return "cat-" + nanoid();
+        return customAlphabet("0123456789", 5);
       },
     },
     name: {

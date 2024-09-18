@@ -17,10 +17,10 @@ import { LazyNotFound } from "../index.js";
 
 const ProductPage = () => {
   const [searchParams] = useSearchParams();
-  const { slug } = useParams();
+  const { productSlug } = useParams();
 
   const { data, isLoading } = useGetProductDetailQuery({
-    id: slug.slice(slug.lastIndexOf("-") + 1),
+    id: productSlug.slice(productSlug.lastIndexOf("-") + 1),
   });
 
   const [selectedSku, setSelectedSku] = useState(null);

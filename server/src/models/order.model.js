@@ -18,11 +18,11 @@ const OrderSchema = new mongoose.Schema(
         _id: false,
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "product",
+          ref: "Product",
         },
         sku: {
           type: String,
-          ref: "sku",
+          ref: "Sku",
         },
         name: {
           type: String,

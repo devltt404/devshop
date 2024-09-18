@@ -50,5 +50,5 @@ const skuSchema = new mongoose.Schema(
   }
 );
 
-const SkuModel = mongoose.model("sku", skuSchema);
+const SkuModel = mongoose.model("Sku", skuSchema);
 export default SkuModel;

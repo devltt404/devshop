@@ -5,9 +5,11 @@ import { useGetProductsQuery } from "@/redux/api/product.api.js";
 import _ from "lodash";
 import { Lightbulb } from "lucide-react";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-  
-const ProductsList = () => {
+import { useParams, useSearchParams } from "react-router-dom";
+
+const ProductsListPage = () => {
+  const { categorySlug } = useParams();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = useMemo(
@@ -17,6 +19,7 @@ const ProductsList = () => {
 
   const { data, isFetching } = useGetProductsQuery({
     ...query,
+    ...(categorySlug && { categoryId: categorySlug.split("-").pop() }),
     limit: 8,
   });
   const onQueryChange = (newParams) => {
@@ -39,14 +42,16 @@ const ProductsList = () => {
         className="h-auto self-stretch bg-gray-100"
       />
       <div className="flex-1">
-        <div className="mb-6 flex items-center gap-2">
-          <Lightbulb className="h-5 w-5" />
+        {!categorySlug && (
+          <div className="mb-6 flex items-center gap-2">
+            <Lightbulb className="h-5 w-5" />
 
-          <p className="text-lg">
-            Search results for keyword{" "}
-            <span className="font-bold italic">"{query.key}"</span>
-          </p>
-        </div>
+            <p className="text-lg">
+              Search results for keyword{" "}
+              <span className="font-bold italic">"{query.key}"</span>
+            </p>
+          </div>
+        )}
 
         {data?.metadata?.products.length === 0 ? (
           <p className="text-2xl text-muted-foreground">No products found.</p>
@@ -65,4 +70,4 @@ const ProductsList = () => {
   );
 };
 
-export default ProductsList;
+export default ProductsListPage;

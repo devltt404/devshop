@@ -2,19 +2,19 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    productId: {
+    product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
     },
-    modelId: {
+    sku: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductModel",
+      ref: "Sku",
       required: true,
     },
     comment: {
