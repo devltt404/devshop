@@ -4,6 +4,8 @@ import {
   isAuthorized,
   isOptionallyAuthorized,
 } from "../../middlewares/auth.middleware.js";
+import validate from "../../middlewares/validate.middleware.js";
+import { createOrderSchema } from "../../schemas/order.schema.js";
 import { asyncHandler } from "../../utils/helper.util.js";
 const orderRoutes = express.Router();
 
@@ -18,6 +20,7 @@ orderRoutes.get(
 orderRoutes.post(
   "/",
   isOptionallyAuthorized,
+  validate(createOrderSchema),
   asyncHandler(OrderController.createOrder)
 );
 orderRoutes.post(

@@ -57,7 +57,7 @@ const ProductsList = () => {
             sortBy={query.sortBy}
             onSortByChange={(sortBy) => onQueryChange({ sortBy })}
             pagination={data?.metadata?.pagination}
-            onPageChange={(page) => onQueryChange({ page })}
+            onPageChange={(newPage) => onQueryChange({ page: newPage })}
           />
         )}
       </div>

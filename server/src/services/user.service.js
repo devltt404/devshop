@@ -2,7 +2,6 @@ import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import UserModel from "../models/user.model.js";
 import { deleteUploadByPath } from "../utils/cloudinary.util.js";
-import { checkMissingFields } from "../utils/helper.util.js";
 
 const profileSelect = "name email picture";
 
@@ -42,8 +41,6 @@ export default class UserService {
   }
 
   static async updateUserProfile({ userId, updateData }) {
-    checkMissingFields({ updateData });
-
     const user = await this.getAndValidateUser({ userId });
 
     // Check if email already exists

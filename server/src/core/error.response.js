@@ -31,7 +31,7 @@ const ERROR = {
       code: "auth-006",
     },
     EMAIL_ALREADY_EXISTS: {
-      status: 400,
+      status: 409,
       message: "Email already exists. Please use another email.",
       code: "auth-007",
       errors: {
@@ -39,7 +39,7 @@ const ERROR = {
       },
     },
     INCORRECT_EMAIL_OR_PASSWORD: {
-      status: 400,
+      status: 401,
       message: "Email or password is incorrect",
       code: "auth-008",
       errors: {
@@ -55,7 +55,7 @@ const ERROR = {
       code: "cat-001",
     },
     NAME_ALREADY_EXISTS: {
-      status: 400,
+      status: 409,
       message: "Category name already exists.",
       code: "cat-002",
       errors: {
@@ -64,7 +64,7 @@ const ERROR = {
     },
     INVALID_PARENT_CATEGORY: {
       status: 400,
-      message: "Invalid parent category.",
+      message: "Invalid parent category id.",
       code: "cat-003",
       errors: {
         parent: "Parent category not found.",
@@ -126,7 +126,7 @@ const ERROR = {
   SKU: {},
   USER: {
     EMAIL_ALREADY_EXISTS: {
-      status: 400,
+      status: 409,
       message: "Email already exists.",
       code: "user-001",
       errors: {

@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 
 const LatestSection = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   const { data } = useGetProductsQuery({
-    currentPage,
+    page,
     limit: 10,
     sortBy: "ctimeDesc",
   });
@@ -37,14 +37,14 @@ const LatestSection = () => {
           ))}
       </div>
 
-      {currentPage < data?.metadata?.pagination.totalPages && (
+      {page < data?.metadata?.pagination.totalPages && (
         <div className="mt-8 text-center">
           <Button
             size="lg"
             variant="secondary"
             className="px-16"
             onClick={() => {
-              setCurrentPage(currentPage + 1);
+              setPage(page + 1);
               setShowSkeleton(true);
             }}
           >

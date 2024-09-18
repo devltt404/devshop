@@ -2,7 +2,6 @@ import { ORDER } from "../constants/index.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import OrderModel from "../models/order.model.js";
-import { checkMissingFields } from "../utils/helper.util.js";
 import CartService from "./cart.service.js";
 import PaymentService from "./payment.service.js";
 import ProductService from "./product.service.js";
@@ -43,12 +42,6 @@ export class OrderService {
     shippingAddress,
     orderData,
   }) {
-    checkMissingFields({
-      paymentIntentId,
-      customerInfo,
-      shippingAddress,
-    });
-
     const order = await OrderModel.create({
       userId,
       items: orderData.items,

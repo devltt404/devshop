@@ -56,9 +56,10 @@ const CartItems = ({ cartItems, setCartItems }) => {
                     <h3 className="line-clamp-2 text-lg font-semibold">
                       {cartItem.name}
                     </h3>
-                    {cartItem.type === "configurable" && (
+
+                    {cartItem.variationSelection && (
                       <p className="mt-1 text-sm text-gray-500">
-                        {Object.values(cartItem.variationSelection).join(" - ")}
+                        {cartItem.variationSelection}
                       </p>
                     )}
                   </Link>

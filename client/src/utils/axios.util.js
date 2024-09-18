@@ -12,15 +12,27 @@ axiosWithAuth.interceptors.response.use(
   },
   async function (error) {
     try {
-      //Try to refresh token if unauthorized (401)
+      // Try to refresh token if unauthorized (401)
       if (error.response.status === 401) {
+        // Whitelisted URLs that should not trigger a token refresh
+        const whitelistedUrls = [
+          "/auth/login",
+          "/auth/register",
+          "/auth/google",
+        ];
+
+        if (whitelistedUrls.includes(error.config.url)) {
+          throw error;
+        }
+
         await axios.post(apiBaseUrl + "/auth/refresh-token", null, {
           withCredentials: true,
         });
+
         return axiosWithAuth.request(error.config);
-      } else {
-        return Promise.reject(error);
       }
+
+      throw error;
     } catch (error) {
       return Promise.reject(error);
     }

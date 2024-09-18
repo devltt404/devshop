@@ -6,6 +6,8 @@ import {
   logUploadDetails,
   uploadCloud,
 } from "../../middlewares/upload.middleware.js";
+import validate from "../../middlewares/validate.middleware.js";
+import { updatePictureSchema } from "../../schemas/user.route.js";
 import { asyncHandler } from "../../utils/helper.util.js";
 const userRoutes = express.Router();
 
@@ -18,6 +20,7 @@ userRoutes.get(
 userRoutes.patch(
   "/profile",
   isAuthorized,
+  validate(updatePictureSchema),
   asyncHandler(UserController.updateUserProfile)
 );
 
@@ -29,6 +32,7 @@ userRoutes.put(
     allowedFormats: CLOUDINARY.ALLOWED_FORMATS.IMAGE,
   }).single("picture"),
   logUploadDetails,
+  validate(updatePictureSchema),
   asyncHandler(UserController.updateUserPicture)
 );
 

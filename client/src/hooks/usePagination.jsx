@@ -6,34 +6,34 @@ import { useMemo } from "react";
  * @param {Object} pagination - Pagination parameters.
  * @param {number} pagination.totalPages - Total number of pages.
  * @param {number} [pagination.minSiblingCount=1] - Minimum number of siblings to display
- * @param {number} pagination.currentPage - Current page number.
+ * @param {number} pagination.page - Current page number.
  * @returns {Array} Array of pagination items, each may be a number or null.
  *
  * @example
  * // Case 1: total pages are Less than minPageCountNeedsDots
- * usePagination({ totalPages: 5, currentPage: 1 })
+ * usePagination({ totalPages: 5, page: 1 })
  * // Returns: [1, 2, 3, 4, 5]
  *
  * @example
  * // Case 2: Only needs right dots
- * usePagination({ totalPages: 50, currentPage: 3 })
+ * usePagination({ totalPages: 50, page: 3 })
  * // Returns: [1, 2, 3, 4, 5, null, 50]
  *
  * @example
  * // Case 3: Only needs left dots
- * usePagination({ totalPages: 50, currentPage: 48 })
+ * usePagination({ totalPages: 50, page: 48 })
  * // Returns: [1, null, 46, 47, 48, 49, 50]
  *
  * @example
  * // Case 4: Needs both left and right dots
- * usePagination({ totalPages: 50, currentPage: 25 })
+ * usePagination({ totalPages: 50, page: 25 })
  * // Returns: [1, null, 24, 25, 26, null, 50]
  */
-const usePagination = ({ totalPages, minSiblingCount = 1, currentPage }) => {
+const usePagination = ({ totalPages, minSiblingCount = 1, page }) => {
   const paginationRange = useMemo(() => {
     /*
       Number of minimum pages that need to display with dots equals to 
-      minSiblingCount + 5 (firstPage + lastPage + currentPage + 2*dots)
+      minSiblingCount + 5 (firstPage + lastPage + page + 2*dots)
     */
     const minPageCountNeedsDots = minSiblingCount + 5;
 
@@ -42,8 +42,8 @@ const usePagination = ({ totalPages, minSiblingCount = 1, currentPage }) => {
       return range(1, totalPages + 1);
     }
 
-    const leftSibling = Math.max(currentPage - minSiblingCount, 1);
-    const rightSibling = Math.min(currentPage + minSiblingCount, totalPages);
+    const leftSibling = Math.max(page - minSiblingCount, 1);
+    const rightSibling = Math.min(page + minSiblingCount, totalPages);
 
     const showLeftDots = leftSibling > 2;
     const showRightDots = rightSibling < totalPages - 2;
@@ -74,7 +74,7 @@ const usePagination = ({ totalPages, minSiblingCount = 1, currentPage }) => {
         totalPages,
       ];
     }
-  }, [totalPages, minSiblingCount, currentPage]);
+  }, [totalPages, minSiblingCount, page]);
 
   return paginationRange;
 };

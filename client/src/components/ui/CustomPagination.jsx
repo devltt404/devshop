@@ -9,21 +9,21 @@ import {
 } from "@/components/ui/pagination";
 import usePagination from "@/hooks/usePagination.jsx";
 
-const CustomPagination = ({ totalPages, currentPage, onPageChange }) => {
+const CustomPagination = ({ totalPages, page, onPageChange }) => {
   // Don't render pagination if there's only one page or page is 0
-  if (currentPage === 0 || totalPages < 2) return null;
+  if (page === 0 || totalPages < 2) return null;
 
-  const paginationRange = usePagination({ currentPage, totalPages });
+  const paginationRange = usePagination({ page, totalPages });
 
-  const onNext = () => onPageChange(currentPage + 1);
-  const onPrev = () => onPageChange(currentPage - 1);
+  const onNext = () => onPageChange(page + 1);
+  const onPrev = () => onPageChange(page - 1);
 
   return (
     <Pagination className="mt-8">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className={currentPage <= 1 && "pointer-events-none opacity-50"}
+            className={page <= 1 && "pointer-events-none opacity-50"}
             onClick={onPrev}
           />
         </PaginationItem>
@@ -38,18 +38,14 @@ const CustomPagination = ({ totalPages, currentPage, onPageChange }) => {
 
           return (
             <PaginationItem key={index} onClick={() => onPageChange(item)}>
-              <PaginationLink isActive={item === currentPage}>
-                {item}
-              </PaginationLink>
+              <PaginationLink isActive={item === page}>{item}</PaginationLink>
             </PaginationItem>
           );
         })}
 
         <PaginationItem>
           <PaginationNext
-            className={
-              currentPage === totalPages && "pointer-events-none opacity-50"
-            }
+            className={page === totalPages && "pointer-events-none opacity-50"}
             onClick={onNext}
           />
         </PaginationItem>

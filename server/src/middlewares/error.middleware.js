@@ -1,4 +1,5 @@
 import serverConfig from "../configs/server.config.js";
+import { ErrorResponse } from "../core/response.js";
 import logger from "../logger.js";
 import {
   deleteUploadByFile,
@@ -41,14 +42,10 @@ export const errorHandler = (error, req, res, next) => {
   const message = !serverConfig.isPro
     ? error.message || "Something went wrong. Please try again."
     : "Internal server error. Please try again.";
-
-  const errResponse = {
-    status: "error",
+  const errorResponse = new ErrorResponse({
     message,
-  };
-
-  errResponse.code = error.code;
-  errResponse.errors = error.errors;
-
-  res.status(status).json(errResponse);
+    errors: error.errors,
+    code: error.code,
+  });
+  res.status(status).json(errorResponse);
 };

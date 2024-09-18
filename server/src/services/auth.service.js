@@ -4,7 +4,6 @@ import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import { clearTokenCookie, setTokenCookie } from "../utils/auth.util.js";
 import { assignGuestCartToUser, clearCartCookie } from "../utils/cart.util.js";
-import { checkMissingFields } from "../utils/helper.util.js";
 import { compareUserPassword, generateTokens } from "../utils/user.util.js";
 import UserService from "./user.service.js";
 
@@ -109,8 +108,6 @@ export default class AuthService {
   }
 
   static async register({ name, email, password, guestCartId, res }) {
-    checkMissingFields({ name, email, password });
-
     const isUserExisted = await UserService.findUserByEmail({ email });
     if (isUserExisted) {
       throw new ErrorResponse(ERROR.AUTH.EMAIL_ALREADY_EXISTS);
@@ -134,8 +131,6 @@ export default class AuthService {
   }
 
   static async login({ email, password, guestCartId, res }) {
-    checkMissingFields({ email, password });
-
     const foundUser = await UserService.findUserByEmail({
       email,
       select: "password name email",

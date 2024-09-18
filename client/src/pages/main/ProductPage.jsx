@@ -150,7 +150,7 @@ const ProductPage = () => {
               <span>{product.numSold} sold</span>
             </div>
 
-            <Separator className="my-4" />
+            <Separator className="my-6" />
 
             {/* PRICE */}
             <div className="mb-4">
@@ -185,7 +185,7 @@ const ProductPage = () => {
               <div>
                 {product.variations.map((variation, i) => (
                   <div className="mb-4" key={i}>
-                    <h3 className="mb-1 font-semibold">{variation.name}</h3>
+                    <h3 className="mb-2 font-semibold">{variation.name}</h3>
                     <div className="flex flex-wrap gap-4">
                       {variation.options.map((option, i2) => {
                         return (
@@ -222,7 +222,7 @@ const ProductPage = () => {
               </div>
             }
 
-            <Separator className="my-4" />
+            <Separator className="my-6" />
             <ProductDetails details={product.details} />
           </div>
 
