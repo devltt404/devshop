@@ -1,0 +1,1 @@
+const e=Object.freeze({STATUS:{PENDING:"pending",PROCESSING:"processing",PROCESSED:"processed"}}),c=Object.freeze({SORT_BY_OPTIONS:[{value:"relevancy",label:"Relevancy"},{value:"priceAsc",label:"Price: Low-High"},{value:"priceDesc",label:"Price: High-Low"}]});export{e as O,c as P};
