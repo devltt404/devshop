@@ -1,1 +1,0 @@
-import{j as e,x as a}from"./index-DeQvR-Up.js";const r=({className:t,children:s})=>e.jsx("h1",{className:a("text-3xl font-bold",t),children:s}),n=({className:t,children:s})=>e.jsx("p",{className:a("mb-4 mt-1 text-muted-foreground",t),children:s});export{r as P,n as a};

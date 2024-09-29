@@ -1,1 +1,0 @@
-import{q as r}from"./index-DeQvR-Up.js";const o="/product",u=r.injectEndpoints({endpoints:e=>({getProducts:e.query({query:({...t})=>({url:o,method:"GET",params:t})}),getProductDetail:e.query({query:({id:t})=>({url:`${o}/${t}`,method:"GET"})})})}),{useGetProductsQuery:c,useGetProductDetailQuery:d}=u;export{d as a,c as u};
