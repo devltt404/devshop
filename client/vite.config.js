@@ -4,7 +4,6 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/devshop/",
   plugins: [react()],
   resolve: {
     alias: {
