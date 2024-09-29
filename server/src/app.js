@@ -34,7 +34,7 @@ app.use(
 app.use(helmet());
 app.use(compression());
 
-app.use(cors({ origin: serverConfig.client.baseUrl, credentials: true }));
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
