@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4000
 
 # Define the command to run the app
-CMD ["node", "--env-file=.env.production", "server.js"]
+CMD ["node", "server.js"]
