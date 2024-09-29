@@ -11,3 +11,5 @@
 /server/src/logs
 
 /server/src/scripts
+
+/client/dist
