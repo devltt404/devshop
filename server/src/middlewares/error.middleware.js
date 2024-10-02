@@ -39,9 +39,13 @@ export const errorHandler = (error, req, res, next) => {
   }
 
   const status = error.status || 500;
-  const message = !serverConfig.isPro
-    ? error.message || "Something went wrong. Please try again."
-    : "Internal server error. Please try again.";
+  let message = error.message || "Something went wrong. Please try again.";
+
+  // If in production mode, hide the message for internal server errors
+  if (status === 500 && serverConfig.isPro) {
+    message = "Internal server error. Please try again.";
+  }
+
   const errorResponse = new ErrorResponse({
     message,
     errors: error.errors,
