@@ -1,3 +1,4 @@
+import ms from "ms";
 import serverConfig from "../configs/server.config.js";
 import CartService from "../services/cart.service.js";
 
@@ -5,7 +6,7 @@ export function setCartCookie({ cartId, res }) {
   res.cookie("cartId", cartId, {
     httpOnly: true,
     secure: serverConfig.isPro,
-    maxAge: "90d",
+    maxAge: ms("90d"),
   });
 }
 
