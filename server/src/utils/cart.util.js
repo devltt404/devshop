@@ -7,6 +7,7 @@ export function setCartCookie({ cartId, res }) {
     httpOnly: true,
     secure: serverConfig.isPro,
     maxAge: ms("90d"),
+    sameSite: "None",
   });
 }
 
@@ -14,6 +15,7 @@ export function clearCartCookie(res) {
   res.clearCookie("cartId", {
     httpOnly: true,
     secure: serverConfig.isPro,
+    sameSite: "None",
   });
 }
 
