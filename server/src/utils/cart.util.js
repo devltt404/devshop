@@ -1,17 +1,18 @@
+import serverConfig from "../configs/server.config.js";
 import CartService from "../services/cart.service.js";
 
 export function setCartCookie({ cartId, res }) {
   res.cookie("cartId", cartId, {
     httpOnly: true,
-    sameSite: "strict",
-    maxAge: 31536000000, // 1 year
+    secure: serverConfig.isPro,
+    maxAge: "90d",
   });
 }
 
 export function clearCartCookie(res) {
   res.clearCookie("cartId", {
     httpOnly: true,
-    sameSite: "strict",
+    secure: serverConfig.isPro,
   });
 }
 
