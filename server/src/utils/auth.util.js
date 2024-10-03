@@ -29,6 +29,7 @@ export function setTokenCookie({ res, accessToken, refreshToken }) {
     httpOnly: false,
     secure: serverConfig.isPro,
     sameSite: "None",
+    maxAge: ms("10y"),
   });
 
   return { accessToken, refreshToken };
