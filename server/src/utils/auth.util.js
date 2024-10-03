@@ -27,6 +27,7 @@ export function setTokenCookie({ res, accessToken, refreshToken }) {
   // This lets the client know if it should authenticate the user
   res.cookie("session", new Date().getTime(), {
     httpOnly: false,
+    secure: serverConfig.isPro,
     sameSite: "None",
   });
 
