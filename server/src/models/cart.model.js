@@ -13,12 +13,12 @@ const cartSchema = new mongoose.Schema(
           _id: false,
           product: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "product",
+            ref: "Product",
             required: true,
           },
           sku: {
             type: String,
-            ref: "sku",
+            ref: "Sku",
           },
           quantity: {
             type: Number,

@@ -37,7 +37,7 @@ const skuSchema = new mongoose.Schema(
     // The product ID to which this SKU (variant) belongs
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "product",
+      ref: "Product",
       required: true,
     },
     images: {
