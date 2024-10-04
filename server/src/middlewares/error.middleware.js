@@ -15,8 +15,6 @@ export const notFoundHandler = (req, res, next) => {
 
 // Error Handling Middleware
 export const errorHandler = (error, req, res, next) => {
-  logger.error(error);
-
   // Delete uploaded files if error occurs
   if (req.file) {
     deleteUploadByFile(req.file);
@@ -25,8 +23,19 @@ export const errorHandler = (error, req, res, next) => {
     deleteUploadByFiles(req.files);
   }
 
+  // Handle unexpected error
+  if (!error.status) {
+    error.status = 500;
+    logger.error(error);
+  }
+
+  // Hide server error message in production
+  if (error.status === 500 && serverConfig.isPro) {
+    error.message = "Internal server error. Please try again.";
+  }
+
   //Handle mongoose validation error
-  if (error.name === "ValidationError") {
+  else if (error.name === "ValidationError") {
     error.status = 400;
     error.message = "Validation error. Please check your fields.";
 
@@ -38,18 +47,10 @@ export const errorHandler = (error, req, res, next) => {
     error.errors = tempErrors;
   }
 
-  const status = error.status || 500;
-  let message = error.message || "Something went wrong. Please try again.";
-
-  // If in production mode, hide the message for internal server errors
-  if (status === 500 && serverConfig.isPro) {
-    message = "Internal server error. Please try again.";
-  }
-
   const errorResponse = new ErrorResponse({
-    message,
+    message: error.message,
     errors: error.errors,
     code: error.code,
   });
-  res.status(status).json(errorResponse);
+  res.status(error.status).json(errorResponse);
 };

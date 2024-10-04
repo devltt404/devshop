@@ -36,7 +36,7 @@ app.use(compression());
 
 app.use(
   cors({
-    origin: serverConfig.client.baseUrl,
+    origin: [serverConfig.client.baseUrl],
     credentials: true,
   })
 );

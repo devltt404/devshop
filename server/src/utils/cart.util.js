@@ -1,24 +1,19 @@
 import ms from "ms";
-import serverConfig from "../configs/server.config.js";
+import { COOKIE_KEY } from "../constants/index.js";
 import CartService from "../services/cart.service.js";
+import { clearCookie, setCookie } from "./cookie.util.js";
 
 export function setCartCookie({ cartId, res }) {
-  res.cookie("cartId", cartId, {
-    httpOnly: true,
-    secure: serverConfig.isPro,
+  setCookie(res, COOKIE_KEY.CART_ID, cartId, {
     maxAge: ms("90d"),
-    sameSite: "None",
   });
 }
 
 export function clearCartCookie(res) {
-  res.clearCookie("cartId", {
-    httpOnly: true,
-    secure: serverConfig.isPro,
-    sameSite: "None",
-  });
+  clearCookie(res, COOKIE_KEY.CART_ID);
 }
 
+// Assign the guest cart to the user if the user logged in and does not have a cart.
 export async function assignGuestCartToUser({ cartId, userId, res }) {
   const userCart = await CartService.findCartByUserId({ userId });
 

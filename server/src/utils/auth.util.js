@@ -1,5 +1,7 @@
 import ms from "ms";
 import serverConfig from "../configs/server.config.js";
+import { COOKIE_KEY } from "../constants/index.js";
+import { clearCookie, setCookie } from "./cookie.util.js";
 
 export function getCommonAuthParams(req, res) {
   return {
@@ -10,41 +12,17 @@ export function getCommonAuthParams(req, res) {
 }
 
 export function setTokenCookie({ res, accessToken, refreshToken }) {
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: serverConfig.isPro,
+  setCookie(res, COOKIE_KEY.ACCESS_TOKEN, accessToken, {
     maxAge: ms(serverConfig.server.accessTokenExpiration),
-    sameSite: "None",
   });
-
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: serverConfig.isPro,
+  setCookie(res, COOKIE_KEY.REFRESH_TOKEN, refreshToken, {
     maxAge: ms(serverConfig.server.refreshTokenExpiration),
-    sameSite: "None",
-  });
-
-  // This lets the client know if it should authenticate the user
-  res.cookie("session", new Date().getTime(), {
-    httpOnly: false,
-    secure: serverConfig.isPro,
-    sameSite: "None",
-    maxAge: ms("10y"),
   });
 
   return { accessToken, refreshToken };
 }
 
 export function clearTokenCookie(res) {
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: serverConfig.isPro,
-    sameSite: "None",
-  });
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: serverConfig.isPro,
-    sameSite: "None",
-  });
-  res.clearCookie("session", { httpOnly: false, sameSite: "None" });
+  clearCookie(res, COOKIE_KEY.ACCESS_TOKEN);
+  clearCookie(res, COOKIE_KEY.REFRESH_TOKEN);
 }

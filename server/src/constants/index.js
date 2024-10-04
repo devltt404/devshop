@@ -1,3 +1,15 @@
+export const COOKIE_KEY = {
+  ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
+  CART_ID: "cartId",
+};
+
+export const NODE_ENV = {
+  development: "development",
+  production: "production",
+  test: "test",
+};
+
 export const ORDER = Object.freeze({
   STATUS: {
     PENDING: "pending",
