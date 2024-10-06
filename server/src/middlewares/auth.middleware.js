@@ -9,8 +9,8 @@ const checkAuthentication =
   ({ optional } = { optional: false }) =>
   async (req, res, next) => {
     try {
-      const { session } = req.cookies;
-      if (!session && optional) {
+      const { refreshToken } = req.cookies;
+      if (!refreshToken && optional) {
         return next();
       }
       const selectedUserFields = "_id name email cart role picture";
