@@ -25,7 +25,7 @@ export default function SearchInput() {
   };
   return (
     <form
-      className={`transition-outline relative flex w-[35rem] items-stretch overflow-hidden rounded-md border focus-within:border-none focus-within:ring-2 focus-within:ring-primary`}
+      className={`transition-outline relative flex max-w-[35rem] flex-1 items-stretch overflow-hidden rounded-md border focus-within:border-none focus-within:ring-2 focus-within:ring-primary`}
       onSubmit={(e) => {
         e.preventDefault();
         navigate(`/search?key=${key}`);
@@ -35,7 +35,7 @@ export default function SearchInput() {
       {/* Overlay */}
       {isOverlayVisible && (
         <div
-          className={`fixed inset-0 z-50 bg-black/50  ${
+          className={`fixed inset-0 z-50 bg-black/50 ${
             !isFocused
               ? "animate-out fade-out-0 fill-mode-forwards"
               : "animate-in fade-in-0"
@@ -47,7 +47,7 @@ export default function SearchInput() {
         ref={inputRef}
         type="text"
         placeholder="Search for products..."
-        className="z-50 flex-1 bg-muted py-2 pl-4 pr-12 focus:outline-none"
+        className="z-50 min-w-0 flex-1 bg-muted py-2 pl-4 pr-6 focus:outline-none"
         onFocus={handleFocus}
         onBlur={handleBlur}
         value={key}
@@ -56,7 +56,7 @@ export default function SearchInput() {
       <button
         type="submit"
         disabled={!key}
-        className="z-50 bg-primary px-4 text-primary-foreground"
+        className="z-50 shrink-0 bg-primary px-4 text-primary-foreground"
       >
         <SearchIcon className="h-5 w-5 stroke-2" />
       </button>

@@ -22,7 +22,7 @@ const CartButton = () => {
   return (
     <Link
       to="/cart"
-      className="group flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
+      className="group flex items-center rounded-md p-2 transition hover:bg-muted lg:px-4 lg:py-3"
     >
       <div className="relative">
         <ShoppingBag className="stroke-[1.5px] text-secondary transition group-hover:text-primary" />

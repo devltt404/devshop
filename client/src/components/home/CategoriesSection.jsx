@@ -2,8 +2,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel.jsx";
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import { useGetCategoriesQuery } from "@/redux/api/category.api.js";
@@ -28,12 +26,12 @@ const CategoriesSection = () => {
         Categories
       </h2>
 
-      <p className="mb-14 text-center text-muted-foreground">
+      <p className="mb-8 text-center text-muted-foreground">
         We offer a wide range of categories to choose from, let's explore!
       </p>
 
       <Carousel className="w-full">
-        <CarouselContent className="gap-4">
+        <CarouselContent className="gap-1 md:gap-2">
           {isLoading ? (
             <CategoriesSkeleton />
           ) : (
@@ -45,7 +43,7 @@ const CategoriesSection = () => {
               >
                 <Link to={`/category/${category.slug}-${category._id}`}>
                   <div className="group inline-flex flex-col items-center gap-2">
-                    <div className="inline-flex h-36 w-44 items-center justify-center rounded-md border bg-slate-50 p-10 bg-white">
+                    <div className="inline-flex h-36 w-44 items-center justify-center rounded-md border bg-slate-50 bg-white p-10">
                       <img
                         src={category.image}
                         alt={category.name}
@@ -59,8 +57,6 @@ const CategoriesSection = () => {
             ))
           )}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
     </section>
   );

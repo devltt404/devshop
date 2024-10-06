@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import StripeIcon from "../icons/StripeIcon.jsx";
 import { PageDescription, PageTitle } from "../ui/PageTitle.jsx";
 import { toast } from "../ui/use-toast.js";
+import TestCard from "./TestCard.jsx";
 
 const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
   const navigate = useNavigate();
@@ -112,7 +113,7 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
 
   return (
     <form onSubmit={handleSubmit} className="max-lg:order-1">
-      <PageTitle className="mb-1">Checkout</PageTitle>
+      <PageTitle>Checkout</PageTitle>
       <PageDescription>
         Your payment is powered by
         <StripeIcon className="h-14 w-14" />
@@ -137,7 +138,13 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
       </div>
 
       <div className="mb-8">
-        <h2 className="mb-2 text-2xl font-semibold">Payment Info</h2>
+        <h2 className="mb-1 text-2xl font-semibold">Payment Info</h2>
+        <p className="mb-2 text-secondary">
+          Click to copy the following test card details
+        </p>
+
+        <TestCard />
+
         <PaymentElement />
       </div>
 

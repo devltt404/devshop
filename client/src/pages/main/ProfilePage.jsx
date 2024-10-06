@@ -90,11 +90,9 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="container-area">
+    <div className="page-spacer container">
       <PageTitle>Profile</PageTitle>
-      <PageDescription className="mb-6">
-        You can update your basic info here
-      </PageDescription>
+      <PageDescription className="mb-8">You can update your basic info here</PageDescription>
 
       <LoadingOverlay isLoading={form.formState.isSubmitting}>
         <div className="flex justify-between">

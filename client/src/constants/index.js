@@ -13,3 +13,10 @@ export const PRODUCT = Object.freeze({
     { value: "priceDesc", label: "Price: High-Low" },
   ],
 });
+
+export const MEDIA_QUERY = Object.freeze({
+  MOBILE: "(max-width: 768px)",
+  TABLET: "(max-width: 992px)",
+  LAPTOP: "(max-width: 1200px)",
+  DESKTOP: "(min-width: 1201px)",
+});

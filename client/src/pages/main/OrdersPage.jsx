@@ -19,14 +19,14 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="container-area">
+    <div className="page-spacer container">
       <PageTitle>Orders</PageTitle>
 
       {orders && orders.length === 0 ? (
         <PageDescription>You don't have any orders yet.</PageDescription>
       ) : (
         <>
-          <PageDescription className="mb-5">
+          <PageDescription>
             You have <span className="font-semibold">{orders?.length}</span>{" "}
             {orders?.length > 1 ? "orders" : "order"}.
           </PageDescription>

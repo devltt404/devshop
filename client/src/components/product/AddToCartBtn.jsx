@@ -11,7 +11,7 @@ const AddToCartBtn = ({ quantity, productId, skuId }) => {
 
   return (
     <Button
-      className="mt-4 w-full py-6"
+      className="w-full py-6"
       onClick={() => {
         if (!skuId) {
           toast({

@@ -1,14 +1,16 @@
 import { MinusIcon, PlusIcon } from "lucide-react";
+import React from "react";
 import { Button } from "../ui/button.jsx";
 import { Input } from "../ui/input.jsx";
 import { toast } from "../ui/use-toast.js";
 
-const ProductQuantity = ({ quantity, setQuantity, stock }) => {
+const ProductQuantity = React.memo(({ quantity, setQuantity, stock }) => {
   return (
-    <div className="flex gap-2 ">
+    <div className="flex gap-2">
       <Button
         variant="outline"
         size="icon"
+        className="h-11 w-11"
         disabled={quantity === 1}
         onClick={() => setQuantity(quantity - 1)}
       >
@@ -17,7 +19,7 @@ const ProductQuantity = ({ quantity, setQuantity, stock }) => {
 
       <Input
         type="text"
-        className="h-10 w-12 text-center"
+        className="h-11 w-12 text-center"
         value={quantity}
         onChange={(e) => {
           if (/^(?!0)\d*$/.test(e.target.value)) {
@@ -43,6 +45,7 @@ const ProductQuantity = ({ quantity, setQuantity, stock }) => {
       <Button
         variant="outline"
         size="icon"
+        className="h-11 w-11"
         disabled={quantity === stock}
         onClick={() => setQuantity(quantity + 1)}
       >
@@ -50,6 +53,6 @@ const ProductQuantity = ({ quantity, setQuantity, stock }) => {
       </Button>
     </div>
   );
-};
+});
 
 export default ProductQuantity;

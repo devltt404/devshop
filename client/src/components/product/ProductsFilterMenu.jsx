@@ -12,9 +12,14 @@ import { Button } from "../ui/button.jsx";
 import { Separator } from "../ui/separator.jsx";
 import RatingRow from "./RatingRow.jsx";
 
-const ProductsFilter = ({ query, onQueryChange, onClearQuery }) => {
+const ProductsFilterMenu = ({
+  query,
+  onQueryChange,
+  onClearQuery,
+  className,
+}) => {
   return (
-    <div className="w-48">
+    <div className={className}>
       <h2 className="flex items-center gap-2 text-xl font-semibold">
         <Filter className="h-5 w-5" />
         Filter
@@ -60,15 +65,17 @@ const ProductsFilter = ({ query, onQueryChange, onClearQuery }) => {
         {/* Price */}
         <AccordionItem value="item-3">
           <AccordionTrigger>Price</AccordionTrigger>
-          <AccordionContent className="">
-            <div className="mb-4 flex items-center justify-between">
+          <AccordionContent>
+            <div className="mb-4 grid max-w-full grid-cols-[1fr_1rem_1fr] items-center gap-2">
               <input
-                className="w-20 border px-2 py-2 text-sm"
+                className="min-w-0 rounded-sm border px-2 py-2 text-sm"
+                type="number"
                 placeholder="Min"
               />
-              <Separator className="w-4" />
+              <Separator className="w-4 bg-gray-300" />
               <input
-                className="w-20 border px-2 py-2 text-sm"
+                className="min-w-0 rounded-sm border px-2 py-2 text-sm"
+                type="number"
                 placeholder="Max"
               />
             </div>
@@ -91,4 +98,4 @@ const ProductsFilter = ({ query, onQueryChange, onClearQuery }) => {
   );
 };
 
-export default ProductsFilter;
+export default ProductsFilterMenu;

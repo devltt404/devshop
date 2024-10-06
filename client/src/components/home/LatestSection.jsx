@@ -26,7 +26,7 @@ const LatestSection = () => {
   return (
     <section className="container">
       <h2 className="mb-8 text-3xl font-bold">Latest Products</h2>
-      <div className="grid grid-cols-5 gap-x-6 gap-y-6">
+      <div className="grid grid-cols-2 gap-4 xl:gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}

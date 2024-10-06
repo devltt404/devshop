@@ -73,6 +73,18 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.container-area{
-  @apply container pt-6 pb-16;
+.page-spacer {
+  @apply pt-8 pb-14;
+}
+
+.page-title {
+  @apply text-3xl font-bold;
+}
+
+.page-subtitle {
+  @apply mb-4 mt-1 text-muted-foreground;
+}
+
+.animation-fill-forwards{
+  animation-fill-mode: forwards;
 }

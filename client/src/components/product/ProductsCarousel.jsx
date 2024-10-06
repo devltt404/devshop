@@ -1,31 +1,35 @@
 import {
   Carousel,
+  CarouselButtonsGroup,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel.jsx";
 import ProductCard from "./ProductCard.jsx";
 import ProductCardSkeleton from "./ProductCardSkeleton.jsx";
 
+const ProductsCarouselItem = ({ children }) => (
+  <CarouselItem className="pl-4 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 xl:pl-6 max-md:w-56 max-md:basis-auto">
+    {children}
+  </CarouselItem>
+);
+
 const ProductsCarousel = ({ products, isLoading }) => {
   return (
     <Carousel className="w-full">
-      <CarouselContent>
+      <CarouselContent className="-ml-4 xl:-ml-6">
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index} className="basis-1/5 pl-6">
+              <ProductsCarouselItem key={index}>
                 <ProductCardSkeleton />
-              </CarouselItem>
+              </ProductsCarouselItem>
             ))
           : products?.map((product) => (
-              <CarouselItem key={product._id} className="basis-1/5 pl-6">
+              <ProductsCarouselItem key={product._id}>
                 <ProductCard product={product} />
-              </CarouselItem>
+              </ProductsCarouselItem>
             ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselButtonsGroup />
     </Carousel>
   );
 };

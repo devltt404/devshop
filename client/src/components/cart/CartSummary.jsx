@@ -5,8 +5,8 @@ import { Button } from "../ui/button.jsx";
 
 const CartSummary = ({ subtotal }) => {
   return (
-    <div className="h-fit w-[26rem] rounded-lg bg-white px-8 py-8 max-xl:w-[22rem] max-lg:w-full">
-      <h1 className="text-2xl font-semibold text-primary">Cart Summary</h1>
+    <div className="h-fit rounded-lg bg-white px-8 py-8">
+      <h1 className="text-2xl font-bold text-primary">Cart Summary</h1>
       <div className="flex justify-between py-7 text-lg font-semibold">
         <h2>Subtotal</h2>
         <p>${displayPrice(subtotal)}</p>

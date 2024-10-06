@@ -45,6 +45,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       boxShadow: {
+        block: "0px 18px 50px rgba(26, 26, 26, 0.1)",
         inner: "0px 0px 0px 2px inset",
         outer: "0px 0px 0px 1px",
       },

@@ -39,25 +39,25 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
   return (
     <LoadingOverlay isLoading={isRemovingItem || isUpdatingQuantity}>
-      <div className="grid flex-1 grid-cols-[6rem_1fr_8rem] gap-y-8 border-gray-100 bg-white px-4 py-6">
+      <div className="grid flex-1 grid-cols-[auto_1fr_auto] gap-y-10 rounded-lg border-gray-100 bg-white px-4 py-6">
         {cartItems.map((cartItem, index) => {
           return (
             <Fragment key={cartItem.sku}>
               <Link
-                className="self-center"
+                className=""
                 to={`/product/${cartItem.slug}-${cartItem.product}`}
               >
                 <img
                   src={cartItem.image}
                   alt={cartItem.name}
-                  className="h-24 w-24 object-contain"
+                  className="aspect-square w-16 object-contain p-2 md:w-24"
                 />
               </Link>
 
-              <div className="me-10 flex justify-between gap-6 px-6 max-xl:me-4 max-xl:flex-col">
+              <div className="flex flex-col gap-4 px-6">
                 <div>
                   <Link to={`/product/${cartItem.slug}-${cartItem.product}`}>
-                    <h3 className="line-clamp-2 text-lg font-semibold">
+                    <h3 className="line-clamp-2 text-base font-semibold md:text-lg">
                       {cartItem.name}
                     </h3>
 
@@ -68,6 +68,58 @@ const CartItems = ({ cartItems, setCartItems }) => {
                     )}
                   </Link>
                 </div>
+
+                <p className="text-xl font-semibold">
+                  ${displayPrice(cartItem.price * cartItem.quantity)}
+                </p>
+              </div>
+
+              <div className="flex flex-col items-end justify-between">
+                <AlertDialog
+                  open={deleteAlertOpen[cartItem.sku]}
+                  onDismiss={() => {
+                    setDeleteAlertOpen((prev) => {
+                      const newOpen = [...prev];
+                      newOpen[index] = false;
+                      return newOpen;
+                    });
+                  }}
+                >
+                  <AlertDialogTrigger asChild>
+                    <Button size="icon" className="h-9 w-9" variant="outline">
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Delete {cartItem.name}?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to remove this cart item from your
+                        cart?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() =>
+                          mutateCart({
+                            mutationFunc: () =>
+                              removeCartItem({
+                                productId: cartItem.product,
+                                skuId: cartItem.sku,
+                              }),
+                            dispatch,
+                            setCartItems,
+                          })
+                        }
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
 
                 <CartQuantityInput
                   openDeleteAlert={() => {
@@ -86,59 +138,6 @@ const CartItems = ({ cartItems, setCartItems }) => {
                   quantity={cartItem.quantity}
                   stock={cartItem.stock}
                 />
-              </div>
-
-              <div className="flex flex-col justify-between text-right">
-                <p className="truncate text-xl font-semibold">
-                  ${displayPrice(cartItem.price * cartItem.quantity)}
-                </p>
-                <div>
-                  <AlertDialog
-                    open={deleteAlertOpen[cartItem.sku]}
-                    onDismiss={() => {
-                      setDeleteAlertOpen((prev) => {
-                        const newOpen = [...prev];
-                        newOpen[index] = false;
-                        return newOpen;
-                      });
-                    }}
-                  >
-                    <AlertDialogTrigger asChild>
-                      <Button size="icon" variant="outline">
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Delete {cartItem.name}?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to remove this cart item from
-                          your cart?
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() =>
-                            mutateCart({
-                              mutationFunc: () =>
-                                removeCartItem({
-                                  productId: cartItem.product,
-                                  skuId: cartItem.sku,
-                                }),
-                              dispatch,
-                              setCartItems,
-                            })
-                          }
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
               </div>
             </Fragment>
           );

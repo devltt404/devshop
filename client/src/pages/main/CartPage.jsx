@@ -1,7 +1,6 @@
 import CartItems from "@/components/cart/CartItems.jsx";
 import CartSummary from "@/components/cart/CartSummary.jsx";
 import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
-import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import { Progress } from "@/components/ui/progress.jsx";
 import shopConfig from "@/configs/shop.config.js";
 import {
@@ -56,98 +56,94 @@ const CartPage = () => {
   }
 
   return (
-    <div className="container-area flex gap-16 max-xl:gap-8 max-lg:flex-col max-lg:gap-12">
-      <div className="flex-1">
+    <div className="page-spacer">
+      <div className="container">
         <PageTitle>Cart</PageTitle>
-
-        {cartItems &&
-          (cartItems.length === 0 ? (
-            <PageDescription>Your cart is empty.</PageDescription>
-          ) : (
-            <>
-              <div className="relative">
-                <PageDescription>
-                  You have{" "}
-                  <span className="font-semibold">{cartItems?.length}</span>{" "}
-                  {cartItems?.length > 1 ? "items" : "item"} in your cart.
-                </PageDescription>
-
-                <AlertDialog>
-                  <AlertDialogTrigger
-                    className="absolute bottom-0 right-0"
-                    asChild
-                  >
-                    <button
-                      className="text-destructive hover:underline"
-                      disabled={isClearingCart}
-                    >
-                      Clear cart
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Clear cart</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Are you sure you want to clear your cart? This action
-                        cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() =>
-                          mutateCart({
-                            mutationFunc: clearCart,
-                            dispatch,
-                            setCartItems,
-                          })
-                        }
-                      >
-                        Clear
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-
-              {/* Free ship progress  */}
-              <div className="mb-4 bg-white px-4 py-6">
-                <p className="mb-2">
-                  {subtotal < shopConfig.freeShipThreshold ? (
-                    <>
-                      Add
-                      <span className="font-bold">
-                        {" "}
-                        ${displayPrice(
-                          shopConfig.freeShipThreshold - subtotal,
-                        )}{" "}
-                      </span>
-                      more to get free shipping
-                    </>
-                  ) : (
-                    <>
-                      Congratulations! You qualify for
-                      <span className="font-bold"> Free Shipping</span>
-                    </>
-                  )}
-                </p>
-
-                <Progress
-                  className="h-2"
-                  value={
-                    subtotal < shopConfig.freeShipThreshold
-                      ? (subtotal / shopConfig.freeShipThreshold) * 100
-                      : 100
-                  }
-                />
-              </div>
-              <CartItems cartItems={cartItems} setCartItems={setCartItems} />
-            </>
-          ))}
+        {cartItems?.length === 0 ? (
+          <PageDescription>Your cart is empty.</PageDescription>
+        ) : (
+          <PageDescription>
+            You have <span className="font-semibold">{cartItems?.length}</span>{" "}
+            {cartItems?.length > 1 ? "items" : "item"} in your cart.
+          </PageDescription>
+        )}
       </div>
 
       {cartItems?.length > 0 && (
-        <CartSummary refetchGetCart={refetchGetCart} subtotal={subtotal} />
+        <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:container lg:grid-cols-[1fr_24rem]">
+          <div>
+            <div className="mb-4 rounded-md bg-white px-8 py-6">
+              <p className="mb-2">
+                {subtotal < shopConfig.freeShipThreshold ? (
+                  <>
+                    Add
+                    <span className="font-bold">
+                      {" "}
+                      ${displayPrice(
+                        shopConfig.freeShipThreshold - subtotal,
+                      )}{" "}
+                    </span>
+                    more to get free shipping
+                  </>
+                ) : (
+                  <>
+                    Congratulations! You qualify for
+                    <span className="font-bold"> Free Shipping</span>
+                  </>
+                )}
+              </p>
+
+              <Progress
+                className="h-2"
+                value={
+                  subtotal < shopConfig.freeShipThreshold
+                    ? (subtotal / shopConfig.freeShipThreshold) * 100
+                    : 100
+                }
+              />
+            </div>
+
+            <div className="text-right">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    className="mb-2 text-destructive hover:underline"
+                    disabled={isClearingCart}
+                  >
+                    Clear cart
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Clear cart</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to clear your cart? This action
+                      cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() =>
+                        mutateCart({
+                          mutationFunc: clearCart,
+                          dispatch,
+                          setCartItems,
+                        })
+                      }
+                    >
+                      Clear
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+
+            <CartItems cartItems={cartItems} setCartItems={setCartItems} />
+          </div>
+
+          <CartSummary refetchGetCart={refetchGetCart} subtotal={subtotal} />
+        </div>
       )}
     </div>
   );

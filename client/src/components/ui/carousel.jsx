@@ -1,9 +1,8 @@
 "use client";
 import useEmblaCarousel from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const CarouselContext = React.createContext(null);
@@ -162,16 +161,15 @@ const CarouselItem = React.forwardRef(({ className, ...props }, ref) => {
 CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef(
-  ({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  ({ className, size = "icon", ...props }, ref) => {
     const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
     return (
-      <Button
+      <button
         ref={ref}
-        variant={variant}
         size={size}
         className={cn(
-          "absolute h-8 w-8 rounded-full",
+          "absolute flex items-center justify-center rounded-full border-2 bg-transparent bg-white p-1.5 text-secondary disabled:opacity-80",
           orientation === "horizontal"
             ? "-left-12 top-1/2 -translate-y-1/2"
             : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -181,25 +179,24 @@ const CarouselPrevious = React.forwardRef(
         onClick={scrollPrev}
         {...props}
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ChevronLeft className="h-6 w-6" />
         <span className="sr-only">Previous slide</span>
-      </Button>
+      </button>
     );
   },
 );
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef(
-  ({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  ({ className, size = "icon", ...props }, ref) => {
     const { orientation, scrollNext, canScrollNext } = useCarousel();
 
     return (
-      <Button
+      <button
         ref={ref}
-        variant={variant}
         size={size}
         className={cn(
-          "absolute h-8 w-8 rounded-full",
+          "absolute flex items-center justify-center rounded-full border-2 bg-transparent bg-white p-1.5 text-secondary disabled:opacity-80",
           orientation === "horizontal"
             ? "-right-12 top-1/2 -translate-y-1/2"
             : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -209,16 +206,37 @@ const CarouselNext = React.forwardRef(
         onClick={scrollNext}
         {...props}
       >
-        <ArrowRight className="h-4 w-4" />
+        <ChevronRight className="h-6 w-6" />
         <span className="sr-only">Next slide</span>
-      </Button>
+      </button>
     );
   },
 );
 CarouselNext.displayName = "CarouselNext";
 
+const CarouselButtonsGroup = React.forwardRef(
+  ({ className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "absolute -top-[4.5rem] right-0 grid grid-cols-2 gap-3 max-sm:hidden",
+          className,
+        )}
+        {...props}
+      >
+        <CarouselPrevious className="static translate-x-0 translate-y-0" />
+        <CarouselNext className="static translate-x-0 translate-y-0" />
+      </div>
+    );
+  },
+);
+
+CarouselButtonsGroup.displayName = "CarouselButtonsGroup";
+
 export {
   Carousel,
+  CarouselButtonsGroup,
   CarouselContent,
   CarouselItem,
   CarouselNext,
