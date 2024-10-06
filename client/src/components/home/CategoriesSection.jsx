@@ -43,7 +43,7 @@ const CategoriesSection = () => {
               >
                 <Link to={`/category/${category.slug}-${category._id}`}>
                   <div className="group inline-flex flex-col items-center gap-2">
-                    <div className="inline-flex h-36 w-44 items-center justify-center rounded-md border bg-slate-50 bg-white p-10">
+                    <div className="inline-flex h-36 w-44 items-center justify-center rounded-md border bg-white p-10">
                       <img
                         src={category.image}
                         alt={category.name}

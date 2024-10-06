@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
       <div className="group flex h-full flex-col overflow-hidden rounded-md border bg-white transition hover:shadow-md">
         <div className="aspect-square">
           <img
-            className="aspect-square w-full select-none object-contain py-10 transition group-hover:scale-105"
+            className="aspect-square w-full select-none object-contain p-6 transition group-hover:scale-105"
             src={product.defaultSku.image}
             alt={product.name}
             loading="lazy"
