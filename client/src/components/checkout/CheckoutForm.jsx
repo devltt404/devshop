@@ -139,9 +139,7 @@ const CheckoutForm = ({ paymentIntentId, setIsCheckingOut, orderData }) => {
 
       <div className="mb-8">
         <h2 className="mb-1 text-2xl font-semibold">Payment Info</h2>
-        <p className="mb-2 text-secondary">
-          Click to copy the following test card details
-        </p>
+        <p className="mb-2">Click to copy the following test card details</p>
 
         <TestCard />
 

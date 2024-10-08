@@ -12,14 +12,10 @@ export default function Header() {
 
   return (
     <header className={"sticky top-0 z-10 bg-white"}>
-      <div className="border-b shadow-md">
+      <div className="shadow-md">
         <div className="container flex items-center justify-between gap-4 py-3">
           <Link to="/">
-            {isMobile ? (
-              <SimpleLogoIcon className="w-10" />
-            ) : (
-              <LogoIcon className="w-52" />
-            )}
+            {isMobile ? <SimpleLogoIcon className="w-10" /> : <LogoIcon />}
           </Link>
 
           <SearchInput />

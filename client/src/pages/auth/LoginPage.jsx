@@ -1,5 +1,4 @@
 import ProviderButtons from "@/components/auth/ProviderButtons.jsx";
-import LogoIcon from "@/components/icons/LogoIcon.jsx";
 import { Button } from "@/components/ui/button";
 import {
   CardContent,
@@ -67,7 +66,6 @@ const LoginPage = () => {
     <Form {...form}>
       <form className="px-4 py-4" onSubmit={form.handleSubmit(onSubmit)}>
         <CardHeader className="text-center">
-          <LogoIcon className="mx-auto w-52 mb-2" />
           <CardTitle className="mb-3 text-3xl">Login</CardTitle>
 
           <CardDescription className="text-base">

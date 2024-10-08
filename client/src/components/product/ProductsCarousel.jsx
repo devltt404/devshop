@@ -1,6 +1,5 @@
 import {
   Carousel,
-  CarouselButtonsGroup,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel.jsx";
@@ -29,7 +28,6 @@ const ProductsCarousel = ({ products, isLoading }) => {
               </ProductsCarouselItem>
             ))}
       </CarouselContent>
-      <CarouselButtonsGroup />
     </Carousel>
   );
 };

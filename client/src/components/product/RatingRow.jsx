@@ -12,16 +12,16 @@ const RatingRow = ({ rating }) => {
           return (
             <FilledStarIcon
               key={index}
-              className="h-4 w-4 fill-primary text-primary"
+              className="h-4 w-4 fill-[#ffa41c] text-[#ffa41c]"
             />
           );
         } else if (rating >= star - 0.5) {
           return (
-            <HalfStarIcon key={index} className="h-4 w-4 fill-primary" />
+            <HalfStarIcon key={index} className="h-4 w-4 fill-[#ffa41c]" />
           );
         } else {
           return (
-            <EmptyStarIcon key={index} className="h-4 w-4 fill-primary" />
+            <EmptyStarIcon key={index} className="h-4 w-4 fill-[#ffa41c]" />
           );
         }
       })}

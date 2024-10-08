@@ -30,7 +30,7 @@ const dropdownItems = [
 
 const TextGroup = ({ sub, main }) => {
   return (
-    <div className="hidden flex-col items-start text-secondary group-hover:text-primary md:flex">
+    <div className="hidden flex-col items-start md:flex">
       <span className="text-xs">{sub}</span>
       <span className="-mt-1 text-sm font-bold">{main}</span>
     </div>
@@ -58,15 +58,15 @@ const UserMenu = () => {
   return !user ? (
     <Link
       to="/login"
-      className="group flex items-center rounded-md px-4 py-3 transition hover:bg-muted"
+      className="group flex items-center rounded-md px-4 py-2 transition hover:bg-muted"
     >
-      <User2 className="mr-2 stroke-[1.5px] text-secondary transition group-hover:text-primary" />
+      <User2 className="mr-2 stroke-[1.5px] transition" />
       <TextGroup sub="Login" main="Account" />
     </Link>
   ) : (
     <DropdownMenu>
-      <DropdownMenuTrigger className="group flex items-center gap-2 rounded-md p-2 lg:px-4 lg:py-3 transition hover:bg-muted">
-        <User2 className="stroke-[1.5px] text-secondary transition group-hover:text-primary" />
+      <DropdownMenuTrigger className="group flex items-center gap-2 rounded-md p-2 transition hover:bg-muted lg:px-4">
+        <User2 className="stroke-[1.5px] transition" />
         <TextGroup sub={`Hello, ${user.name.split(" ")[0]}`} main="Account" />
       </DropdownMenuTrigger>
 
@@ -93,7 +93,7 @@ const UserMenu = () => {
         <DropdownMenuSeparator />
 
         <div className="px-3 py-2">
-          <Button variant="secondary" className="w-full" onClick={handleLogout}>
+          <Button className="w-full" onClick={handleLogout}>
             Logout
           </Button>
         </div>

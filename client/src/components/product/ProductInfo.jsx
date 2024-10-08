@@ -13,7 +13,7 @@ const ProductInfo = React.memo(({ product, selectedSku }) => {
           : "Please select a variant to see the SKU"}
       </p>
       <div className="flex items-center text-sm text-gray-400">
-        <p className="mr-2 pt-1 text-yellow-500">
+        <p className="mr-2 pt-1 font-semibold text-[#ffa41c]">
           {product.avgRating.toFixed(1)}
         </p>
         <RatingRow rating={product.avgRating} />

@@ -13,14 +13,26 @@ export default function ProductCard({ product }) {
   return (
     <Link to={`/product/${product.slug}-${product._id}`}>
       <div className="group flex h-full flex-col overflow-hidden rounded-md border bg-white transition hover:shadow-md">
-        <div className="aspect-square">
+        <div className="relative aspect-square">
           <img
-            className="aspect-square w-full select-none object-contain p-6 transition group-hover:scale-105"
+            className="aspect-square w-full select-none object-contain p-6 transition duration-300 ease-in-out group-hover:scale-[103%]"
             src={product.defaultSku.image}
             alt={product.name}
             loading="lazy"
             decoding="async"
           />
+
+          {product.defaultSku.originalPrice > product.defaultSku.price && (
+            <div className="absolute right-2 top-2 rounded-md bg-secondary px-2 py-1 text-sm font-bold text-primary-foreground">
+              Save{" "}
+              {(
+                ((product.defaultSku.originalPrice - product.defaultSku.price) /
+                  product.defaultSku.originalPrice) *
+                100
+              ).toFixed(0)}
+              %
+            </div>
+          )}
         </div>
 
         <div className="flex flex-1 flex-col px-4 pb-4">
@@ -53,9 +65,11 @@ export default function ProductCard({ product }) {
             <p className="text-lg font-bold text-red-600">
               ${displayPrice(product.defaultSku.price)}
             </p>
-            <p className="text-xs text-muted-foreground line-through">
-              ${displayPrice(product.defaultSku.originalPrice)}
-            </p>
+            {product.defaultSku.originalPrice > product.defaultSku.price && (
+              <p className="text-xs text-muted-foreground line-through">
+                ${displayPrice(product.defaultSku.originalPrice)}
+              </p>
+            )}
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ const ProductQuantity = React.memo(({ quantity, setQuantity, stock }) => {
 
       <Input
         type="text"
-        className="h-11 w-12 text-center"
+        className="h-11 w-12 bg-white text-center"
         value={quantity}
         onChange={(e) => {
           if (/^(?!0)\d*$/.test(e.target.value)) {

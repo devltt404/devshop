@@ -30,9 +30,7 @@ const CheckoutSummary = ({ orderData }) => {
 
         <div className="mb-4 flex border-y border-y-gray-300 py-6">
           <Input placeholder="Enter coupon code" className="mr-4" />
-          <Button className="px-8" variant="secondary">
-            Apply
-          </Button>
+          <Button className="px-8">Apply</Button>
         </div>
         <div>
           <div className="flex justify-between text-2xl font-bold">

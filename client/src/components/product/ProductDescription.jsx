@@ -14,7 +14,7 @@ const ProductDescription = React.memo(({ product }) => {
         <p dangerouslySetInnerHTML={{ __html: product.description }}></p>
       </div>
 
-      <div className="rounded-xl bg-white px-10 pb-6 pt-8">
+      <div className="rounded-xl bg-white shadow-block px-10 pb-6 pt-8">
         {showDetails.map((key, i) => (
           <Fragment key={key}>
             <div className="grid grid-cols-[40%_1fr] gap-4">

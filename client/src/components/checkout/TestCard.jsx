@@ -10,7 +10,7 @@ const TestCard = () => {
           <th className="border px-4 py-2">CVC</th>
         </tr>
       </thead>
-      <tbody className="bg-white text-secondary">
+      <tbody className="bg-white">
         <tr>
           <td
             className="cursor-pointer border px-4 py-2"

@@ -25,7 +25,7 @@ const CartSummary = ({ subtotal }) => {
             : `$${displayPrice(shopConfig.shippingFee)}`}
         </p>
       </div>
-      <div className="my-6 flex justify-between text-xl font-bold text-secondary">
+      <div className="my-6 flex justify-between text-2xl font-bold">
         <h2>Total</h2>
         <p>
           $

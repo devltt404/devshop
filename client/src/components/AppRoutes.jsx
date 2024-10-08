@@ -14,14 +14,15 @@ import {
   LazyRegister,
 } from "@/pages/index.js";
 import { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
-import LoadingScreen from "./loading/LoadingScreen.jsx";
+import { Route, Routes, useLocation } from "react-router-dom";
 import AuthFormWrapper from "./wrappers/AuthFormWrapper.jsx";
 
 const AppRoutes = () => {
+  const location = useLocation(); // Get the current location
+
   return (
-    <Suspense fallback={<LoadingScreen />}>
-      <Routes>
+    <Suspense>
+      <Routes location={location} key={location.pathname}>
         <Route>
           {/* GUEST ONLY */}
           <Route element={<AuthFormWrapper />}>

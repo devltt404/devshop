@@ -82,7 +82,6 @@ const RegisterPage = () => {
     <Form {...form}>
       <form className="px-4 py-4" onSubmit={form.handleSubmit(onSubmit)}>
         <CardHeader className="text-center">
-          <LogoIcon className="mx-auto mb-2 w-52" />
           <CardTitle className="mb-3 text-3xl">Register</CardTitle>
           <CardDescription className="text-base">
             Already have an account?{" "}

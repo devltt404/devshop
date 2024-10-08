@@ -20,7 +20,7 @@ const ProductVariations = React.memo(
               )}
             >
               {variation.name}:{" "}
-              <span className="font-bold text-secondary">
+              <span className="font-bold text-tertiary">
                 {variation.options[selectedVariationIndex[i]]?.value ||
                   "Select an option"}
               </span>
@@ -34,7 +34,7 @@ const ProductVariations = React.memo(
                     "rounded-md border-2 px-4 py-2.5 disabled:border-gray-300 disabled:bg-muted disabled:text-gray-400 disabled:shadow-none",
                     selectedVariationIndex[i] === i2
                       ? "border-primary"
-                      : "hover:border-secondary",
+                      : "hover:border-tertext-tertiary",
                   )}
                   onClick={() => {
                     handleSelectSku(i, i2);

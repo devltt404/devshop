@@ -9,17 +9,24 @@ const BestSellingSection = () => {
   });
 
   return (
-    <section className="lg:container">
-      <div className="bg-[url(/best-selling-bg.png)] bg-center bg-no-repeat px-8 py-12 lg:rounded-lg lg:px-14 lg:py-20">
-        <div className="mb-8 flex items-center gap-2 text-white">
-          <Flame className="h-7 w-7" />
-          <h2 className="text-3xl font-bold">Best Selling!</h2>
+    <section>
+      <div className="bg-primary py-6">
+        <div className="flex items-center justify-center gap-1">
+          <Flame className="h-12 w-12 stroke-[0.8px] text-white" />
+          <h2 className="text-stroke text-5xl font-extrabold text-primary-foreground">
+            Best Selling
+          </h2>
+          <Flame className="h-12 w-12 stroke-[0.8px] text-white" />
         </div>
+      </div>
 
-        <ProductsCarousel
-          products={data?.metadata?.products}
-          isLoading={isLoading}
-        />
+      <div className="border-b bg-white py-12">
+        <div className="container">
+          <ProductsCarousel
+            products={data?.metadata?.products}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
     </section>
   );
