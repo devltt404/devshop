@@ -72,7 +72,7 @@ const CartPage = () => {
       {cartItems?.length > 0 && (
         <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:container lg:grid-cols-[1fr_24rem]">
           <div>
-            <div className="mb-4 rounded-md bg-white px-8 py-6">
+            <div className="mb-4 rounded-md bg-white px-4 py-6 md:px-8">
               <p className="mb-2">
                 {subtotal < shopConfig.freeShipThreshold ? (
                   <>

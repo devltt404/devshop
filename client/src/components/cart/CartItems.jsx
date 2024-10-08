@@ -74,7 +74,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
                 </p>
               </div>
 
-              <div className="flex flex-col items-end justify-between">
+              <div className="flex flex-col items-end gap-2 justify-between">
                 <AlertDialog
                   open={deleteAlertOpen[cartItem.sku]}
                   onDismiss={() => {
