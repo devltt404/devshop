@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Footer from "../layout/Footer.jsx";
 import Header from "../layout/header/Header.jsx";
@@ -10,7 +11,9 @@ export default function ShopWrapper() {
         <Headline />
         <Header />
         <main className="flex-1 bg-background">
-          <Outlet />
+          <Suspense>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
       <Footer />

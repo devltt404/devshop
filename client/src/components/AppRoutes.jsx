@@ -21,7 +21,6 @@ const AppRoutes = () => {
   const location = useLocation(); // Get the current location
 
   return (
-    <Suspense>
       <Routes location={location} key={location.pathname}>
         <Route>
           {/* GUEST ONLY */}
@@ -52,7 +51,6 @@ const AppRoutes = () => {
           </Route>
         </Route>
       </Routes>
-    </Suspense>
   );
 };
 

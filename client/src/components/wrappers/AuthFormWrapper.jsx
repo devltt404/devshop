@@ -1,4 +1,5 @@
 import useAuth from "@/hooks/useAuth.jsx";
+import { Suspense } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { Card } from "../ui/card.jsx";
 
@@ -10,7 +11,9 @@ const AuthFormWrapper = () => {
   ) : (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <Card className="mx-2 max-w-lg shadow-lg">
-        <Outlet />
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </Card>
     </div>
   );
