@@ -39,7 +39,7 @@ export default function ProductCard({ product }) {
           <TooltipProvider delayDuration={100}>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <p className="line-clamp-2 font-semibold">{product.name}</p>
+                <p className="line-clamp-2 font-semibold text-sm sm:text-base">{product.name}</p>
               </TooltipTrigger>
 
               <TooltipContent>
@@ -61,7 +61,7 @@ export default function ProductCard({ product }) {
             </span>
           </div>
 
-          <div className="mb-2 mt-auto flex flex-wrap items-center gap-2">
+          <div className="mb-2 mt-auto flex flex-wrap items-center gap-x-2">
             <p className="text-lg font-bold text-red-600">
               ${displayPrice(product.defaultSku.price)}
             </p>

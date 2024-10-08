@@ -84,7 +84,7 @@ const ProductsListPage = () => {
             value={query.sortBy || PRODUCT.SORT_BY_OPTIONS[0].value}
             onValueChange={(sortBy) => onQueryChange({ sortBy })}
           >
-            <SelectTrigger className="ml-auto w-[180px] font-semibold">
+            <SelectTrigger className="ml-auto w-[180px] font-semibold bg-white">
               <SelectValue />
             </SelectTrigger>
 

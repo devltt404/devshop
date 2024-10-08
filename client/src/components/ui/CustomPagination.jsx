@@ -20,7 +20,7 @@ const CustomPagination = ({ totalPages, page, onPageChange }) => {
 
   return (
     <Pagination className="mt-8">
-      <PaginationContent>
+      <PaginationContent className="flex-wrap justify-center">
         <PaginationItem>
           <PaginationPrevious
             className={page <= 1 && "pointer-events-none opacity-50"}

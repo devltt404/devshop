@@ -25,10 +25,14 @@ const LatestSection = () => {
 
   return (
     <section className="container py-12">
-      <h2 className="mb-8 inline-block text-4xl font-bold mr-2">Latest Products.</h2>
-      <p className="inline-block text-3xl text-gray-600 font-semibold">Take a look at our new arrivals.</p>
+      <div className="mb-8 flex flex-wrap gap-2 items-end">
+        <h2 className="text-4xl font-bold">Latest Products.</h2>
+        <p className="text-3xl font-semibold text-gray-600">
+          Take a look at our new arrivals.
+        </p>
+      </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-6">
+      <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-6">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
