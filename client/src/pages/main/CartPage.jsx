@@ -107,7 +107,7 @@ const CartPage = () => {
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button
-                    className="mb-2 text-destructive hover:underline"
+                    className="mb-2 mr-2 text-destructive hover:underline"
                     disabled={isClearingCart}
                   >
                     Clear cart
