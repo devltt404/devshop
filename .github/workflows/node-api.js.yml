@@ -50,7 +50,7 @@ jobs:
           CLIENT_BASE_URL=${{ vars.CLIENT_BASE_URL }}
 
           JWT_SECRET=${{ secrets.JWT_SECRET }}
-          DATABSE_URL=${{ secrets.DATABSE_URL }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
           STRIPE_PK=${{ secrets.STRIPE_PK }}
           STRIPE_SK=${{ secrets.STRIPE_SK }}
           CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }}
