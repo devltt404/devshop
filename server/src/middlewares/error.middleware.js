@@ -1,6 +1,6 @@
+import logger from "../configs/logger.config.js";
 import serverConfig from "../configs/server.config.js";
 import { ErrorResponse } from "../core/response.js";
-import logger from "../logger.js";
 import {
   deleteUploadByFile,
   deleteUploadByFiles,

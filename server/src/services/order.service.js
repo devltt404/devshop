@@ -8,7 +8,6 @@ import ProductService from "./product.service.js";
 import SkuService from "./sku.service.js";
 
 export class OrderService {
-  // #region BUSINESS LOGIC
   static async getOrderDetail({ orderId }) {
     const order = await OrderModel.findById(orderId).lean();
     if (!order) {
@@ -117,5 +116,4 @@ export class OrderService {
       throw error;
     }
   }
-  // #endregion
 }

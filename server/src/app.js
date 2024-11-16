@@ -16,11 +16,11 @@ import apiRoutes from "./routes/index.js";
 const app = express();
 
 // Cloudinary configuration
-import "./cloudinary.js";
+import "./configs/cloudinary.config.js";
 
 // Connect to database
 import "../src/db/connect.db.js";
-import logger from "./logger.js";
+import logger from "./configs/logger.config.js";
 
 //middlewares
 app.use(

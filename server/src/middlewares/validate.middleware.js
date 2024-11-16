@@ -8,7 +8,7 @@ export default function validate(schema) {
       stripUnknown: true,
       convert: true,
     });
-    
+
     if (error) {
       const errors = {};
       error.details.forEach((err) => {

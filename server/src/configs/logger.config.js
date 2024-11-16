@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import winston from "winston";
 import { consoleFormat } from "winston-console-format";
 import "winston-daily-rotate-file";
-import serverConfig from "./configs/server.config.js";
+import serverConfig from "./server.config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,7 +42,7 @@ const logger = winston.createLogger({
     }),
     new winston.transports.DailyRotateFile({
       level: "silly",
-      filename: path.join(__dirname, `/logs/%DATE%-combined.log`),
+      filename: path.join(__dirname, `../logs/%DATE%-combined.log`),
       zippedArchive: true, // zip archived logs
       maxFiles: serverConfig.server.logFilesExpiration,
     }),

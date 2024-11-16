@@ -2,30 +2,17 @@ import jwt from "jsonwebtoken";
 import serverConfig from "../configs/server.config.js";
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
-import { clearTokenCookie, setTokenCookie } from "../utils/auth.util.js";
-import { assignGuestCartToUser, clearCartCookie } from "../utils/cart.util.js";
+import {
+  clearTokenCookie,
+  handleCart,
+  handleToken,
+  setTokenCookie,
+} from "../utils/auth.util.js";
+import { clearCartCookie } from "../utils/cart.util.js";
 import { compareUserPassword, generateTokens } from "../utils/user.util.js";
 import UserService from "./user.service.js";
 
 export default class AuthService {
-  // #region HELPER
-  static handleToken({ user, res }) {
-    const { accessToken, refreshToken } = generateTokens(user);
-    setTokenCookie({ accessToken, refreshToken, res });
-  }
-
-  static async handleCart({ user, guestCartId, res }) {
-    await assignGuestCartToUser({
-      userId: user._id,
-      cartId: guestCartId,
-      res,
-    });
-
-    clearCartCookie(res);
-  }
-  // #endregion
-
-  // #region BUSINESS LOGIC
   static async authUser(user) {
     if (!user)
       return {
@@ -101,8 +88,8 @@ export default class AuthService {
       });
     }
 
-    this.handleToken({ user, guestCartId, res });
-    await this.handleCart({ user, guestCartId, res });
+    handleToken({ user, guestCartId, res });
+    await handleCart({ user, guestCartId, res });
 
     return { user };
   }
@@ -119,8 +106,8 @@ export default class AuthService {
       password,
     });
 
-    this.handleToken({ user: newUser, guestCartId, res });
-    await this.handleCart({ user: newUser, guestCartId, res });
+    handleToken({ user: newUser, guestCartId, res });
+    await handleCart({ user: newUser, guestCartId, res });
 
     return {
       user: {
@@ -139,8 +126,8 @@ export default class AuthService {
       throw new ErrorResponse(ERROR.AUTH.INCORRECT_EMAIL_OR_PASSWORD);
     }
 
-    this.handleToken({ user: foundUser, guestCartId, res });
-    await this.handleCart({ user: foundUser, guestCartId, res });
+    handleToken({ user: foundUser, guestCartId, res });
+    await handleCart({ user: foundUser, guestCartId, res });
 
     return {
       user: {
@@ -155,5 +142,4 @@ export default class AuthService {
     clearCartCookie(res);
     return {};
   }
-  // #endregion
 }

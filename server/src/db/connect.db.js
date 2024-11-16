@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import AutoIncrementFactory from "mongoose-sequence";
+import logger from "../configs/logger.config.js";
 import serverConfig from "../configs/server.config.js";
-import logger from "../logger.js";
 
 //Singleton class to connect to MongoDB
 class Database {

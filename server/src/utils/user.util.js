@@ -24,3 +24,16 @@ export const generateTokens = (user) => {
 
   return { accessToken, refreshToken };
 };
+
+export async function getAndValidateUser({
+  userId,
+  select = profileSelect,
+  lean = false,
+}) {
+  const user = await UserModel.findById(userId).select(select).lean(lean);
+  if (!user) {
+    throw new ErrorResponse(ERROR.USER.INVALID_USER);
+  }
+
+  return user;
+}

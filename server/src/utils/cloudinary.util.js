@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import logger from "../logger.js";
+import logger from "../configs/logger.config.js";
 
 function extractFilename(path) {
   return path

@@ -1,6 +1,6 @@
 import multer from "multer";
+import logger from "../configs/logger.config.js";
 import { CLOUDINARY } from "../constants/index.js";
-import logger from "../logger.js";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

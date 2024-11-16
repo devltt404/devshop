@@ -1,11 +1,11 @@
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import ProductModel from "../models/product.model.js";
+import { getTreeOfSingleCategory } from "../utils/category.util.js";
 import CategoryService from "./category.service.js";
 import SkuService from "./sku.service.js";
 
 export default class ProductService {
-  // #region QUERY
   static async findProductById({
     productId,
     select = "",
@@ -24,9 +24,7 @@ export default class ProductService {
       new: true,
     }).lean();
   }
-  // #endregion
 
-  // #region BUSINESS LOGIC
   static async getProductDetail(productId) {
     const product = await ProductModel.findById(productId)
       .populate("category")
@@ -37,7 +35,7 @@ export default class ProductService {
 
     const [skus, category] = await Promise.all([
       SkuService.findSkusByProductId({ productId }),
-      CategoryService.getTreeOfSingleCategory(product.category),
+      getTreeOfSingleCategory(product.category),
     ]);
 
     product.skus = skus;

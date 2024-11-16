@@ -26,3 +26,18 @@ export function clearTokenCookie(res) {
   clearCookie(res, COOKIE_KEY.ACCESS_TOKEN);
   clearCookie(res, COOKIE_KEY.REFRESH_TOKEN);
 }
+
+export function handleToken({ user, res }) {
+  const { accessToken, refreshToken } = generateTokens(user);
+  setTokenCookie({ accessToken, refreshToken, res });
+}
+
+export async function handleCart({ user, guestCartId, res }) {
+  await assignGuestCartToUser({
+    userId: user._id,
+    cartId: guestCartId,
+    res,
+  });
+
+  clearCartCookie(res);
+}

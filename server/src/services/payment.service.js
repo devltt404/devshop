@@ -6,7 +6,6 @@ import CartService from "./cart.service.js";
 const stripe = Stripe(serverConfig.stripe.sk);
 
 export default class PaymentService {
-  // #region BUSINESS LOGIC
   static async getPaymentIntent(paymentIntentId) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     return paymentIntent;
@@ -52,5 +51,4 @@ export default class PaymentService {
     const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId);
     return paymentIntent;
   }
-  // #endregion
 }

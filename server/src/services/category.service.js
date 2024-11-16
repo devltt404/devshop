@@ -4,42 +4,13 @@ import { ErrorResponse } from "../core/response.js";
 import CategoryModel from "../models/category.model.js";
 
 export default class CategoryService {
-  // #region QUERY
   static async findOneCategory({ filter, select = "", lean = true }) {
     return await CategoryModel.findOne(filter).select(select).lean(lean);
   }
 
-  // #endregion
-
-  // #region HELPER
-  static async getDescendantIds(categoryId) {
-    let descendantIds = await CategoryModel.find({
-      path: { $regex: `,${categoryId},` },
-    })
-      .select("_id")
-      .lean();
-
-    descendantIds = descendantIds.map((category) => category._id);
-
-    return descendantIds;
+  static async findCategories({ filter, select = "", lean = true }) {
+    return await CategoryModel.find(filter).select(select).lean(lean);
   }
-
-  static async getTreeOfSingleCategory(category) {
-    let categoryIds = category.path.split(",").slice(1, -1);
-
-    const findQueries = await Promise.all(
-      categoryIds.map(async (categoryId) => {
-        return CategoryModel.findById(categoryId).select("name slug").lean();
-      })
-    );
-
-    findQueries.push(category);
-
-    return findQueries;
-  }
-  // #endregion
-
-  // #region BUSINESS LOGIC
 
   static async getAllCategories() {
     const categories = await CategoryModel.find({}).lean();
@@ -111,6 +82,4 @@ export default class CategoryService {
       path: newCategory.path,
     };
   }
-
-  //#endregion BUSINESS LOGIC
 }
