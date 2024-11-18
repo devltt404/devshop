@@ -45,9 +45,10 @@ const CategoriesSection = () => {
                     <div className="group inline-flex flex-col items-center gap-4">
                       <div className="inline-flex h-40 w-40 items-center justify-center rounded-full bg-muted p-10">
                         <img
+                          loading="lazy"
                           src={category.image}
-                          alt={category.name}
-                          className="transition duration-300 ease-in-out group-hover:scale-110"
+                          alt={`${category.name} icon`}
+                          className="h-full w-full object-cover transition duration-300 ease-in-out group-hover:scale-110"
                         />
                       </div>
                       <p className="text-lg font-bold">{category.name}</p>

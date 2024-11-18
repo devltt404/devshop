@@ -7,8 +7,8 @@ const OrderItem = ({ item }) => {
       <div className="grid grid-cols-[4.5rem_1fr] gap-4">
         <img
           src={item.image}
-          alt="product"
-          className="aspect-square mt-2 w-full object-contain"
+          alt={`${item.name} thumbnail`}
+          className="mt-2 aspect-square w-full object-contain"
         />
         <div className="flex flex-col gap-2">
           <div>

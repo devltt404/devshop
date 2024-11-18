@@ -62,6 +62,7 @@ const UserMenu = () => {
     >
       <User2 className="mr-2 stroke-[1.5px] transition" />
       <TextGroup sub="Login" main="Account" />
+      <span className="sr-only">User menu</span>
     </Link>
   ) : (
     <DropdownMenu>

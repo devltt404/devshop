@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip.jsx";
-import { displayPrice } from "@/utils/helper.util.js";
+import { displayPrice, prescaleImg } from "@/utils/helper.util.js";
 import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "../ui/separator.jsx";
@@ -16,14 +16,14 @@ export default function ProductCard({ product }) {
         <div className="relative aspect-square">
           <img
             className="aspect-square w-full select-none object-contain p-6 transition duration-300 ease-in-out group-hover:scale-[103%]"
-            src={product.defaultSku.image}
-            alt={product.name}
+            src={prescaleImg(product.defaultSku.image, 300, 300)}
+            alt={`${product.name} thumbnail`}
             loading="lazy"
             decoding="async"
           />
 
           {product.defaultSku.originalPrice > product.defaultSku.price && (
-            <div className="absolute right-2 top-2 rounded-md bg-secondary px-2 py-1 text-sm font-bold text-primary-foreground">
+            <div className="absolute right-2 top-2 rounded-md bg-secondary px-2 py-1 text-sm font-bold text-secondary-foreground">
               Save{" "}
               {(
                 ((product.defaultSku.originalPrice - product.defaultSku.price) /
@@ -39,7 +39,9 @@ export default function ProductCard({ product }) {
           <TooltipProvider delayDuration={100}>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <p className="line-clamp-2 font-semibold text-sm sm:text-base">{product.name}</p>
+                <p className="line-clamp-2 text-sm font-semibold sm:text-base">
+                  {product.name}
+                </p>
               </TooltipTrigger>
 
               <TooltipContent>

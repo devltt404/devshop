@@ -1,16 +1,17 @@
 import { cn } from "@/lib/utils.js";
+import { prescaleImg } from "@/utils/helper.util.js";
 import { useState } from "react";
 
 const ImagesPreview = ({ images }) => {
   const [currentImage, setCurrentImage] = useState(0);
 
   return (
-    <div >
+    <div>
       <div className="mb-6 flex aspect-square items-center justify-center rounded-lg border-2">
         <img
-          src={images[currentImage]}
+          src={prescaleImg(images[currentImage], 700, 700)}
           className="max-h-full max-w-full object-contain p-6"
-          alt="Main product image"
+          alt="Selected product image"
         />
       </div>
 
@@ -27,7 +28,8 @@ const ImagesPreview = ({ images }) => {
             }}
           >
             <img
-              src={image}
+              alt="Product image"
+              src={prescaleImg(image, 200, 200)}
               role="group"
               className={"max-h-full max-w-full object-contain transition"}
               aria-roledescription="slide"

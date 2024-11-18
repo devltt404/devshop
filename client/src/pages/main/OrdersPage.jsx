@@ -58,7 +58,7 @@ const OrdersPage = () => {
                     <li key={item._id} className="relative">
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={`${item.name} thumbnail`}
                         className="h-16 w-16 object-contain"
                       />
                       <span className="absolute -right-2 -top-2 flex aspect-square h-4 items-center justify-center rounded-full bg-black text-xs font-semibold text-white">

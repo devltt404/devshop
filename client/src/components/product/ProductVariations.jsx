@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils.js";
+import { prescaleImg } from "@/utils/helper.util.js";
 import React from "react";
 
 const ProductVariations = React.memo(
@@ -44,7 +45,7 @@ const ProductVariations = React.memo(
                   <div className="flex items-center gap-2">
                     {option.image ? (
                       <img
-                        src={option.image}
+                        src={prescaleImg(option.image, 100, 100)}
                         alt={option.value}
                         className="h-12 w-12 object-contain"
                       />

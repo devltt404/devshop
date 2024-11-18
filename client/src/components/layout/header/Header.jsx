@@ -16,6 +16,7 @@ export default function Header() {
         <div className="container flex items-center justify-between gap-4 py-3">
           <Link to="/">
             {isMobile ? <SimpleLogoIcon className="w-10" /> : <LogoIcon />}
+            <span className="sr-only">Homepage</span>
           </Link>
 
           <SearchInput />

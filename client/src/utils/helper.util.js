@@ -20,3 +20,10 @@ export function setValidationErrors({ errors, form }) {
     });
   }
 }
+
+export function prescaleImg(originalUrl, width = 300, height = 300) {
+  return originalUrl.replace(
+    "pisces.bbystatic.com",
+    `pisces.bbystatic.com/prescaled/${width}/${height}`,
+  );
+}

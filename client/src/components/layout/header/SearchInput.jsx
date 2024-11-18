@@ -59,6 +59,7 @@ export default function SearchInput() {
         className="z-50 shrink-0 bg-primary px-4 text-primary-foreground"
       >
         <SearchIcon className="h-5 w-5 stroke-2" />
+        <span className="sr-only">Search</span>
       </button>
     </form>
   );

@@ -49,7 +49,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
               >
                 <img
                   src={cartItem.image}
-                  alt={cartItem.name}
+                  alt={`${cartItem.name} thumbnail`}
                   className="aspect-square w-16 object-contain p-2 md:w-24"
                 />
               </Link>
@@ -74,7 +74,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
                 </p>
               </div>
 
-              <div className="flex flex-col items-end gap-2 justify-between">
+              <div className="flex flex-col items-end justify-between gap-2">
                 <AlertDialog
                   open={deleteAlertOpen[cartItem.sku]}
                   onDismiss={() => {

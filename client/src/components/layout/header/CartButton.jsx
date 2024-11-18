@@ -32,6 +32,7 @@ const CartButton = () => {
           </span>
         )}
       </div>
+      <span className="sr-only">Shopping cart</span>
     </Link>
   );
 };

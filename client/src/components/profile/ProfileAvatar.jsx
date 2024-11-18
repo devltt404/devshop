@@ -129,6 +129,7 @@ const ProfileAvatar = ({ profilePicutre, setProfilePicture }) => {
             >
               <div className="relative mx-auto h-full w-32 overflow-hidden rounded-full border-2 border-dashed">
                 <img
+                  alt="avatar"
                   src={picturePreview || profilePicutre}
                   className={cn(
                     "h-full w-full object-cover",

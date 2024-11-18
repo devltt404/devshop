@@ -13,7 +13,6 @@ const ProviderButtons = () => {
 
   const handleGoogleLoginSuccess = async (response) => {
     try {
-      console.log(response);
       const data = await authGoogle({
         accessToken: response.access_token,
       }).unwrap();
