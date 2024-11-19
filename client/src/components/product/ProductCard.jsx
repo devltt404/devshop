@@ -16,7 +16,10 @@ export default function ProductCard({ product }) {
         <div className="relative aspect-square">
           <img
             className="aspect-square w-full select-none object-contain p-6 transition duration-300 ease-in-out group-hover:scale-[103%]"
-            src={prescaleImg(product.defaultSku.image, 300, 300)}
+            src={
+              prescaleImg(product.defaultSku.image, 300, 300) ||
+              "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081"
+            }
             alt={`${product.name} thumbnail`}
             loading="lazy"
             decoding="async"
