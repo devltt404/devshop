@@ -1,7 +1,10 @@
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import ProductModel from "../models/product.model.js";
-import { getTreeOfSingleCategory } from "../utils/category.util.js";
+import {
+  getDescendantIds,
+  getTreeOfSingleCategory,
+} from "../utils/category.util.js";
 import CategoryService from "./category.service.js";
 import SkuService from "./sku.service.js";
 
@@ -84,9 +87,7 @@ export default class ProductService {
         throw new ErrorResponse(ERROR.PRODUCT.INVALID_CATEGORY);
       }
 
-      const descendantIds = await CategoryService.getDescendantIds(
-        foundCategory._id
-      );
+      const descendantIds = await getDescendantIds(foundCategory._id);
 
       matchConditions.category = { $in: [...descendantIds, categoryId] };
     }
