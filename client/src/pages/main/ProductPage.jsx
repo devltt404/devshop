@@ -1,4 +1,3 @@
-import LoadingArea from "@/components/loading/LoadingArea.jsx";
 import AddToCartBtn from "@/components/product/AddToCartBtn.jsx";
 import ImagesPreview from "@/components/product/ImagesPreview.jsx";
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb.jsx";
@@ -8,6 +7,7 @@ import ProductInfo from "@/components/product/ProductInfo.jsx";
 import ProductQuantity from "@/components/product/ProductQuantity.jsx";
 import ProductVariations from "@/components/product/ProductVariations.jsx";
 import { Separator } from "@/components/ui/separator.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 import shopConfig from "@/configs/shop.config.js";
 import { useGetProductDetailQuery } from "@/redux/api/product.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
@@ -110,7 +110,15 @@ const ProductPage = () => {
   }, [product, searchParams]);
 
   if (isLoading || selectedSku === null) {
-    return <LoadingArea />;
+    return (
+      <div className="page-spacer">
+        <div className="mb-4 h-5"></div>
+
+        <div className="container">
+          <Skeleton className="h-screen rounded-xl bg-white shadow-block" />
+        </div>
+      </div>
+    );
   }
 
   if (!product) {
@@ -124,7 +132,7 @@ const ProductPage = () => {
       </div>
 
       <div className="md:container">
-        <div className="shadow-block grid grid-cols-1 items-start gap-x-14 gap-y-8 rounded-xl bg-white px-6 pb-12 pt-8 md:px-10 lg:grid-cols-[40%_1fr]">
+        <div className="grid grid-cols-1 items-start gap-x-14 gap-y-8 rounded-xl bg-white px-6 pb-12 pt-8 shadow-block md:px-10 lg:grid-cols-[40%_1fr]">
           <ImagesPreview
             images={[
               ...(selectedSku ? selectedSku.images : product.skus[0].images),

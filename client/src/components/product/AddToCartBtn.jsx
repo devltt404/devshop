@@ -29,10 +29,7 @@ const AddToCartBtn = ({ quantity, productId, skuId }) => {
         })
           .unwrap()
           .then(({ metadata }) => {
-            toast({
-              description: `Added ${quantity} to cart!`,
-            });
-            dispatch(setTotalQuantity(metadata.cart?.items.length));
+            dispatch(setTotalQuantity(metadata.totalQuantity));
           })
           .catch((error) => {
             if (error.code === "cart-001") {

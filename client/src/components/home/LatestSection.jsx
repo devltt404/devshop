@@ -1,6 +1,6 @@
 import ProductCard from "@/components/product/ProductCard.jsx";
 import ProductCardSkeleton from "@/components/product/ProductCardSkeleton.jsx";
-import { useGetProductsQuery } from "@/redux/api/product.api.js";
+import useGetProducts from "@/hooks/useGetProducts.jsx";
 import { ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
@@ -10,22 +10,21 @@ const LatestSection = () => {
   const [products, setProducts] = useState([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const { data } = useGetProductsQuery({
+  const { products: fetchedProducts, pagination } = useGetProducts({
     page,
     limit: 10,
-    sortBy: "ctimeDesc",
+    sortBy: "ctime",
+    order: "desc",
   });
 
   useEffect(() => {
-    if (data?.metadata?.products) {
-      setProducts([...products, ...data.metadata.products]);
-      setShowSkeleton(false);
-    }
-  }, [data]);
+    setProducts([...products, ...(fetchedProducts || [])]);
+    setShowSkeleton(false);
+  }, [fetchedProducts]);
 
   return (
     <section className="container py-12">
-      <div className="mb-8 flex flex-wrap gap-2 items-end">
+      <div className="mb-8 flex flex-wrap items-end gap-2">
         <h2 className="text-4xl font-bold">Latest Products.</h2>
         <p className="text-3xl font-semibold text-gray-600">
           Take a look at our new arrivals.
@@ -43,7 +42,7 @@ const LatestSection = () => {
           ))}
       </div>
 
-      {page < data?.metadata?.pagination.totalPages && (
+      {page < pagination?.totalPages && (
         <div className="mt-8 text-center">
           <Button
             size="lg"

@@ -21,7 +21,11 @@ const ProfileForm = ({ form, onSubmit }) => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input error={form.formState.errors.name} {...field} />
+                  <Input
+                    className="bg-white"
+                    error={form.formState.errors.name}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -34,7 +38,11 @@ const ProfileForm = ({ form, onSubmit }) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input error={form.formState.errors.email} {...field} />
+                  <Input
+                    className="bg-white"
+                    error={form.formState.errors.email}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

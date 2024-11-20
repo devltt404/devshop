@@ -9,12 +9,13 @@ import {
 } from "@/components/ui/select";
 import { SelectItem } from "@/components/ui/select.jsx";
 import { Separator } from "@/components/ui/separator.jsx";
-import { MEDIA_QUERY, PRODUCT } from "@/constants/index.js";
+import { MEDIA_QUERY, PRODUCT_SORT_BY_OPTIONS } from "@/constants/index.js";
+import useGetProducts from "@/hooks/useGetProducts.jsx";
 import useMediaQuery from "@/hooks/useMediaQuery.jsx";
-import { useGetProductsQuery } from "@/redux/api/product.api.js";
+import { getSortVal } from "@/utils/helper.util.js";
 import _ from "lodash";
 import { Lightbulb } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 const ProductsListPage = () => {
@@ -23,17 +24,21 @@ const ProductsListPage = () => {
   const { categorySlug } = useParams();
 
   const [searchParams, setSearchParams] = useSearchParams();
-
   const query = useMemo(
     () => Object.fromEntries([...searchParams]),
     [searchParams],
   );
 
-  const { data, isFetching } = useGetProductsQuery({
+  const [catFacet, setCatFacet] = useState(query.catFacet?.split(",") || []);
+
+  const { products, isFetching, pagination, facets } = useGetProducts({
     ...query,
     ...(categorySlug && { categoryId: categorySlug.split("-").pop() }),
+    ...(catFacet?.length > 0 && { catFacet: catFacet.join(",") }),
+    facet: "category",
     limit: 8,
   });
+
   const onQueryChange = (newParams) => {
     setSearchParams({ ...query, ...newParams });
   };
@@ -51,6 +56,9 @@ const ProductsListPage = () => {
             query={query}
             onQueryChange={onQueryChange}
             onClearQuery={onClearQuery}
+            categories={facets?.category?.buckets || []}
+            catFacet={catFacet}
+            setCatFacet={setCatFacet}
           />
 
           <Separator
@@ -81,30 +89,43 @@ const ProductsListPage = () => {
           )}
 
           <Select
-            value={query.sortBy || PRODUCT.SORT_BY_OPTIONS[0].value}
-            onValueChange={(sortBy) => onQueryChange({ sortBy })}
+            value={
+              query.sortBy
+                ? getSortVal(query.sortBy, query.order)
+                : getSortVal(
+                    PRODUCT_SORT_BY_OPTIONS[0].sortBy,
+                    PRODUCT_SORT_BY_OPTIONS[0].order,
+                  )
+            }
+            onValueChange={(val) => {
+              const [sortBy, order] = val.split("-");
+              onQueryChange({ sortBy, order });
+            }}
           >
-            <SelectTrigger className="ml-auto w-[180px] font-semibold bg-white">
+            <SelectTrigger className="ml-auto w-[180px] bg-white font-semibold">
               <SelectValue />
             </SelectTrigger>
 
             <SelectContent>
-              {PRODUCT.SORT_BY_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+              {PRODUCT_SORT_BY_OPTIONS.map((option) => (
+                <SelectItem
+                  key={option.sortBy + option.order}
+                  value={getSortVal(option.sortBy, option.order)}
+                >
                   {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-        {data?.metadata?.products.length === 0 ? (
+        {products?.length === 0 ? (
           <p className="text-2xl text-muted-foreground">No products found.</p>
         ) : (
           <ProductsGrid
             isLoading={isFetching}
-            products={data?.metadata?.products}
+            products={products}
             sortBy={query.sortBy}
-            pagination={data?.metadata?.pagination}
+            pagination={pagination}
             onPageChange={(newPage) => onQueryChange({ page: newPage })}
           />
         )}

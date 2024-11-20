@@ -39,7 +39,7 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
   return (
     <LoadingOverlay isLoading={isRemovingItem || isUpdatingQuantity}>
-      <div className="grid flex-1 grid-cols-[auto_1fr_auto] gap-y-10 rounded-lg border-gray-100 bg-white px-4 py-6">
+      <div className="grid flex-1 grid-cols-[auto_1fr_auto] gap-y-10 rounded-lg border-gray-100 bg-white shadow-block px-4 py-6">
         {cartItems.map((cartItem, index) => {
           return (
             <Fragment key={cartItem.sku}>

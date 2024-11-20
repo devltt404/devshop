@@ -2,6 +2,7 @@ import VisaIcon from "@/components/icons/VisaIcon.jsx";
 import LoadingScreen from "@/components/loading/LoadingScreen.jsx";
 import OrderItem from "@/components/order/OrderItem.jsx";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge.jsx";
+import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 import { useGetOrderDetailQuery } from "@/redux/api/order.api.js";
 import { displayPrice } from "@/utils/helper.util.js";
 import { Separator } from "@radix-ui/react-dropdown-menu";
@@ -9,7 +10,6 @@ import moment from "moment";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { LazyNotFound } from "../index.js";
-import { PageDescription, PageTitle } from "@/components/ui/PageTitle.jsx";
 
 const OrderPage = () => {
   const { id } = useParams();
@@ -28,16 +28,16 @@ const OrderPage = () => {
   }
 
   return (
-    <div className="page-spacer container mt-6 bg-white">
+    <div className="container mt-6 rounded-md bg-white px-8 py-8 shadow-block">
       <div className="mb-4">
         <OrderStatusBadge status={order.orderStatus} />
       </div>
 
-      <PageTitle>
-        Order #{order._id}
-      </PageTitle>
+      <PageTitle>Order #{order._id}</PageTitle>
 
-      <PageDescription>Ordered on {moment(order.createdAt).format("MM/DD/YYYY - hh:mm A")}</PageDescription>
+      <PageDescription>
+        Ordered on {moment(order.createdAt).format("MM/DD/YYYY - hh:mm A")}
+      </PageDescription>
 
       <div className="mb-6 mt-4 grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
         <div className="flex flex-col gap-1">
@@ -77,7 +77,7 @@ const OrderPage = () => {
 
       <h2 className="mb-5 text-xl font-semibold">Order Items</h2>
 
-      <div className="mb-4 flex flex-col gap-4">
+      <div className="mb-4 flex flex-col gap-6">
         {order.items?.map((item) => (
           <OrderItem key={item.skuId || item.productId} item={item} />
         ))}

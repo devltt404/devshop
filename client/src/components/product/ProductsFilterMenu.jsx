@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Filter } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import { Separator } from "../ui/separator.jsx";
 import RatingRow from "./RatingRow.jsx";
@@ -17,7 +18,23 @@ const ProductsFilterMenu = ({
   onQueryChange,
   onClearQuery,
   className,
+  categories,
+  catFacet,
+  setCatFacet,
 }) => {
+  const [minPriceInp, setMinPriceInp] = useState(null);
+  const [maxPriceInp, setMaxPriceInp] = useState(null);
+
+  const handleApplyPrice = () => {
+    if (minPriceInp != "") onQueryChange({ minPrice: minPriceInp });
+    if (maxPriceInp != "") onQueryChange({ maxPrice: maxPriceInp });
+  };
+
+  useEffect(() => {
+    setMinPriceInp(query.minPrice || "");
+    setMaxPriceInp(query.maxPrice || "");
+  }, [query]);
+
   return (
     <div className={className}>
       <h2 className="flex items-center gap-2 text-xl font-semibold">
@@ -32,10 +49,36 @@ const ProductsFilterMenu = ({
             Category
           </AccordionTrigger>
           <AccordionContent>
-            <div className="flex select-none items-center gap-2">
-              <Checkbox id="cat" />
-              <Label htmlFor="cat">Category 1</Label>
-            </div>
+            <ul className="flex select-none flex-col gap-2">
+              {categories.map((category, index) => (
+                <li key={index} className="flex items-center">
+                  <Checkbox
+                    id={category.key}
+                    checked={catFacet.includes(category.key)}
+                    onCheckedChange={(checked) => {
+                      setCatFacet((prev) => {
+                        const newCatFacet = [...prev];
+                        if (checked) {
+                          newCatFacet.push(category.key);
+                        } else {
+                          newCatFacet.splice(
+                            newCatFacet.indexOf(category.key),
+                            1,
+                          );
+                        }
+                        return newCatFacet;
+                      });
+                    }}
+                  />
+                  <Label
+                    className="ml-2 mt-1 font-medium"
+                    htmlFor={category.key}
+                  >
+                    {category.name}
+                  </Label>
+                </li>
+              ))}
+            </ul>
           </AccordionContent>
         </AccordionItem>
 
@@ -71,15 +114,19 @@ const ProductsFilterMenu = ({
                 className="min-w-0 rounded-sm border px-2 py-2 text-sm"
                 type="number"
                 placeholder="Min"
+                value={minPriceInp}
+                onChange={(e) => setMinPriceInp(e.target.value)}
               />
               <Separator className="w-4 bg-gray-300" />
               <input
                 className="min-w-0 rounded-sm border px-2 py-2 text-sm"
                 type="number"
                 placeholder="Max"
+                value={maxPriceInp}
+                onChange={(e) => setMaxPriceInp(e.target.value)}
               />
             </div>
-            <Button className="w-full" size="sm">
+            <Button className="w-full" size="sm" onClick={handleApplyPrice}>
               Apply
             </Button>
           </AccordionContent>

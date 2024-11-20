@@ -27,7 +27,7 @@ const CartButton = () => {
       <div className="relative">
         <ShoppingBag className="stroke-[1.5px] transition" />
         {totalQuantity > 0 && (
-          <span className="absolute -right-1 -top-1 h-4 w-4 scale-90 rounded-full bg-red-600 text-center font-mono text-sm leading-4 text-white">
+          <span className="absolute -right-1 -top-1 h-4 w-4 rounded-full bg-red-600 text-center font-mono text-xs leading-4 text-white">
             {totalQuantity}
           </span>
         )}

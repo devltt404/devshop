@@ -40,8 +40,7 @@ const OrdersPage = () => {
 
                 <div className="grid grid-cols-[1fr_auto] justify-between gap-x-4 gap-y-1">
                   <h2 className="truncate text-xl font-semibold">
-                    Order ID:{" "}
-                    <span className="text-secondary">#{order._id}</span>
+                    Order ID: <span className="font-bold">#{order._id}</span>
                   </h2>
                   <p className="text-right">
                     {order.items?.length}{" "}
@@ -53,7 +52,7 @@ const OrdersPage = () => {
                   </p>
                 </div>
 
-                <ul className="mt-6 flex flex-wrap gap-5 [&>li]:w-16">
+                <ul className="mt-5 flex flex-wrap gap-5 [&>li]:w-16">
                   {order.items?.map((item) => (
                     <li key={item._id} className="relative">
                       <img

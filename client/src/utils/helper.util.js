@@ -27,3 +27,7 @@ export function prescaleImg(originalUrl, width = 300, height = 300) {
     `pisces.bbystatic.com/prescaled/${width}/${height}`,
   );
 }
+
+export function getSortVal(field, order) {
+  return `${field}-${order}`;
+}
