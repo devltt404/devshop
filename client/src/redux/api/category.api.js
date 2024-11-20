@@ -1,12 +1,11 @@
+import { ENDPOINT } from "@/constants/index.js";
 import { api } from "./index.js";
-
-const baseCategoryEndpoint = "/category";
 
 export const categoryApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: () => ({
-        url: baseCategoryEndpoint,
+        url: ENDPOINT.CATEGORIES,
         method: "GET",
       }),
     }),

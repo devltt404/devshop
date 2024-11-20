@@ -1,6 +1,6 @@
 import { api } from "./index.js";
 
-const baseProductEndpoint = "/product";
+const baseProductEndpoint = "/products";
 
 export const productApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,4 +20,4 @@ export const productApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetProductsQuery, useGetProductDetailQuery } = productApi;
+export const { useGetProductDetailQuery, useGetProductsQuery } = productApi;

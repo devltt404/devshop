@@ -1,17 +1,18 @@
+import { ENDPOINT } from "@/constants/index.js";
 import { api } from "./index.js";
 
 const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUserProfile: builder.query({
       query: () => ({
-        url: "/user/profile",
+        url: `${ENDPOINT.USERS}/profile`,
       }),
       keepUnusedDataFor: 0,
     }),
 
     updateUserProfile: builder.mutation({
       query: (data) => ({
-        url: "/user/profile",
+        url: `${ENDPOINT.USERS}/profile`,
         method: "PATCH",
         data,
       }),
@@ -19,7 +20,7 @@ const userApi = api.injectEndpoints({
 
     updateUserPicture: builder.mutation({
       query: (data) => ({
-        url: "/user/picture",
+        url: `${ENDPOINT.USERS}/picture`,
         method: "PUT",
         data,
       }),
@@ -27,4 +28,8 @@ const userApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation, useUpdateUserPictureMutation } = userApi;
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useUpdateUserPictureMutation,
+} = userApi;

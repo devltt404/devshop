@@ -1,12 +1,11 @@
+import { ENDPOINT } from "@/constants/index.js";
 import { api } from "./index.js";
-
-const baseAuthEndpoint = "/auth";
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     authUser: builder.query({
       query: () => ({
-        url: baseAuthEndpoint,
+        url: ENDPOINT.AUTH,
         method: "GET",
       }),
       keepUnusedDataFor: 0,
@@ -14,7 +13,7 @@ export const authApi = api.injectEndpoints({
 
     authGoogle: builder.mutation({
       query: (data) => ({
-        url: baseAuthEndpoint + "/google",
+        url: ENDPOINT.AUTH + "/google",
         method: "POST",
         data,
       }),
@@ -23,7 +22,7 @@ export const authApi = api.injectEndpoints({
 
     login: builder.mutation({
       query: (data) => ({
-        url: baseAuthEndpoint + "/login",
+        url: ENDPOINT.AUTH + "/login",
         method: "POST",
         data,
       }),
@@ -32,7 +31,7 @@ export const authApi = api.injectEndpoints({
 
     register: builder.mutation({
       query: (data) => ({
-        url: baseAuthEndpoint + "/register",
+        url: ENDPOINT.AUTH + "/register",
         method: "POST",
         data,
       }),
@@ -41,7 +40,7 @@ export const authApi = api.injectEndpoints({
 
     logout: builder.mutation({
       query: () => ({
-        url: baseAuthEndpoint + "/logout",
+        url: ENDPOINT.AUTH + "/logout",
         method: "POST",
       }),
       invalidatesTags: ["SIMPLE_CART", "CART"],
@@ -54,5 +53,5 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
-  useAuthGoogleMutation
+  useAuthGoogleMutation,
 } = authApi;

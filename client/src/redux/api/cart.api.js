@@ -1,12 +1,11 @@
+import { ENDPOINT } from "@/constants/index.js";
 import { api } from "./index.js";
-
-const baseCartEndpoint = "/cart";
 
 const cartApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSimpleCart: builder.query({
       query: () => ({
-        url: baseCartEndpoint + "/simple",
+        url: ENDPOINT.CART + "/simple",
         method: "GET",
       }),
       providesTags: ["SIMPLE_CART"],
@@ -14,7 +13,7 @@ const cartApi = api.injectEndpoints({
 
     getDetailedCart: builder.query({
       query: () => ({
-        url: baseCartEndpoint + "/detail",
+        url: ENDPOINT.CART + "/detail",
         method: "GET",
       }),
       keepUnusedDataFor: 0,
@@ -23,7 +22,7 @@ const cartApi = api.injectEndpoints({
 
     addToCart: builder.mutation({
       query: ({ productId, skuId, quantity }) => ({
-        url: baseCartEndpoint + "/item",
+        url: ENDPOINT.CART + "/item",
         method: "POST",
         data: { productId, skuId, quantity },
       }),
@@ -31,7 +30,7 @@ const cartApi = api.injectEndpoints({
 
     removeCartItem: builder.mutation({
       query: ({ productId, skuId }) => ({
-        url: baseCartEndpoint + "/item",
+        url: ENDPOINT.CART + "/item",
         method: "DELETE",
         data: { productId, skuId },
       }),
@@ -39,7 +38,7 @@ const cartApi = api.injectEndpoints({
 
     updateCartItemQuantity: builder.mutation({
       query: ({ productId, skuId, quantity }) => ({
-        url: baseCartEndpoint + "/item-quantity",
+        url: ENDPOINT.CART + "/item-quantity",
         method: "PUT",
         data: { productId, skuId, quantity },
       }),
@@ -47,7 +46,7 @@ const cartApi = api.injectEndpoints({
 
     clearCart: builder.mutation({
       query: () => ({
-        url: baseCartEndpoint + "/all-items",
+        url: ENDPOINT.CART + "/all-items",
         method: "DELETE",
       }),
     }),

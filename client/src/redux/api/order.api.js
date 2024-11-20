@@ -1,25 +1,24 @@
+import { ENDPOINT } from "@/constants/index.js";
 import { api } from "./index.js";
-
-const baseOrderEndpoint = "/order";
 
 export const orderApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getOrderDetail: builder.query({
       query: (orderId) => ({
-        url: `${baseOrderEndpoint}/${orderId}`,
+        url: `${ENDPOINT.ORDERS}/${orderId}`,
       }),
     }),
 
     getUserOrders: builder.query({
       query: () => ({
-        url: `${baseOrderEndpoint}/user`,
+        url: `${ENDPOINT.ORDERS}/user`,
       }),
       providesTags: ["ORDERS"],
     }),
 
     createOrder: builder.mutation({
       query: (data) => ({
-        url: baseOrderEndpoint,
+        url: ENDPOINT.ORDERS,
         method: "POST",
         data,
       }),
@@ -28,7 +27,7 @@ export const orderApi = api.injectEndpoints({
 
     authorizeOrder: builder.mutation({
       query: ({ orderId, paymentId }) => ({
-        url: `${baseOrderEndpoint}/authorize/${orderId}`,
+        url: `${ENDPOINT.ORDERS}/authorize/${orderId}`,
         method: "POST",
         data: { paymentId },
       }),
