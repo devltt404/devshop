@@ -56,6 +56,7 @@ jobs:
           CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }}
           CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
+          ELASTICSEARCH_URI=${{ secrets.ELASTICSEARCH_URI }}
           EOF
 
       - name: Build
