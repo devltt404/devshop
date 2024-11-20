@@ -63,7 +63,7 @@ export class OrderService {
     try {
       // Check if all items in the order are valid and in stock
       const queryPromises = [];
-      order.items.map((orderItem) => {
+      order.items.forEach((orderItem) => {
         queryPromises.push(
           ProductService.findProductById({
             productId: orderItem.product,
@@ -77,7 +77,8 @@ export class OrderService {
       });
 
       const productsAndSkus = await Promise.all(queryPromises);
-      for (let i = 0; i < productsAndSkus.length; i += 2) {
+
+      for (let i = 0; i < order.items.length; i++) {
         const item = order.items[i];
         const product = productsAndSkus[i];
         const sku = productsAndSkus[i + 1];

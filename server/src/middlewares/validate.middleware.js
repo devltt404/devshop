@@ -1,8 +1,9 @@
+import { VALIDATE_OPTION } from "../constants/index.js";
 import { ErrorResponse } from "../core/response.js";
 
-export default function validate(schema) {
+export default function validate(schema, type = VALIDATE_OPTION.body) {
   return (req, res, next) => {
-    const { error } = schema.validate(req.body, {
+    const { error, value } = schema.validate(req[type], {
       abortEarly: false,
       allowUnknown: true,
       stripUnknown: true,
@@ -22,7 +23,9 @@ export default function validate(schema) {
           errors,
         })
       );
+    } else {
+      req[type] = value;
+      next();
     }
-    next();
   };
 }

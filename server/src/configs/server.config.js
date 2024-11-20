@@ -25,6 +25,8 @@ const env = cleanEnv(process.env, {
   CLOUDINARY_API_KEY: str(),
   CLOUDINARY_API_SECRET: str(),
 
+  ELASTICSEARCH_URI: str(),
+
   DATABASE_URL: str(),
 
   LOG_FILES_EXPIRATION: str({ default: "3d" }),
@@ -58,6 +60,9 @@ const serverConfig = {
     name: env.CLOUDINARY_NAME,
     apiKey: env.CLOUDINARY_API_KEY,
     apiSecret: env.CLOUDINARY_API_SECRET,
+  },
+  elasticsearch: {
+    uri: env.ELASTICSEARCH_URI,
   },
 };
 

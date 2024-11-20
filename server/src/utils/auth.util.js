@@ -1,7 +1,10 @@
 import ms from "ms";
 import serverConfig from "../configs/server.config.js";
 import { COOKIE_KEY } from "../constants/index.js";
+import CartService from "../services/cart.service.js";
+import { clearCartCookie } from "./cart.util.js";
 import { clearCookie, setCookie } from "./cookie.util.js";
+import { generateTokens } from "./user.util.js";
 
 export function getCommonAuthParams(req, res) {
   return {
@@ -33,7 +36,7 @@ export function handleToken({ user, res }) {
 }
 
 export async function handleCart({ user, guestCartId, res }) {
-  await assignGuestCartToUser({
+  await CartService.assignGuestCartToUser({
     userId: user._id,
     cartId: guestCartId,
     res,

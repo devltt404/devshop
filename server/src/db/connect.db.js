@@ -10,14 +10,14 @@ class Database {
   }
 
   connect() {
-    mongoose.set("debug", { shell: true, color: true });
-    mongoose.set("debug", function (coll, method, query, doc, options) {
-      logger.debug(
-        `Mongoose: ${coll}.${method}(${JSON.stringify(query)}, ${JSON.stringify(
-          doc
-        )}, ${JSON.stringify(options)})`
-      );
-    });
+    // mongoose.set("debug", { shell: true, color: true });
+    // mongoose.set("debug", function (coll, method, query, doc, options) {
+    //   logger.debug(
+    //     `Mongoose: ${coll}.${method}(${JSON.stringify(query)}, ${JSON.stringify(
+    //       doc
+    //     )}, ${JSON.stringify(options)})`
+    //   );
+    // });
 
     mongoose
       .connect(serverConfig.database.url)

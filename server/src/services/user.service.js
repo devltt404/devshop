@@ -2,7 +2,6 @@ import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import UserModel from "../models/user.model.js";
 import { deleteUploadByPath } from "../utils/cloudinary.util.js";
-import { getAndValidateUser } from "../utils/user.util.js";
 
 const profileSelect = "name email picture";
 
@@ -19,12 +18,21 @@ export default class UserService {
     return await UserModel.create(userData);
   }
 
+  static async validateUser({ userId, select = profileSelect, lean = false }) {
+    const user = await UserModel.findById(userId).select(select).lean(lean);
+    if (!user) {
+      throw new ErrorResponse(ERROR.USER.INVALID_USER);
+    }
+
+    return user;
+  }
+
   static async getUserProfile({ userId }) {
-    return { profile: await getAndValidateUser({ userId }) };
+    return { profile: await this.validateUser({ userId }) };
   }
 
   static async updateUserProfile({ userId, updateData }) {
-    const user = await getAndValidateUser({ userId });
+    const user = await this.validateUser({ userId });
 
     // Check if email already exists
     if (updateData.email) {
@@ -46,7 +54,7 @@ export default class UserService {
   }
 
   static async updateUserPicture({ newPicturePath, userId }) {
-    const user = await getAndValidateUser({ userId });
+    const user = await this.validateUser({ userId });
     if (!user) {
       throw new ErrorResponse(ERROR.USER.INVALID_USER);
     }

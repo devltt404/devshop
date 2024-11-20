@@ -2,12 +2,12 @@ import express from "express";
 import AuthController from "../../controllers/auth.controller.js";
 import { isAuthorized } from "../../middlewares/auth.middleware.js";
 import validate from "../../middlewares/validate.middleware.js";
+import { asyncHandler } from "../../utils/helper.util.js";
 import {
   authGoogleSchema,
   authLoginSchema,
   authRegisterSchema,
-} from "../../schemas/auth.schema.js";
-import { asyncHandler } from "../../utils/helper.util.js";
+} from "../../validations/auth.schema.js";
 
 const authRoutes = express.Router();
 

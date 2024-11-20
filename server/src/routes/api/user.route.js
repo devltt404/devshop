@@ -7,8 +7,8 @@ import {
   uploadCloud,
 } from "../../middlewares/upload.middleware.js";
 import validate from "../../middlewares/validate.middleware.js";
-import { updatePictureSchema } from "../../schemas/user.route.js";
 import { asyncHandler } from "../../utils/helper.util.js";
+import { updatePictureSchema } from "../../validations/user.schema.js";
 const userRoutes = express.Router();
 
 // USER

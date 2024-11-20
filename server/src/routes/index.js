@@ -14,12 +14,12 @@ import userRoutes from "./api/user.route.js";
 const apiRoutes = express.Router();
 
 apiRoutes.use("/auth", authRoutes);
-apiRoutes.use("/category", categoryRoutes);
-apiRoutes.use("/product", productRoutes);
+apiRoutes.use("/categories", categoryRoutes);
+apiRoutes.use("/products", productRoutes);
 apiRoutes.use("/cart", cartRoutes);
 apiRoutes.use("/payment", paymentRoutes);
-apiRoutes.use("/order", orderRoutes);
-apiRoutes.use("/user", userRoutes);
+apiRoutes.use("/orders", orderRoutes);
+apiRoutes.use("/users", userRoutes);
 
 if (!serverConfig.isPro) {
   apiRoutes.use("/test", testRoutes);

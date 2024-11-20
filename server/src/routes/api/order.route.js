@@ -5,8 +5,8 @@ import {
   isOptionallyAuthorized,
 } from "../../middlewares/auth.middleware.js";
 import validate from "../../middlewares/validate.middleware.js";
-import { createOrderSchema } from "../../schemas/order.schema.js";
 import { asyncHandler } from "../../utils/helper.util.js";
+import { createOrderSchema } from "../../validations/order.schema.js";
 const orderRoutes = express.Router();
 
 //USER

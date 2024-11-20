@@ -36,3 +36,20 @@ export const CLOUDINARY = Object.freeze({
   },
   MAX_SIZE: 1024 * 1024, // 1 MB
 });
+
+export const PRODUCT_SORT_FIELD = Object.freeze({
+  price: "minPrice",
+  rating: "rating",
+  ctime: "createdAt",
+  sold: "numSold",
+});
+
+export const PRODUCT_FACET_FIELD = Object.freeze({
+  category: "category",
+});
+
+export const VALIDATE_OPTION = Object.freeze({
+  body: "body",
+  query: "query",
+  params: "params",
+});

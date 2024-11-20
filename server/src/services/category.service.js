@@ -12,6 +12,56 @@ export default class CategoryService {
     return await CategoryModel.find(filter).select(select).lean(lean);
   }
 
+  static async getDescendantIds(categoryId) {
+    let descendantIds = await CategoryService.findCategories({
+      filter: { path: { $regex: `,${categoryId},` } },
+      select: "_id",
+      lean: true,
+    });
+
+    descendantIds = descendantIds.map((category) => category._id);
+
+    return descendantIds;
+  }
+
+  static async getTreeOfSingleCategory(category) {
+    let categoryIds = category.path.split(",").slice(1, -1);
+
+    const findQueries = await Promise.all(
+      categoryIds.map(async (categoryId) => {
+        return CategoryService.findOneCategory({
+          filter: { _id: categoryId },
+          select: "name slug",
+          lean: true,
+        });
+      })
+    );
+
+    findQueries.push(category);
+
+    return findQueries;
+  }
+
+  static async aggregateFacetCategories(buckets) {
+    const categoryIds = buckets.map((bucket) => bucket.key);
+
+    const categories = await CategoryModel.find({
+      _id: { $in: categoryIds },
+    }).select("_id name");
+
+    const categoryMap = categories.reduce((map, category) => {
+      map[category._id.toString()] = category.name;
+      return map;
+    }, {});
+
+    const resultWithCategoryNames = buckets.map((bucket) => ({
+      ...bucket,
+      name: categoryMap[bucket.key] || "Unknown",
+    }));
+
+    return resultWithCategoryNames;
+  }
+
   static async getAllCategories() {
     const categories = await CategoryModel.find({}).lean();
 

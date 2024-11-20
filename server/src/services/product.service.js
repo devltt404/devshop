@@ -1,11 +1,8 @@
 import ERROR from "../core/error.response.js";
 import { ErrorResponse } from "../core/response.js";
 import ProductModel from "../models/product.model.js";
-import {
-  getDescendantIds,
-  getTreeOfSingleCategory,
-} from "../utils/category.util.js";
 import CategoryService from "./category.service.js";
+import { ElasticsearchService } from "./elasticsearch.service.js";
 import SkuService from "./sku.service.js";
 
 export default class ProductService {
@@ -38,7 +35,7 @@ export default class ProductService {
 
     const [skus, category] = await Promise.all([
       SkuService.findSkusByProductId({ productId }),
-      getTreeOfSingleCategory(product.category),
+      CategoryService.getTreeOfSingleCategory(product.category),
     ]);
 
     product.skus = skus;
@@ -50,179 +47,102 @@ export default class ProductService {
     return { product };
   }
 
-  static async getProducts({
-    key,
-    page = 1,
-    limit = 10,
-    sortBy,
-    categoryId,
-    minRating,
-    minPrice,
-    maxPrice,
-  }) {
-    // Parse the query number parameters
-    limit = parseInt(limit);
-    page = parseInt(page);
-
-    // Aggregation pipeline
-    const pipeline = [];
-
-    // Object to filter products
-    const matchConditions = {};
-
-    if (key) {
-      matchConditions.$text = { $search: key };
-    }
-
-    if (minRating) {
-      matchConditions.avgRating = { $gte: minRating };
-    }
-
-    if (categoryId) {
-      const foundCategory = await CategoryService.findOneCategory({
-        filter: { _id: categoryId },
-      });
-
-      if (!foundCategory) {
-        throw new ErrorResponse(ERROR.PRODUCT.INVALID_CATEGORY);
-      }
-
-      const descendantIds = await getDescendantIds(foundCategory._id);
-
-      matchConditions.category = { $in: [...descendantIds, categoryId] };
-    }
-
-    if (Object.keys(matchConditions).length !== 0) {
-      pipeline.push({
-        $match: matchConditions,
-      });
-    }
-
-    // Lookup SKUs to get the minimum and maximum prices for each product
-    pipeline.push({
-      $lookup: {
-        from: "skus", // The collection name for SKUs
-        localField: "_id",
-        foreignField: "productId",
-        as: "skus",
-      },
-    });
-
-    pipeline.push({
-      $addFields: {
-        minPrice: {
-          $min: "$skus.price",
-        },
-        maxPrice: {
-          $max: "$skus.price",
+  static async aggregateProductsBasicInfo(productIds) {
+    return await ProductModel.aggregate([
+      {
+        $match: {
+          _id: { $in: productIds },
         },
       },
-    });
-
-    pipeline.push({
-      $addFields: {
-        defaultSku: {
-          $arrayElemAt: [
-            {
-              $filter: {
-                input: {
-                  $map: {
-                    input: "$skus",
-                    as: "sku",
-                    in: {
-                      _id: "$$sku._id",
-                      image: {
-                        $cond: {
-                          if: { $gt: [{ $size: "$$sku.images" }, 0] },
-                          then: { $arrayElemAt: ["$$sku.images", 0] },
-                          else: { $arrayElemAt: ["$images", 0] },
+      {
+        $lookup: {
+          from: "skus",
+          localField: "_id",
+          foreignField: "productId",
+          as: "skus",
+        },
+      },
+      {
+        $addFields: {
+          minPrice: {
+            $min: "$skus.price",
+          },
+          maxPrice: {
+            $max: "$skus.price",
+          },
+        },
+      },
+      {
+        $addFields: {
+          defaultSku: {
+            $arrayElemAt: [
+              {
+                $filter: {
+                  input: {
+                    $map: {
+                      input: "$skus",
+                      as: "sku",
+                      in: {
+                        _id: "$$sku._id",
+                        image: {
+                          $cond: {
+                            if: { $gt: [{ $size: "$$sku.images" }, 0] },
+                            then: { $arrayElemAt: ["$$sku.images", 0] },
+                            else: { $arrayElemAt: ["$images", 0] },
+                          },
                         },
+                        price: "$$sku.price",
+                        originalPrice: "$$sku.originalPrice",
                       },
-                      price: "$$sku.price",
-                      originalPrice: "$$sku.originalPrice",
                     },
                   },
+                  as: "sku",
+                  cond: { $eq: ["$$sku.price", "$minPrice"] },
                 },
-                as: "sku",
-                cond: { $eq: ["$$sku.price", "$minPrice"] },
               },
-            },
-            0,
-          ],
-        },
-      },
-    });
-
-    // Filter products by price range
-    if (minPrice || maxPrice) {
-      pipeline.push({
-        $match: {
-          $expr: {
-            $and: [
-              { $gte: ["$minPrice", minPrice || 0] },
-              { $lte: ["$maxPrice", maxPrice || Infinity] },
+              0,
             ],
           },
         },
-      });
+      },
+      {
+        $project: {
+          features: 0,
+          details: 0,
+          skus: 0,
+          variations: 0,
+          description: 0,
+          images: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          __v: 0,
+        },
+      },
+    ]);
+  }
+
+  static async getProducts(params) {
+    const { productIds, totalProducts, facets } =
+      await ElasticsearchService.searchProducts(params);
+
+    let aggregatedProducts;
+    if (params.facet === "category") {
+      [aggregatedProducts, facets.category.buckets] = await Promise.all([
+        this.aggregateProductsBasicInfo(productIds),
+        CategoryService.aggregateFacetCategories(facets.category.buckets),
+      ]);
+    } else {
+      aggregatedProducts = await this.aggregateProductsBasicInfo(productIds);
     }
 
-    // Exclude some detail fields to reduce the response size
-    pipeline.push({
-      $project: {
-        features: 0,
-        details: 0,
-        skus: 0,
-        variations: 0,
-        description: 0,
-        images: 0,
+    return {
+      products: aggregatedProducts,
+      pagination: {
+        page: params.page,
+        limit: params.limit,
+        totalPages: Math.ceil(totalProducts / params.limit),
       },
-    });
-
-    // Sort
-    if (sortBy === "priceAsc") {
-      pipeline.push({
-        $sort: { minPrice: 1 },
-      });
-    } else if (sortBy === "priceDesc") {
-      pipeline.push({
-        $sort: { minPrice: -1 },
-      });
-    } else if (sortBy === "ctimeDesc") {
-      pipeline.push({
-        $sort: { createdAt: -1 },
-      });
-    } else if (sortBy === "soldDesc") {
-      pipeline.push({
-        $sort: { numSold: -1 },
-      });
-    }
-
-    // Pagination
-    pipeline.push({
-      $facet: {
-        pagination: [{ $count: "totalProducts" }],
-        products: [{ $skip: (page - 1) * limit }, { $limit: limit }],
-      },
-    });
-
-    // Flatten the pagination array to an object
-    pipeline.push({
-      $addFields: {
-        pagination: { $arrayElemAt: ["$pagination", 0] },
-      },
-    });
-
-    const res = (await ProductModel.aggregate(pipeline))[0];
-
-    // Add some more pagination info
-    if (!res.pagination) {
-      res.pagination = { totalProducts: 0 };
-    }
-    res.pagination.page = page;
-    res.pagination.limit = limit;
-    res.pagination.totalPages = Math.ceil(res.pagination.totalProducts / limit);
-
-    return res;
+      facets,
+    };
   }
 }
