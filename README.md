@@ -111,7 +111,7 @@ We use **Docker Compose** to set up and run **MongoDB**, **Elasticsearch** and *
 1. Start services
 
    ```bash
-   docker-compose up -d
+   docker-compose -f docker-compose.local.yml up -d
    ```
 
 2. Verify running Containers
