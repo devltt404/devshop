@@ -1,0 +1,52 @@
+services:
+  mongodb:
+    image: mongo:8.0
+    container_name: ds-mongodb
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=devshop
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - service-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: ds-elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      - service-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    container_name: ds-kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - service-network
+    depends_on:
+      - elasticsearch
+
+volumes:
+  mongodb-data:
+    driver: local
+  es-data:
+    driver: local
+
+networks:
+  service-network:
+    driver: bridge
