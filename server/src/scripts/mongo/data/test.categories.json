@@ -1,0 +1,484 @@
+[{
+  "_id": "20948",
+  "slug": "computers",
+  "path": null,
+  "name": "Computers",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477513/devshop/categories/computer_xfqzus.png"
+},
+{
+  "_id": "50623",
+  "slug": "desktops",
+  "path": ",20948,",
+  "name": "Desktops"
+},
+{
+  "_id": "51029",
+  "slug": "gaming-pcs",
+  "path": ",20948,50623,",
+  "name": "Gaming PCs"
+},
+{
+  "_id": "11679",
+  "slug": "all-in-one-computers",
+  "path": ",20948,50623,",
+  "name": "All-in-One Computers"
+},
+{
+  "_id": "90111",
+  "slug": "workstations",
+  "path": ",20948,50623,",
+  "name": "Workstations"
+},
+{
+  "_id": "27711",
+  "slug": "laptops",
+  "path": ",20948,",
+  "name": "Laptops"
+},
+{
+  "_id": "54925",
+  "slug": "gaming-laptops",
+  "path": ",20948,27711,",
+  "name": "Gaming Laptops"
+},
+{
+  "_id": "33488",
+  "slug": "ultrabooks",
+  "path": ",20948,27711,",
+  "name": "Ultrabooks"
+},
+{
+  "_id": "88947",
+  "slug": "tablets",
+  "path": ",20948,",
+  "name": "Tablets"
+},
+{
+  "_id": "38541",
+  "slug": "monitors",
+  "path": ",20948,",
+  "name": "Monitors"
+},
+{
+  "_id": "07934",
+  "slug": "computer-components",
+  "path": ",20948,",
+  "name": "Computer Components"
+},
+{
+  "_id": "30271",
+  "slug": "cpus",
+  "path": ",20948,07934,",
+  "name": "CPUs"
+},
+{
+  "_id": "85924",
+  "slug": "gpus",
+  "path": ",20948,07934,",
+  "name": "GPUs"
+},
+{
+  "_id": "01992",
+  "slug": "motherboards",
+  "path": ",20948,07934,",
+  "name": "Motherboards"
+},
+{
+  "_id": "37102",
+  "slug": "ram",
+  "path": ",20948,07934,",
+  "name": "RAM"
+},
+{
+  "_id": "94284",
+  "slug": "storage",
+  "path": ",20948,07934,",
+  "name": "Storage"
+},
+{
+  "_id": "57982",
+  "slug": "computer-accessories",
+  "path": ",20948,",
+  "name": "Computer Accessories"
+},
+{
+  "_id": "22062",
+  "slug": "keyboards",
+  "path": ",20948,57982,",
+  "name": "Keyboards"
+},
+{
+  "_id": "44317",
+  "slug": "mice",
+  "path": ",20948,57982,",
+  "name": "Mice"
+},
+{
+  "_id": "76531",
+  "slug": "webcams",
+  "path": ",20948,57982,",
+  "name": "Webcams"
+},
+{
+  "_id": "05727",
+  "slug": "headsets",
+  "path": ",20948,57982,",
+  "name": "Headsets"
+},
+{
+  "_id": "59242",
+  "slug": "external-storage",
+  "path": ",20948,57982,",
+  "name": "External Storage"
+},
+{
+  "_id": "00694",
+  "slug": "phones",
+  "path": null,
+  "name": "Phones",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477516/devshop/categories/phone_udkeit.png"
+},
+{
+  "_id": "70218",
+  "slug": "smartphones",
+  "path": ",00694,",
+  "name": "Smartphones"
+},
+{
+  "_id": "66964",
+  "slug": "android-phones",
+  "path": ",00694,70218,",
+  "name": "Android Phones"
+},
+{
+  "_id": "38639",
+  "slug": "iphones",
+  "path": ",00694,70218,",
+  "name": "iPhones"
+},
+{
+  "_id": "31664",
+  "slug": "phone-accessories",
+  "path": ",00694,",
+  "name": "Phone Accessories"
+},
+{
+  "_id": "98603",
+  "slug": "cases",
+  "path": ",00694,31664,",
+  "name": "Cases"
+},
+{
+  "_id": "03725",
+  "slug": "screen-protectors",
+  "path": ",00694,31664,",
+  "name": "Screen Protectors"
+},
+{
+  "_id": "27377",
+  "slug": "chargers",
+  "path": ",00694,31664,",
+  "name": "Chargers"
+},
+{
+  "_id": "57612",
+  "slug": "power-banks",
+  "path": ",00694,31664,",
+  "name": "Power Banks"
+},
+{
+  "_id": "01310",
+  "slug": "home-entertainment",
+  "path": null,
+  "name": "Home Entertainment",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477514/devshop/categories/entertainment_vw3fwt.png"
+},
+{
+  "_id": "27761",
+  "slug": "televisions",
+  "path": ",01310,",
+  "name": "Televisions"
+},
+{
+  "_id": "88486",
+  "slug": "internet-tvs",
+  "path": ",01310,27761,",
+  "name": "Internet TVs"
+},
+{
+  "_id": "64771",
+  "slug": "home-audio",
+  "path": ",01310,",
+  "name": "Home Audio"
+},
+{
+  "_id": "77368",
+  "slug": "soundbars",
+  "path": ",01310,64771,",
+  "name": "Soundbars"
+},
+{
+  "_id": "08676",
+  "slug": "home-theater-systems",
+  "path": ",01310,64771,",
+  "name": "Home Theater Systems"
+},
+{
+  "_id": "37526",
+  "slug": "gaming",
+  "path": null,
+  "name": "Gaming",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477513/devshop/categories/gaming_i59spz.png"
+},
+{
+  "_id": "46249",
+  "slug": "consoles",
+  "path": ",37526,",
+  "name": "Consoles"
+},
+{
+  "_id": "16921",
+  "slug": "playstation",
+  "path": ",37526,46249,",
+  "name": "PlayStation"
+},
+{
+  "_id": "44294",
+  "slug": "xbox",
+  "path": ",37526,46249,",
+  "name": "Xbox"
+},
+{
+  "_id": "17518",
+  "slug": "nintendo",
+  "path": ",37526,46249,",
+  "name": "Nintendo"
+},
+{
+  "_id": "29536",
+  "slug": "gaming-accessories",
+  "path": ",37526,",
+  "name": "Gaming Accessories"
+},
+{
+  "_id": "53831",
+  "slug": "vr-headsets",
+  "path": ",37526,29536,",
+  "name": "VR Headsets"
+},
+{
+  "_id": "23340",
+  "slug": "wearable",
+  "path": null,
+  "name": "Wearable",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477517/devshop/categories/wearable_ibgrqq.png"
+},
+{
+  "_id": "18025",
+  "slug": "smartwatches",
+  "path": ",23340,",
+  "name": "Smartwatches"
+},
+{
+  "_id": "69172",
+  "slug": "fitness-trackers",
+  "path": ",23340,",
+  "name": "Fitness Trackers"
+},
+{
+  "_id": "03767",
+  "slug": "audio",
+  "path": null,
+  "name": "Audio",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477513/devshop/categories/audio_pydagg.png"
+},
+{
+  "_id": "00028",
+  "slug": "headphones",
+  "path": ",03767,",
+  "name": "Headphones"
+},
+{
+  "_id": "04903",
+  "slug": "wireless-headphones",
+  "path": ",03767,00028,",
+  "name": "Wireless Headphones"
+},
+{
+  "_id": "30693",
+  "slug": "over-ear-wireless-headphones",
+  "path": ",03767,00028,04903,",
+  "name": "Over-ear wireless headphones"
+},
+{
+  "_id": "15443",
+  "slug": "wired-headphones",
+  "path": ",03767,00028,",
+  "name": "Wired Headphones"
+},
+{
+  "_id": "25014",
+  "slug": "over-ear-wired-headphones",
+  "path": ",03767,00028,15443,",
+  "name": "Over-ear wired headphones"
+},
+{
+  "_id": "79242",
+  "slug": "speakers",
+  "path": ",03767,",
+  "name": "Speakers"
+},
+{
+  "_id": "32126",
+  "slug": "wireless-speakers",
+  "path": ",03767,79242,",
+  "name": "Wireless Speakers"
+},
+{
+  "_id": "76755",
+  "slug": "wired-speakers",
+  "path": ",03767,79242,",
+  "name": "Wired Speakers"
+},
+{
+  "_id": "07465",
+  "slug": "smart-home",
+  "path": null,
+  "name": "Smart Home",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477514/devshop/categories/smart-home_qgj6rp.png"
+},
+{
+  "_id": "21727",
+  "slug": "home-automation",
+  "path": ",07465,",
+  "name": "Home Automation"
+},
+{
+  "_id": "68092",
+  "slug": "lighting",
+  "path": ",07465,21727,",
+  "name": "Lighting"
+},
+{
+  "_id": "13907",
+  "slug": "plugs",
+  "path": ",07465,21727,",
+  "name": "Plugs"
+},
+{
+  "_id": "67632",
+  "slug": "thermostats",
+  "path": ",07465,21727,",
+  "name": "Thermostats"
+},
+{
+  "_id": "76817",
+  "slug": "security-systems",
+  "path": ",07465,",
+  "name": "Security Systems"
+},
+{
+  "_id": "68588",
+  "slug": "cameras",
+  "path": ",07465,76817,",
+  "name": "Cameras"
+},
+{
+  "_id": "77039",
+  "slug": "doorbells",
+  "path": ",07465,76817,",
+  "name": "Doorbells"
+},
+{
+  "_id": "48872",
+  "slug": "locks",
+  "path": ",07465,76817,",
+  "name": "Locks"
+},
+{
+  "_id": "15187",
+  "slug": "networking",
+  "path": null,
+  "name": "Networking",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477515/devshop/categories/network_nrh4d9.png"
+},
+{
+  "_id": "10091",
+  "slug": "routers",
+  "path": ",15187,",
+  "name": "Routers"
+},
+{
+  "_id": "69954",
+  "slug": "networking-equipment",
+  "path": ",15187,",
+  "name": "Networking Equipment"
+},
+{
+  "_id": "74138",
+  "slug": "switches",
+  "path": ",15187,69954,",
+  "name": "Switches"
+},
+{
+  "_id": "30522",
+  "slug": "access-points",
+  "path": ",15187,69954,",
+  "name": "Access Points"
+},
+{
+  "_id": "39941",
+  "slug": "extenders",
+  "path": ",15187,69954,",
+  "name": "Extenders"
+},
+{
+  "_id": "25745",
+  "slug": "office",
+  "path": null,
+  "name": "Office",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477515/devshop/categories/office_w6ljfe.png"
+},
+{
+  "_id": "45855",
+  "slug": "printers",
+  "path": ",25745,",
+  "name": "Printers"
+},
+{
+  "_id": "96087",
+  "slug": "scanners",
+  "path": ",25745,",
+  "name": "Scanners"
+},
+{
+  "_id": "29392",
+  "slug": "projectors",
+  "path": ",25745,",
+  "name": "Projectors"
+},
+{
+  "_id": "88461",
+  "slug": "car-electronics",
+  "path": null,
+  "name": "Car Electronics",
+  "image": "https://res.cloudinary.com/db9v5ywkw/image/upload/v1717477513/devshop/categories/car_uekztm.png"
+},
+{
+  "_id": "71695",
+  "slug": "car-audio",
+  "path": ",88461,",
+  "name": "Car Audio"
+},
+{
+  "_id": "23348",
+  "slug": "gps-&-navigation",
+  "path": ",88461,",
+  "name": "GPS & Navigation"
+},
+{
+  "_id": "47735",
+  "slug": "dash-cams",
+  "path": ",88461,",
+  "name": "Dash Cams"
+}]

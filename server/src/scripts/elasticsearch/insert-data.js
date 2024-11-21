@@ -7,8 +7,6 @@ import { esClient } from "../../configs/elasticsearch.config.js";
 import ProductModel from "../../models/product.model.js";
 import SkuModel from "../../models/sku.model.js";
 
-await mongoose.connect(process.env.DATABASE_URL);
-
 const createProductsIndex = async () => {
   try {
     await esClient.indices.create({
@@ -31,6 +29,11 @@ const createProductsIndex = async () => {
     });
     console.log("Product index created");
   } catch (err) {
+    if (err.meta.body.error.type === "resource_already_exists_exception") {
+      console.log("Product index already exists");
+      return;
+    }
+
     console.error("Error creating index:", err);
   }
 };
@@ -41,53 +44,50 @@ const createProductDocs = async () => {
   const products = await ProductModel.find({}).lean();
   console.log(`Start creating ${products.length} product documents`);
 
-  products.forEach(async (product, i) => {
-    try {
-      console.log(`${i + 1}. Creating document for product ${product._id}`);
+  let count = 0;
 
-      const sku = await SkuModel.find({ productId: product._id }).lean();
-      let minPrice = sku.reduce(
-        (min, s) => (s.price < min ? s.price : min),
-        Infinity
-      );
-      let maxPrice = sku.reduce(
-        (max, s) => (s.price > max ? s.price : max),
-        -Infinity
-      );
+  for (const product of products) {
+    console.log(`${++count}. Creating document for product ${product._id}`);
 
-      await esClient.index({
-        index: "products",
-        id: product._id,
-        body: {
-          name: product.name,
-          description: product.description,
-          avgRating: product.avgRating,
-          numReviews: product.numReviews,
-          category: product.category,
-          numSold: product.numSold,
-          minPrice,
-          maxPrice,
-          createdAt: product.createdAt,
-        },
-      });
+    const sku = await SkuModel.find({ productId: product._id }).lean();
+    let minPrice = sku.reduce(
+      (min, s) => (s.price < min ? s.price : min),
+      Infinity
+    );
+    let maxPrice = sku.reduce(
+      (max, s) => (s.price > max ? s.price : max),
+      -Infinity
+    );
 
-      console.log(`Document created for product ${product._id}`);
-    } catch (error) {
-      console.error(
-        `Error creating document for product ${product._id}:`,
-        error
-      );
-    }
-  });
+    await esClient.index({
+      index: "products",
+      id: product._id,
+      body: {
+        name: product.name,
+        description: product.description,
+        avgRating: product.avgRating,
+        numReviews: product.numReviews,
+        category: product.category,
+        numSold: product.numSold,
+        minPrice,
+        maxPrice,
+        createdAt: product.createdAt,
+      },
+    });
 
-  console.log(`Setup elastic search for ${products.length} products`);
+    console.log(`Document created for product ${product._id}`);
+  }
+
+  console.log(`Setup elastic search for ${count}/${products.length} products`);
 };
 
-const setup = async () => {
+const insertData = async () => {
   await createProductsIndex();
   await createProductDocs();
 };
 
-setup().then(() => {
+mongoose.connect(process.env.DATABASE_URL).then(async () => {
+  console.log("Connected to MongoDB");
+  await insertData();
   mongoose.connection.close();
 });
