@@ -29,7 +29,7 @@ const createProductsIndex = async () => {
     });
     console.log("Product index created");
   } catch (err) {
-    if (err.meta.body.error.type === "resource_already_exists_exception") {
+    if (err.meta?.body?.error?.type === "resource_already_exists_exception") {
       console.log("Product index already exists");
       return;
     }

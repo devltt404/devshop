@@ -10,8 +10,8 @@
     "server-production": "node --env-file=.env.production server.js --trace-warnings",
     "client": "cd ../client && npm run dev",
     "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
-    "setup-es": "node --env-file=.env.development src/scripts/elasticsearch/insert-data.js",
-    "setup-mongo": "node --env-file=.env.development src/scripts/mongo/insert-data.js",
+    "setup-es": "node --env-file=.env.development src/scripts/elasticsearch/seed.js",
+    "setup-mongo": "node --env-file=.env.development src/scripts/mongo/seed.js",
     "setup": "npm run setup-mongo && npm run setup-es"
   },
   "keywords": [],
