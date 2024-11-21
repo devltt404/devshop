@@ -47,7 +47,7 @@ Devshop is an online electric gadgets shopping website built with MERN stack.
 
 #### Step 1: Clone the Repository
 
-Clone the BullFood repository to your local machine: bash Copy code
+Clone the DevShop repository to your local machine: bash Copy code
 
 ```bash
 git clone https://github.com/devltt404/devshop
