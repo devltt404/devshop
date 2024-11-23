@@ -26,6 +26,7 @@ const cartApi = api.injectEndpoints({
         method: "POST",
         data: { productId, skuId, quantity },
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
 
     removeCartItem: builder.mutation({
@@ -34,6 +35,7 @@ const cartApi = api.injectEndpoints({
         method: "DELETE",
         data: { productId, skuId },
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
 
     updateCartItemQuantity: builder.mutation({
@@ -42,6 +44,7 @@ const cartApi = api.injectEndpoints({
         method: "PUT",
         data: { productId, skuId, quantity },
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
 
     clearCart: builder.mutation({
@@ -49,6 +52,7 @@ const cartApi = api.injectEndpoints({
         url: ENDPOINT.CART + "/all-items",
         method: "DELETE",
       }),
+      invalidatesTags: ["SIMPLE_CART", "CART"],
     }),
   }),
 });

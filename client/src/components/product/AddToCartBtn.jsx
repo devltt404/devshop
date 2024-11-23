@@ -1,5 +1,4 @@
 import { useAddToCartMutation } from "@/redux/api/cart.api.js";
-import { setTotalQuantity } from "@/redux/slices/cart.slice.js";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Button } from "../ui/button.jsx";
@@ -28,8 +27,11 @@ const AddToCartBtn = ({ quantity, productId, skuId }) => {
           skuId,
         })
           .unwrap()
-          .then(({ metadata }) => {
-            dispatch(setTotalQuantity(metadata.totalQuantity));
+          .then(() => {
+            toast({
+              title: "Success!",
+              description: "Item added to cart.",
+            });
           })
           .catch((error) => {
             if (error.code === "cart-001") {

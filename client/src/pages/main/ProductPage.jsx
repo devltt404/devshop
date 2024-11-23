@@ -149,6 +149,7 @@ const ProductPage = () => {
               handleSelectSku={handleSelectSku}
               isOptionAvailable={isOptionAvailable}
               skus={product.skus}
+              setQuantity={setQuantity}
             />
 
             <Separator className="my-6" />
