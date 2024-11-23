@@ -25,7 +25,7 @@ export class ElasticsearchService {
     ];
 
     if (sortBy) {
-      sort.push({
+      sort.unshift({
         [PRODUCT_SORT_FIELD[sortBy]]: { order: order || "asc" },
       });
     }
@@ -33,20 +33,29 @@ export class ElasticsearchService {
     // ------ Filter ------
     const mustFilters = [];
     if (key) {
+      // mustFilters.push({
+      //   bool: {
+      //     should: [
+      //       { match: { name: { query: key, boost: 3 } } },
+      //       // {
+      //       //   match: {
+      //       //     description: { query: key, fuzziness: "AUTO", boost: 1.5 },
+      //       //   },
+      //       // },
+      //     ],
+      //   },
+      // });
+
       mustFilters.push({
-        bool: {
-          should: [
-            { match: { name: { query: key, boost: 3 } } },
-            {
-              match: {
-                description: { query: key, fuzziness: "AUTO", boost: 1.5 },
-              },
-            },
-          ],
+        multi_match: {
+          query: key,
+          fields: ["name^3", "description"],
+          fuzziness: "AUTO",
+          operator: "and",
         },
       });
 
-      sort.push({
+      sort.unshift({
         _score: { order: "desc" },
       });
     }
