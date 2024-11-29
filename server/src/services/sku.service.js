@@ -5,7 +5,7 @@ export default class SkuService {
     return SkuModel.find({ productId }).lean(lean);
   }
 
-  static async findSkuById({ skuId, lean = true }) {
-    return SkuModel.findById(skuId).lean(lean);
+  static async findSkuById({ skuId, lean = true, select = "" }) {
+    return SkuModel.findById(skuId).select(select).lean(lean);
   }
 }

@@ -43,15 +43,15 @@ export default class CartService {
   }
 
   static async validateCartItem({ productId, skuId }) {
-    //Validate product
-    const product = await ProductService.findProductById({
-      productId,
-      select: "-description -details",
-    });
-    if (!product) throw new ErrorResponse(ERROR.CART.INVALID_PRODUCT_ID);
+    const [product, sku] = await Promise.all([
+      ProductService.findProductById({
+        productId,
+        select: "_id",
+      }),
+      SkuService.findSkuById({ skuId, select: "stock" }),
+    ]);
 
-    //Validate sku
-    const sku = await SkuService.findSkuById({ skuId });
+    if (!product) throw new ErrorResponse(ERROR.CART.INVALID_PRODUCT_ID);
     if (!sku) throw new ErrorResponse(ERROR.CART.INVALID_SKU_ID);
 
     return { product, sku };
@@ -153,6 +153,7 @@ export default class CartService {
       productId,
       skuId,
     });
+
     let cart = await CartModel.findOne(
       genFindCartQuery({ userId, guestCartId })
     );

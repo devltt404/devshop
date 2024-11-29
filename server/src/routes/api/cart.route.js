@@ -5,35 +5,15 @@ import { asyncHandler } from "../../utils/helper.util.js";
 const cartRoutes = express.Router();
 
 //! USER + GUEST
-cartRoutes.get(
-  "/simple",
-  isOptionallyAuthorized,
-  asyncHandler(CartController.getSimpleCart)
-);
-cartRoutes.get(
-  "/detail",
-  isOptionallyAuthorized,
-  asyncHandler(CartController.getCartDetail)
-);
-cartRoutes.post(
-  "/item",
-  isOptionallyAuthorized,
-  asyncHandler(CartController.addToCart)
-);
-cartRoutes.delete(
-  "/item",
-  isOptionallyAuthorized,
-  asyncHandler(CartController.removeCartItem)
-);
+cartRoutes.use(isOptionallyAuthorized);
+cartRoutes.get("/simple", asyncHandler(CartController.getSimpleCart));
+cartRoutes.get("/detail", asyncHandler(CartController.getCartDetail));
+cartRoutes.post("/item", asyncHandler(CartController.addToCart));
+cartRoutes.delete("/item", asyncHandler(CartController.removeCartItem));
 cartRoutes.put(
   "/item-quantity",
-  isOptionallyAuthorized,
   asyncHandler(CartController.updateCartItemQuantity)
 );
-cartRoutes.delete(
-  "/all-items",
-  isOptionallyAuthorized,
-  asyncHandler(CartController.clearCart)
-);
+cartRoutes.delete("/all-items", asyncHandler(CartController.clearCart));
 
 export default cartRoutes;

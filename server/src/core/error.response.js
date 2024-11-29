@@ -87,9 +87,9 @@ const ERROR = {
       message: "Invalid product id.",
       code: "cart-003",
     },
-    INVALID_ITEM_ID: {
+    INVALID_SKU_ID: {
       status: 400,
-      message: "Invalid item id.",
+      message: "Invalid sku id.",
       code: "cart-004",
     },
     INVALID_QUANTITY: {
